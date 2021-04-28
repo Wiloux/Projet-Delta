@@ -40,6 +40,8 @@ namespace Florian {
         public Transform frontWheels;
         public Transform backWheels;
         public Transform steeringWheel;
+        public Transform body;
+        public Camera playerCamera;
 
         #region Unity callbacks
 
@@ -151,6 +153,14 @@ namespace Florian {
             player.controllers.AddController(controller, true);
             if (player != null) { Debug.Log("Controller found : " + player.name); } else { Debug.LogWarning("Controller not found"); }
             playerName = name;
+        }
+
+        public void SetCamera(int playerId, int maxPlayer) {
+            playerCamera.rect = Tools.GetPlayerRect(playerId, maxPlayer);
+        }
+
+        public void ChangeTexture(Material mat) {
+            body.GetComponent<MeshRenderer>().material = mat;
         }
 
         public void Boost() {

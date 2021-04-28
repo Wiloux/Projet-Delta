@@ -226,6 +226,44 @@ namespace ToolsBoxEngine {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
 
+        public static Rect GetPlayerRect(int playerId, int maxPlayer) {
+            switch (maxPlayer) {
+                case 1:
+                    return new Rect(0, 0, 1, 1);
+                case 2:
+                    switch (playerId) {
+                        case 1:
+                            return new Rect(0, 0, 0.5f, 1);
+                        case 2:
+                            return new Rect(0.5f, 0, 0.5f, 1);
+                    }
+                    break;
+                case 3:
+                    switch (playerId) {
+                        case 1:
+                            return new Rect(0, 0.5f, 0.5f, 0.5f);
+                        case 2:
+                            return new Rect(0.5f, 0.5f, 0.5f, 0.5f);
+                        case 3:
+                            return new Rect(0, 0, 0.5f, 0.5f);
+                    }
+                    break;
+                case 4:
+                    switch (playerId) {
+                        case 1:
+                            return new Rect(0, 0.5f, 0.5f, 0.5f);
+                        case 2:
+                            return new Rect(0.5f, 0.5f, 0.5f, 0.5f);
+                        case 3:
+                            return new Rect(0, 0, 0.5f, 0.5f);
+                        case 4:
+                            return new Rect(0.5f, 0, 0.5f, 0.5f);
+                    }
+                    break;
+            }
+            return new Rect(0, 0, 1, 1);
+        }
+
         #endregion
     }
 }
