@@ -1,0 +1,79 @@
+﻿using System;
+using UnityEngine;
+
+namespace Florian.ActionSequencer {
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(BoxCollider))]
+    [ExecuteInEditMode]
+    public class AreaTrigger : MonoBehaviour {
+        private ActionSequencer enterActions;
+        private ActionSequencer exitActions;
+
+        public bool alwaysExitActions = false;
+
+        public Color gizmosColor = Color.red;
+
+        private Rigidbody rigidBody;
+        private BoxCollider[] boxCollider;
+
+        private void Awake() {
+            rigidBody = GetComponent<Rigidbody>();
+            boxCollider = GetComponents<BoxCollider>();
+            rigidBody.isKinematic = true;
+            rigidBody.useGravity = false;
+            for (int i = 0; i < boxCollider.Length; i++) {
+                boxCollider[i].isTrigger = true;
+            }
+
+            foreach (ActionSequencer sequencer in GetComponentsInChildren<ActionSequencer>()) {
+                if (sequencer.name == "OnEnter") {
+                    enterActions = sequencer;
+                } else if (sequencer.name == "OnExit") {
+                    exitActions = sequencer;
+                }
+            }
+
+            if (null == enterActions) {
+                GameObject enterActionGo = new GameObject("OnEnter");
+                enterActionGo.transform.SetParent(transform);
+                enterActions = enterActionGo.AddComponent<ActionSequencer>();
+            }
+
+            if (null == exitActions) {
+                GameObject exitActionGo = new GameObject("OnExit");
+                exitActionGo.transform.SetParent(transform);
+                exitActions = exitActionGo.AddComponent<ActionSequencer>();
+            }
+
+            if (gameObject.name.Equals("GameObject")) { gameObject.name = "AreaTrigger"; }
+        }
+
+        public void OnAreaEnter(GameObject entity = null) {
+            enterActions.Launch(entity);
+        }
+
+        public void OnAreaExit(GameObject entity = null) {
+            exitActions.Launch(entity);
+        }
+
+        private void OnTriggerEnter(Collider other) {
+            if (other.gameObject == null) return;
+
+            OnAreaEnter(other.gameObject);
+        }
+
+        private void OnTriggerExit(Collider other) {
+            if (other.gameObject == null) return;
+
+            OnAreaExit(other.gameObject);
+        }
+
+        private void OnDrawGizmos() {
+            Color color = gizmosColor;
+            Gizmos.color = color;
+            for (int i = 0; i < boxCollider.Length; i++) {
+                Gizmos.DrawCube(transform.position + boxCollider[i].center, boxCollider[i].size);
+            }
+        }
+    }
+}
