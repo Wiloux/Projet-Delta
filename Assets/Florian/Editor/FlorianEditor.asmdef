@@ -1,7 +1,9 @@
 {
     "name": "FlorianEditor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:127ceb8980798bd44bc8ebc1d59c6896"
+    ],
     "includePlatforms": [
         "Editor"
     ],
