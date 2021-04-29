@@ -398,7 +398,7 @@ Rigidbody:
   m_Mass: 300
   m_Drag: 2
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -496,6 +496,18 @@ MonoBehaviour:
   steeringWheel: {fileID: 6475608891522552370}
   body: {fileID: 7379954279266431166}
   playerCamera: {fileID: 2410863475699871443}
+  airBorn: 0
+  rotationOnLeavingGround: {x: 0, y: 0, z: 0}
+  rotateSpeed: 40
+  nbOfLaps: 0
+  nbOfLapsY: 0
+  nbOfLapsZ: 0
+  lastNbOfLapY: 0
+  lastNbOfLapZ: 0
+  lastDir: 0
+  startRot: 0
+  lastH: 0
+  parent: {fileID: 2410863474544765466}
 --- !u!1 &2410863475699871440
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,13 +533,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2410863475699871440}
-  m_LocalRotation: {x: 0, y: -0.043619405, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: 0.15, y: 0.1, z: -0.16}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 9.56, y: 3.49, z: 0.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2410863475443005161}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: -5, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!20 &2410863475699871443
 Camera:
   m_ObjectHideFlags: 0

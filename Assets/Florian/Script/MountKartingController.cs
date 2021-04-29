@@ -5,8 +5,10 @@ using DG.Tweening;
 using ToolsBoxEngine;
 using Rewired;
 
-namespace Florian {
-    public class MountKartingController : MonoBehaviour {
+namespace Florian
+{
+    public class MountKartingController : MonoBehaviour
+    {
         [Header("Rewired")]
         public string playerName;
         private Rewired.Player player;
@@ -43,9 +45,28 @@ namespace Florian {
         public Transform body;
         public Camera playerCamera;
 
+        public bool airBorn;
+
+        [Header("Stunts")]
+        public Vector3 rotationOnLeavingGround;
+        public float rotateSpeed;
+        public int nbOfLaps;
+        public int nbOfLapsY;
+        public int nbOfLapsZ;
+        public int lastNbOfLapY;
+        public int lastNbOfLapZ;
+        public int lastDir;
+        public bool startRot;
+        public bool lastH;
+        public Transform parent;
+        //public Quaternion CurrentRotation;
+
         #region Unity callbacks
 
-        private void Start() {
+        private void Start()
+        {
+            lastNbOfLapY = -1;
+            lastNbOfLapZ = -1;
             SetController(playerName);
             //Debug.Log(player.controllers.GetFirstControllerWithTemplate<Rewired.IControllerTemplateAxisSource>());
             //Rewired.Controller controller = player.controllers;
@@ -54,68 +75,144 @@ namespace Florian {
             //}
         }
 
-        private void Update() {
+        private void Update()
+        {
+
             /*if (Input.GetKeyDown(KeyCode.Space))
             {
                 float time = Time.timeScale == 1 ? .2f : 1;
                 Time.timeScale = time;
             }*/
+            airBorn = !isGrounded();
+
 
             //Follow Collider
             transform.position = sphere.transform.position - new Vector3(0, 0.4f, 0);
+            if (!airBorn)
+            {
+                //Accelerate
+                if (player.GetButton("Accelerate"))
+                    speed = acceleration;
 
-            //Accelerate
-            if (player.GetButton("Accelerate"))
-                speed = acceleration;
+                if (player.GetButton("Decelerate"))
+                    speed -= acceleration * 0.2f;
 
-            if (player.GetButton("Decelerate"))
-                speed -= acceleration * 0.2f;
+                //Steer
+                if (player.GetAxis("Horizontal") != 0)
+                {
+                    int dir = player.GetAxis("Horizontal") > 0 ? 1 : -1;
+                    float amount = Mathf.Abs((player.GetAxis("Horizontal")));
+                    Steer(dir, amount);
+                }
 
-            //Steer
-            if (player.GetAxis("Horizontal") != 0) {
-                int dir = player.GetAxis("Horizontal") > 0 ? 1 : -1;
-                float amount = Mathf.Abs((player.GetAxis("Horizontal")));
-                Steer(dir, amount);
+                //Drift
+                if (player.GetButtonDown("Drift") && !drifting && player.GetAxis("Horizontal") != 0)
+                {
+                    drifting = true;
+                    driftDirection = player.GetAxis("Horizontal") > 0 ? 1 : -1;
+
+                    //kartModel.parent.DOComplete();
+                    //kartModel.parent.DOPunchPosition(transform.up * .2f, .3f, 5, 1);
+                }
+
+                if (drifting)
+                {
+                    float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 0, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, 0);
+                    Steer(driftDirection, control);
+                }
+
+                if (player.GetButtonUp("Drift") && drifting)
+                {
+                    if (raphquidecide)
+                        Boost();
+                }
+
+                currentSpeed = Mathf.SmoothStep(currentSpeed, speed, Time.deltaTime * 12f); speed = 0f;
+                currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f); rotate = 0f;
+
+
+                //if (!drifting)
+                //    kartModel.localEulerAngles = Vector3.Lerp(kartModel.localEulerAngles, new Vector3(0, 90 + (player.GetAxis("Horizontal") * 15), kartModel.localEulerAngles.z), .2f);
+                //else
+                //{
+                //    float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, .5f, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, .5f);
+                //    kartModel.parent.localRotation = Quaternion.Euler(0, Mathf.LerpAngle(kartModel.parent.localEulerAngles.y, (control * 15) * driftDirection, .2f), 0);
+                //}
+
+                frontWheels.localEulerAngles = new Vector3(0, (player.GetAxis("Horizontal") * 15), frontWheels.localEulerAngles.z);
+                frontWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
+                backWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
+
+                steeringWheel.localEulerAngles = new Vector3(-25, 90, ((player.GetAxis("Horizontal") * 45)));
             }
-
-            //Drift
-            if (player.GetButtonDown("Drift") && !drifting && player.GetAxis("Horizontal") != 0) {
-                drifting = true;
-                driftDirection = player.GetAxis("Horizontal") > 0 ? 1 : -1;
-
-                //kartModel.parent.DOComplete();
-                //kartModel.parent.DOPunchPosition(transform.up * .2f, .3f, 5, 1);
+            else
+            {
+                int dir = 0;
+                bool H = false;
+                if (player.GetAxis("Horizontal") != 0)
+                {
+                    dir = player.GetAxis("Horizontal") > 0 ? 1 : -1;
+                    body.transform.Rotate(new Vector3(0, 0, 1) * rotateSpeed * Time.deltaTime * dir, Space.Self);
+                    H = true;
+                }
+                else if (player.GetAxis("Vertical") != 0)
+                {
+                    dir = player.GetAxis("Vertical") > 0 ? 1 : -1;
+                    body.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime * dir, Space.Self);
+                    H = false;
+                }
+                if(dir != 0)
+                CheckIfALapIsDone(rotationOnLeavingGround, dir, lastDir, H);
             }
+        }
+        private void CheckIfALapIsDone(Vector3 OriginalRot, int dir, int _lastdir, bool H)
+        {
 
-            if (drifting) {
-                float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 0, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, 0);
-                Steer(driftDirection, control);
+            if (dir == _lastdir && H == lastH)
+            {
+
+                float DiffY = Mathf.DeltaAngle(ChangeAngleInterval(parent.transform.rotation.eulerAngles.x), OriginalRot.x + 360);
+                DiffY = Mathf.RoundToInt(DiffY);
+
+                if (DiffY == 0 && (lastNbOfLapY + 1) == nbOfLapsY && startRot)
+                {
+                    nbOfLapsY++;
+                }
+
+                if (DiffY == 1 && (lastNbOfLapY + 2) == nbOfLapsY)
+                {
+                    lastNbOfLapY++;
+                    startRot = true;
+                }
+                //float DiffZ = Mathf.DeltaAngle(ChangeAngleInterval(transform.rotation.eulerAngles.z), OriginalRot.z + 360);
+                //DiffZ = Mathf.RoundToInt(DiffZ);
+
+
+                //if (DiffZ == 0 && (lastNbOfLapZ) == nbOfLapsZ && startRot)
+                //{
+                //    nbOfLapsZ++;
+                //}
+
+                //if (DiffZ == 1 && (lastNbOfLapZ + 1) == nbOfLapsZ)
+                //{
+                //    startRot = true;
+                //    lastNbOfLapZ++;
+                //}
+
             }
-
-            if (player.GetButtonUp("Drift") && drifting) {
-                if (raphquidecide)
-                    Boost();
+            else
+            {
+                rotationOnLeavingGround = parent.transform.rotation.eulerAngles;
+                lastDir = dir;
+                startRot = false;
+                lastH = H;
+                Debug.Log("reset");
             }
-
-            currentSpeed = Mathf.SmoothStep(currentSpeed, speed, Time.deltaTime * 12f); speed = 0f;
-            currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f); rotate = 0f;
-
-
-            if (!drifting)
-                kartModel.localEulerAngles = Vector3.Lerp(kartModel.localEulerAngles, new Vector3(0, 90 + (player.GetAxis("Horizontal") * 15), kartModel.localEulerAngles.z), .2f);
-            else {
-                float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, .5f, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, .5f);
-                kartModel.parent.localRotation = Quaternion.Euler(0, Mathf.LerpAngle(kartModel.parent.localEulerAngles.y, (control * 15) * driftDirection, .2f), 0);
-            }
-
-            frontWheels.localEulerAngles = new Vector3(0, (player.GetAxis("Horizontal") * 15), frontWheels.localEulerAngles.z);
-            frontWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
-            backWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
-
-            steeringWheel.localEulerAngles = new Vector3(-25, 90, ((player.GetAxis("Horizontal") * 45)));
         }
 
-        private void FixedUpdate() {
+
+        private void FixedUpdate()
+        {
             //Forward Acceleration
             if (!drifting)
                 sphere.AddForce(-kartModel.transform.right * currentSpeed, ForceMode.Acceleration);
@@ -123,10 +220,10 @@ namespace Florian {
                 sphere.AddForce(transform.forward * currentSpeed, ForceMode.Acceleration);
 
             //Gravity
-            sphere.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
+            // sphere.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
 
             //Steering
-            transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), Time.deltaTime * 5f);
+            //  transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), Time.deltaTime * 5f);
 
             //RaycastHit hitOn;
             RaycastHit hitNear;
@@ -135,19 +232,22 @@ namespace Florian {
             Physics.Raycast(transform.position + (transform.up * .1f), Vector3.down, out hitNear, 2.0f, layerMask);
 
             //Normal Rotation
-            kartNormal.up = Vector3.Lerp(kartNormal.up, hitNear.normal, Time.deltaTime * 8.0f);
-            kartNormal.Rotate(0, transform.eulerAngles.y, 0);
+            //kartNormal.up = Vector3.Lerp(kartNormal.up, hitNear.normal, Time.deltaTime * 8.0f);
+            //kartNormal.Rotate(0, transform.eulerAngles.y, 0);
         }
 
         #endregion
 
-        public void SetController(string name) {
+
+        public void SetController(string name)
+        {
             player = ReInput.players.GetPlayer(name);
             if (player != null) { Debug.Log("Controller found : " + player.name); } else { Debug.LogWarning("Controller not found"); return; }
             playerName = name;
         }
 
-        public void SetController(string name, Controller controller) {
+        public void SetController(string name, Controller controller)
+        {
             player = ReInput.players.GetPlayer(name);
             player.controllers.ClearAllControllers();
             player.controllers.AddController(controller, true);
@@ -155,18 +255,22 @@ namespace Florian {
             playerName = name;
         }
 
-        public void SetCamera(int playerId, int maxPlayer) {
+        public void SetCamera(int playerId, int maxPlayer)
+        {
             playerCamera.rect = Tools.GetPlayerRect(playerId, maxPlayer);
         }
 
-        public void ChangeTexture(Material mat) {
+        public void ChangeTexture(Material mat)
+        {
             body.GetComponent<MeshRenderer>().material = mat;
         }
 
-        public void Boost() {
+        public void Boost()
+        {
             drifting = false;
 
-            if (driftMode > 0) {
+            if (driftMode > 0)
+            {
                 DOVirtual.Float(currentSpeed * 3, currentSpeed, .3f * driftMode, Speed);
             }
 
@@ -174,12 +278,48 @@ namespace Florian {
             kartModel.parent.DOLocalRotate(Vector3.zero, .5f).SetEase(Ease.OutBack);
         }
 
-        public void Steer(int direction, float amount) {
+        public void Steer(int direction, float amount)
+        {
             rotate = (steering * direction) * amount;
         }
 
-        private void Speed(float x) {
+        private void Speed(float x)
+        {
             currentSpeed = x;
         }
+
+        float ChangeAngleInterval(float angle)
+        {
+            if (angle > 180f)
+            {
+                angle = angle - 360f;
+                return angle;
+            }
+            else
+            {
+                return angle;
+            }
+        }
+        bool lapDone = false;
+      
+        bool isGrounded()
+        {
+            RaycastHit hitFloor;
+            if (Physics.Raycast(transform.position + (transform.up * 0.2f), Vector3.down, out hitFloor, 2.0f, layerMask))
+            {
+                nbOfLaps = 0;
+                nbOfLapsY = 0;
+                nbOfLapsZ = 0;
+                rotationOnLeavingGround = parent.transform.rotation.eulerAngles;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
+
+
 }
