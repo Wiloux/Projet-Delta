@@ -34,6 +34,8 @@ public class MountKartingController : MonoBehaviour
     public Transform backWheels;
     public Transform steeringWheel;
 
+    public bool airBorn;
+
 
     private void Update()
     {
@@ -44,6 +46,9 @@ public class MountKartingController : MonoBehaviour
         }*/
 
         //Follow Collider
+
+        airBorn = !isGrounded();
+
         transform.position = sphere.transform.position - new Vector3(0, 0.4f, 0);
 
         //Accelerate
@@ -100,6 +105,15 @@ public class MountKartingController : MonoBehaviour
         backWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
 
         steeringWheel.localEulerAngles = new Vector3(-25, 90, ((Input.GetAxis("Horizontal") * 45)));
+    }
+
+    bool isGrounded()
+    {
+        RaycastHit hitFloor;
+
+        if (Physics.Raycast(transform.position + (transform.up * 0.2f), Vector3.down, out hitFloor, 2.0f, layerMask))
+            return true;
+        else return false;
     }
 
     private void FixedUpdate()
