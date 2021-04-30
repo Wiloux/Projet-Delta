@@ -320,7 +320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318642008939402599}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.535, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6993007, y: 1.25, z: 0.3289474}
   m_Children:
   - {fileID: 7379954279266431166}
@@ -535,7 +535,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1 &2410863475067752963
 GameObject:
@@ -633,9 +633,9 @@ MonoBehaviour:
   playerCamera: {fileID: 2410863475699871443}
   airBorn: 0
   rotationOnLeavingGround: {x: 0, y: 0, z: 0}
-  rotateSpeed: 40
+  rotateSpeed: 500
   nbOfLaps: 0
-  lastDir: 0
+  lastDir: {x: 0, y: 0}
   startRot: 0
   newAxis: 0
   parent: {fileID: 2410863474544765466}

@@ -986,11 +986,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lapsNumber: 0
   checkpoints:
-  - {x: 53.084377, y: 0, z: 52.025787}
-  - {x: 54.410553, y: 0, z: -63.82956}
-  - {x: -5.2738037, y: 0, z: -62.098896}
-  - {x: -83.972755, y: 0, z: -6.40567}
-  - {x: -8.673861, y: 0, z: 53.186287}
+  - {x: 77.760445, y: 0, z: 73.371056}
+  - {x: 78.88089, y: 0, z: -60.261917}
+  - {x: 0.1814003, y: 0, z: -62.408665}
+  - {x: -58.537025, y: 0, z: -24.035141}
+  - {x: -54.05319, y: 0, z: 64.17291}
+  - {x: 7.1764526, y: 0, z: 83.302444}
   characters: []
   raceStarted: 0
 --- !u!4 &385954435
@@ -5236,6 +5237,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 529016993}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1689177149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1689177150}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1689177150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689177149}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 71.737274, y: 1.9850006, z: 7.263275}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1700930838
 GameObject:
