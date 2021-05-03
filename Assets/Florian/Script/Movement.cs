@@ -21,6 +21,7 @@ namespace Florian
         public float maxSpeed;
         public float turnSpeed;
         public float accelerationSpeed;
+        public float decelerationSpeed;
 
         [Header("Orientation")]
         public float maxTurnSpeed;
@@ -32,6 +33,7 @@ namespace Florian
 
         [Header("Air Detection")]
         public float gravity;
+        public float jumpForce;
         public bool airborn;
         public LayerMask layerMask;
 
@@ -55,27 +57,29 @@ namespace Florian
                 speed -= accelerationSpeed * Time.deltaTime;
             }
 
-            if (player.GetButton("Decelerate") && speed < maxSpeed)
+            if (player.GetButton("Decelerate") && speed > 0)
             {
-                speed += accelerationSpeed * Time.deltaTime;
+                speed -= decelerationSpeed * Time.deltaTime;
             }
 
             if (player.GetAxis("Horizontal") != 0)
             {
                 int direction = player.GetAxis("Horizontal") > 0 ? 1 : -1;
                 transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * Time.deltaTime, Space.Self);
-                if (model.transform.localEulerAngles.y < 120f && model.transform.localEulerAngles.y > 60)
-                {
-                    model.transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * 1.2f * Time.deltaTime, Space.Self);
-                }
+                model.transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * 1.2f * Time.deltaTime, Space.Self);
             }
             else
             {
-                model.transform.DOLocalRotate(new Vector3(0, 90f, 0), 0.5f).SetEase(Ease.OutBack);
+                model.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.OutBack);
             }
 
             _rb.AddForce(transform.forward * speed, ForceMode.Acceleration);
 
+            airborn = isGrounded();
+            if (player.GetButton("Jump") && airborn)
+            {
+                Jump();
+            }
             Gravity();
         }
 
@@ -126,6 +130,11 @@ namespace Florian
         public void ChangeTexture(Material mat)
         {
             body.GetComponent<MeshRenderer>().material = mat;
+        }
+
+        public void Jump()
+        {
+            _rb.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
         }
 
 
