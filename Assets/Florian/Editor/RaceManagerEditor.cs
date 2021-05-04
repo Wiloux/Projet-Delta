@@ -7,6 +7,15 @@ using Florian;
 namespace Florian.Editor {
     [CustomEditor(typeof(RaceManager))]
     public class RaceManagerEditor : UnityEditor.Editor {
+        public override void OnInspectorGUI() {
+            base.OnInspectorGUI();
+
+            if (GUILayout.Button("Spawn checkpoints")) {
+                RaceManager script = (RaceManager)target;
+                script?.SpawnCheckpoints();
+            }
+        }
+
         private void OnSceneGUI() {
             serializedObject.Update();
 

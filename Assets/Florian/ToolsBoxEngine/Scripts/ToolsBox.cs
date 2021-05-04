@@ -222,6 +222,10 @@ namespace ToolsBoxEngine {
             return result;
         }
 
+        #endregion
+
+        #region Utilities
+
         public static float Remap(this float value, float from1, float to1, float from2, float to2) {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
@@ -233,9 +237,9 @@ namespace ToolsBoxEngine {
                 case 2:
                     switch (playerId) {
                         case 1:
-                            return new Rect(0, 0, 0.5f, 1);
+                            return new Rect(0, 0, 1, 0.5f);
                         case 2:
-                            return new Rect(0.5f, 0, 0.5f, 1);
+                            return new Rect(0, 0.5f, 1, 0.5f);
                     }
                     break;
                 case 3:
@@ -262,6 +266,36 @@ namespace ToolsBoxEngine {
                     break;
             }
             return new Rect(0, 0, 1, 1);
+        }
+
+        public static float AcuteAngle(float angle) {
+            if (angle > 180f) {
+                angle = angle - 360f;
+            }
+            return angle;
+        }
+
+        public static Vector3 AcuteAngle(Vector3 angle) {
+            return new Vector3(AcuteAngle(angle.x), AcuteAngle(angle.y), AcuteAngle(angle.z));
+        }
+
+        public static int Ponder(params int[] weight) {
+            int totWeight = 0;
+
+            for (int i = 0; i < weight.Length; i++) {
+                totWeight += weight[i];
+            }
+
+            int random = UnityEngine.Random.Range(0, totWeight);
+
+            for (int i = 0; i < weight.Length; i++) {
+                if (random < weight[i]) {
+                    return i;
+                }
+                random -= weight[i];
+            }
+
+            return weight.Length - 1;
         }
 
         #endregion

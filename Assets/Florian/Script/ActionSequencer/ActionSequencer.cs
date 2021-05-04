@@ -87,5 +87,11 @@ namespace Florian.ActionSequencer {
                 action.Execute();
             }
         }
+
+        public T AddAction<T>() where T : Action {
+            GameObject insta = new GameObject();
+            insta.transform.parent = transform;
+            return insta.AddComponent<T>();
+        }
     }
 }

@@ -27,5 +27,24 @@ namespace Florian.ActionSequencer {
         public override void OnResetAction() {
             entity = null;
         }
+
+        #region Setters
+
+        public void SetAction(WaitType waitType, TargetType targetType, GameObject targetEntity = null) {
+            base.SetAction(waitType, 0f);
+            SetAction(targetType, targetEntity);
+        }
+
+        public void SetAction(WaitType waitType, float timeToWait, TargetType targetType, GameObject targetEntity = null) {
+            base.SetAction(waitType, timeToWait);
+            SetAction(targetType, targetEntity);
+        }
+
+        public void SetAction(TargetType targetType, GameObject targetEntity = null) {
+            this.targetType = targetType;
+            this.targetEntity = targetEntity;
+        }
+
+        #endregion
     }
 }

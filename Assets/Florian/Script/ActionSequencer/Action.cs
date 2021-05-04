@@ -58,5 +58,10 @@ namespace Florian.ActionSequencer {
         }
 
         public abstract void OnResetAction();
+
+        public void SetAction(WaitType waitType, float timeToWait = 0f) {
+            this.waitType = waitType;
+            this.timeToWait = timeToWait;
+        }
     }
 }

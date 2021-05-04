@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -7,7 +8,7 @@ using Rewired;
 using TMPro;
 
 namespace Florian {
-    public class MountKartingController : MonoBehaviour {
+    public class MountKartingController : Character {
         [Header("Rewired")]
         public string playerName;
         private Rewired.Player player;
@@ -58,20 +59,17 @@ namespace Florian {
 
         private Vector2 stuntRotation = Vector2.zero;
         private Vector2 lastRot = Vector2.zero;
-        private Nullable<Vector3> goToRotation = null;
+        private ToolsBoxEngine.Nullable<Vector3> goToRotation = null;
         private Vector3 startRotation = Vector3.zero;
         private float goToRotationSteps = 0f;
-        private float goToRotationTime = 0f;
+
+        public event EventHandler OnAirBorn;
+        public event EventHandler OnLanding;
 
         #region Unity callbacks
 
         private void Start() {
             SetController(playerName);
-            //Debug.Log(player.controllers.GetFirstControllerWithTemplate<Rewired.IControllerTemplateAxisSource>());
-            //Rewired.Controller controller = player.controllers;
-            //for (int i = 0; i < controller.templateCount; i++) {
-            //    Debug.Log(controller.name + " implements the " + controller.Templates[i].name + " Template.");
-            //}
         }
 
         private void Update() {
@@ -81,87 +79,110 @@ namespace Florian {
                 float time = Time.timeScale == 1 ? .2f : 1;
                 Time.timeScale = time;
             }*/
-            airBorn = !isGrounded();
+
+            bool grounded = isGrounded();
+            if (airBorn == grounded) {
+                if (airBorn == false) {
+                    if (OnAirBorn != null) {
+                        OnAirBorn(this, EventArgs.Empty);
+                        OnAirBorn = null;
+                    }
+                } else {
+                    if (OnLanding != null) {
+                        OnLanding(this, EventArgs.Empty);
+                        OnLanding = null;
+                    }
+                }
+
+                airBorn = !grounded;
+            }
 
             //Follow Collider
             transform.position = sphere.transform.position - new Vector3(0, 0.4f, 0);
             if (!airBorn) {
-                //Accelerate
-                if (player.GetButton("Accelerate"))
-                    speed = acceleration;
-
-                if (player.GetButton("Decelerate"))
-                    speed -= acceleration * 0.2f;
-
-                //Steer
-                if (player.GetAxis("Horizontal") != 0) {
-                    int dir = player.GetAxis("Horizontal") > 0 ? 1 : -1;
-                    float amount = Mathf.Abs((player.GetAxis("Horizontal")));
-                    Steer(dir, amount);
-                }
-
-                //Drift
-                if (player.GetButtonDown("Drift") && !drifting && player.GetAxis("Horizontal") != 0) {
-                    drifting = true;
-                    driftDirection = player.GetAxis("Horizontal") > 0 ? 1 : -1;
-
-                    //kartModel.parent.DOComplete();
-                    //kartModel.parent.DOPunchPosition(transform.up * .2f, .3f, 5, 1);
-                }
-
-                if (drifting) {
-                    float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 0, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, 0);
-                    Steer(driftDirection, control);
-                }
-
-                if (player.GetButtonUp("Drift") && drifting) {
-                    if (raphquidecide)
-                        Boost();
-                }
-
-                currentSpeed = Mathf.SmoothStep(currentSpeed, speed, Time.deltaTime * 12f); speed = 0f;
-                currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f); rotate = 0f;
-
-
-                //if (!drifting)
-                //    kartModel.localEulerAngles = Vector3.Lerp(kartModel.localEulerAngles, new Vector3(0, 90 + (player.GetAxis("Horizontal") * 15), kartModel.localEulerAngles.z), .2f);
-                //else
-                //{
-                //    float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, .5f, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, .5f);
-                //    kartModel.parent.localRotation = Quaternion.Euler(0, Mathf.LerpAngle(kartModel.parent.localEulerAngles.y, (control * 15) * driftDirection, .2f), 0);
-                //}
-
-                frontWheels.localEulerAngles = new Vector3(0, (player.GetAxis("Horizontal") * 15), frontWheels.localEulerAngles.z);
-                frontWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
-                backWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
-
-                steeringWheel.localEulerAngles = new Vector3(-25, 90, ((player.GetAxis("Horizontal") * 45)));
+                UpdateMovements();
             } else {
+                //UpdateAirBorn();
+            }
 
-                //Air control
-                Vector2 dir = Vector2.zero;
-                bool H = false;
-                if (player.GetAxisRaw("Horizontal") != 0) {
-                    dir.x = player.GetAxisRaw("Horizontal") > 0 ? 1 : -1;
-                    parent.transform.Rotate(new Vector3(0, 1, 0) * rotateSpeed * Time.deltaTime * dir.x, Space.Self);
-                    H = true;
-                } else if (player.GetAxisRaw("Vertical") != 0) {
-                    dir.y = player.GetAxisRaw("Vertical") > 0 ? 1 : -1;
-                    parent.transform.Rotate(new Vector3(0, 0, 1) * rotateSpeed * Time.deltaTime * dir.y, Space.Self);
-                    H = false;
+            UpdateRotation();
+        }
+
+        private void UpdateMovements() {
+            //Accelerate
+            if (player.GetButton("Accelerate"))
+                speed = acceleration;
+
+            if (player.GetButton("Decelerate"))
+                speed -= acceleration * 0.2f;
+
+            //Steer
+            if (player.GetAxis("Horizontal") != 0) {
+                int dir = player.GetAxis("Horizontal") > 0 ? 1 : -1;
+                float amount = Mathf.Abs((player.GetAxis("Horizontal")));
+                Steer(dir, amount);
+            }
+
+            //Drift
+            if (player.GetButtonDown("Drift") && !drifting && player.GetAxis("Horizontal") != 0) {
+                drifting = true;
+                driftDirection = player.GetAxis("Horizontal") > 0 ? 1 : -1;
+
+                //kartModel.parent.DOComplete();
+                //kartModel.parent.DOPunchPosition(transform.up * .2f, .3f, 5, 1);
+            }
+
+            if (drifting) {
+                float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 0, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, 0);
+                Steer(driftDirection, control);
+            }
+
+            if (player.GetButtonUp("Drift") && drifting) {
+                if (raphquidecide)
+                    Boost();
+            }
+
+            currentSpeed = Mathf.SmoothStep(currentSpeed, speed, Time.deltaTime * 12f); speed = 0f;
+            currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f); rotate = 0f;
+
+
+            //if (!drifting)
+            //    kartModel.localEulerAngles = Vector3.Lerp(kartModel.localEulerAngles, new Vector3(0, 90 + (player.GetAxis("Horizontal") * 15), kartModel.localEulerAngles.z), .2f);
+            //else
+            //{
+            //    float control = (driftDirection == 1) ? Tools.Remap(player.GetAxis("Horizontal"), -1, 1, .5f, 2) : Tools.Remap(player.GetAxis("Horizontal"), -1, 1, 2, .5f);
+            //    kartModel.parent.localRotation = Quaternion.Euler(0, Mathf.LerpAngle(kartModel.parent.localEulerAngles.y, (control * 15) * driftDirection, .2f), 0);
+            //}
+
+            frontWheels.localEulerAngles = new Vector3(0, (player.GetAxis("Horizontal") * 15), frontWheels.localEulerAngles.z);
+            frontWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
+            backWheels.localEulerAngles += new Vector3(0, 0, sphere.velocity.magnitude / 2);
+
+            steeringWheel.localEulerAngles = new Vector3(-25, 90, ((player.GetAxis("Horizontal") * 45)));
+        }
+
+        private void UpdateAirBorn() {
+            //Air control
+            Vector2 dir = Vector2.zero;
+            bool H = false;
+            if (player.GetAxisRaw("Horizontal") != 0) {
+                dir.x = player.GetAxisRaw("Horizontal") > 0 ? 1 : -1;
+                parent.transform.Rotate(new Vector3(0, 1, 0) * rotateSpeed * Time.deltaTime * dir.x, Space.Self);
+                H = true;
+            } else if (player.GetAxisRaw("Vertical") != 0) {
+                dir.y = player.GetAxisRaw("Vertical") > 0 ? 1 : -1;
+                parent.transform.Rotate(new Vector3(0, 0, 1) * rotateSpeed * Time.deltaTime * dir.y, Space.Self);
+                H = false;
+            }
+            if (dir != Vector2.zero) {
+                //CheckIfALapIsDone(rotationOnLeavingGround, dir, lastDir, H);
+
+                if ((dir.x != 0 && lastDir.y != 0) || (dir.y != 0 && lastDir.x != 0)) {
+                    //parent.transform.localEulerAngles
+                    RotateTo(rotationOnLeavingGround, 0.2f);
                 }
-                if (dir != Vector2.zero) {
-                    //CheckIfALapIsDone(rotationOnLeavingGround, dir, lastDir, H);
 
-                    if ((dir.x != 0 && lastDir.y != 0) || (dir.y != 0 && lastDir.x != 0)) {
-                        //parent.transform.localEulerAngles
-                        RotateTo(rotationOnLeavingGround, 0.2f);
-                    }
-
-                    CheckIfALapIsDone(dir);
-                }
-
-                UpdateRotation();
+                CheckIfALapIsDone(dir);
             }
         }
 
@@ -175,92 +196,6 @@ namespace Florian {
                     goToRotationSteps = 0f;
                 }
             }
-        }
-
-        private void RotateTo(Vector3 angle, float time) {
-            goToRotation = ChangeAngleInterval(angle);
-            startRotation = ChangeAngleInterval(parent.transform.localEulerAngles);
-            goToRotationTime = time;
-            //StartCoroutine(Rotate(angle, time));
-            //Debug.Log(" / " + goToRotation.Value + " .. " + angle + ".. " + startRotation);
-        }
-
-        //private IEnumerator Rotate(Vector3 angle, float time) {
-        //    for (int i = 0; i < time; i++) {
-
-        //    }
-        //}
-
-        private void CheckIfALapIsDone(Vector3 OriginalRot, Vector2 dir, Vector2 _lastdir, bool _newAxis) {
-
-            if (dir == _lastdir && _newAxis == this.newAxis) {
-
-                int DiffX = CalculateDiffToInt(parent.transform.localEulerAngles.z, OriginalRot.z, 360);
-                int DiffY = CalculateDiffToInt(parent.transform.localEulerAngles.y, OriginalRot.y, 360);
-
-                int Diff = DiffX + DiffY;
-                Debug.Log("X : " + DiffX + " . Y : " + DiffY + " . Tot : " + Diff);
-
-                if (Diff == 0 && startRot) {
-                    nbOfLaps++;
-                    UpdateComboMeter(comboMeter);
-                    startRot = false;
-                }
-
-                if (Mathf.Abs(Diff) == 1 && !startRot) {
-                    startRot = true;
-                }
-
-            } else {
-                rotationOnLeavingGround = parent.transform.localEulerAngles;
-                lastDir = dir;
-                startRot = false;
-                this.newAxis = _newAxis;
-            }
-        }
-
-        private void CheckIfALapIsDone(Vector2 dir) {
-            if (dir != lastDir) {
-                if (dir.x != lastDir.x) {
-                    stuntRotation.x = 0;
-                }
-
-                if (dir.y != lastDir.y) {
-                    stuntRotation.y = 0;
-                }
-            }
-
-            Vector2 actualRot = new Vector2(parent.transform.localEulerAngles.z, parent.transform.localEulerAngles.y);
-            float diffX = Mathf.DeltaAngle(lastRot.x, actualRot.x);
-            float diffY = Mathf.DeltaAngle(lastRot.y, actualRot.y);
-
-            stuntRotation.x += diffX;
-            stuntRotation.y += diffY;
-
-            if (Mathf.Abs(stuntRotation.x) / 360f >= 1) {
-                nbOfLaps += Mathf.FloorToInt(Mathf.Abs(stuntRotation.x) / 360f);
-                stuntRotation.x %= 360f;
-                UpdateComboMeter(comboMeter);
-            }
-
-            if (Mathf.Abs(stuntRotation.y) / 360f >= 1) {
-                nbOfLaps += Mathf.FloorToInt(Mathf.Abs(stuntRotation.y) / 360f);
-                stuntRotation.y %= 360f;
-                UpdateComboMeter(comboMeter);
-            }
-
-            //Debug.Log("AccumRot : " + stuntRotation + " . rotDiff : " + diffX + " . " + diffY);
-
-            lastRot = new Vector2(actualRot.x, actualRot.y);
-            lastDir = new Vector2(dir.x, dir.y);
-        }
-
-        private void UpdateComboMeter(TextMeshProUGUI text) {
-            text.text = "x" + nbOfLaps;
-        }
-        private int CalculateDiffToInt(float rotationA, float rotationB, float maxAngle) {
-            float DiffY = Mathf.DeltaAngle(ChangeAngleInterval(rotationA), rotationB + maxAngle);
-            return Mathf.RoundToInt(DiffY);
         }
 
         private void FixedUpdate() {
@@ -293,6 +228,41 @@ namespace Florian {
 
         #endregion
 
+        private void CheckIfALapIsDone(Vector2 dir) {
+            if (dir != lastDir) {
+                if (dir.x != lastDir.x) {
+                    stuntRotation.x = 0;
+                }
+
+                if (dir.y != lastDir.y) {
+                    stuntRotation.y = 0;
+                }
+            }
+
+            Vector2 actualRot = new Vector2(parent.transform.localEulerAngles.z, parent.transform.localEulerAngles.y);
+            float diffX = Mathf.DeltaAngle(lastRot.x, actualRot.x);
+            float diffY = Mathf.DeltaAngle(lastRot.y, actualRot.y);
+
+            stuntRotation.x += diffX;
+            stuntRotation.y += diffY;
+
+            if (Mathf.Abs(stuntRotation.x) / 360f >= 1) {
+                nbOfLaps += Mathf.FloorToInt(Mathf.Abs(stuntRotation.x) / 360f);
+                stuntRotation.x %= 360f;
+                SetComboMeter(nbOfLaps);
+            }
+
+            if (Mathf.Abs(stuntRotation.y) / 360f >= 1) {
+                nbOfLaps += Mathf.FloorToInt(Mathf.Abs(stuntRotation.y) / 360f);
+                stuntRotation.y %= 360f;
+                SetComboMeter(nbOfLaps);
+            }
+
+            lastRot = new Vector2(actualRot.x, actualRot.y);
+            lastDir = new Vector2(dir.x, dir.y);
+        }
+
+        #region Setters
 
         public void SetController(string name) {
             player = ReInput.players.GetPlayer(name);
@@ -316,6 +286,67 @@ namespace Florian {
             body.GetComponent<MeshRenderer>().material = mat;
         }
 
+        private void AddToEvent(ref EventHandler _event, EventHandler function) {
+            _event += function;
+        }
+
+        private void RemoveToEvent(ref EventHandler _event, EventHandler function) {
+            _event -= function;
+        }
+
+        private void RotateTo(Vector3 angle, float time) {
+            goToRotation = Tools.AcuteAngle(angle);
+            startRotation = Tools.AcuteAngle(parent.transform.localEulerAngles);
+        }
+
+        private void SetComboMeter(int number) {
+            if (number == 0) {
+                comboMeter.gameObject.SetActive(false);
+            } else {
+                comboMeter.gameObject.SetActive(true);
+            }
+
+            switch (number) {
+                case 0:
+                case 1:
+                case 2:
+                    comboMeter.color = Color.green;
+                    break;
+                case 3:
+                case 4:
+                    comboMeter.color = Color.yellow;
+                    break;
+                default:
+                    comboMeter.color = Color.red;
+                    break;
+            }
+
+            comboMeter.text = "x" + number;
+        }
+
+        #endregion
+
+        #region Getters
+
+        private int CalculateDiffToInt(float rotationA, float rotationB, float maxAngle) {
+            float DiffY = Mathf.DeltaAngle(Tools.AcuteAngle(rotationA), rotationB + maxAngle);
+            return Mathf.RoundToInt(DiffY);
+        }
+
+        bool isGrounded() {
+            RaycastHit hitFloor;
+            if (Physics.Raycast(transform.position + (transform.up * 0.2f), Vector3.down, out hitFloor, 2.0f, layerMask)) {
+                nbOfLaps = 0;
+                SetComboMeter(nbOfLaps);
+                rotationOnLeavingGround = parent.transform.localEulerAngles;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        #endregion
+
         public void Boost() {
             drifting = false;
 
@@ -334,32 +365,6 @@ namespace Florian {
         private void Speed(float x) {
             currentSpeed = x;
         }
-
-        float ChangeAngleInterval(float angle) {
-            if (angle > 180f) {
-                angle = angle - 360f;
-                return angle;
-            } else {
-                return angle;
-            }
-        }
-
-        Vector3 ChangeAngleInterval(Vector3 angle) {
-            return new Vector3(ChangeAngleInterval(angle.x), ChangeAngleInterval(angle.y), ChangeAngleInterval(angle.z));
-        }
-
-        bool isGrounded() {
-            RaycastHit hitFloor;
-            if (Physics.Raycast(transform.position + (transform.up * 0.2f), Vector3.down, out hitFloor, 2.0f, layerMask)) {
-                nbOfLaps = 0;
-                UpdateComboMeter(comboMeter);
-                rotationOnLeavingGround = parent.transform.localEulerAngles;
-                return true;
-            } else {
-                return false;
-            }
-        }
-
     }
 
 

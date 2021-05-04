@@ -15,13 +15,16 @@ namespace Florian {
         private List<int> assignedJoysticks = null;
         private Controller[] playersController = null;
 
+        [Header("Race")]
+        public RaceManager race;
+
         [Header("UIs")]
         public MultiplayerPanel multiplayerPanel = null;
 
         [Header("Players")]
         public GameObject kart = null;
-        [HideInInspector] public List<MountKartingController> players = null;
-        [SerializeField] private Material[] playersColor = null;
+        [HideInInspector] public List<Movement> players = null;
+        public Material[] playersColor = null;
 
         [Header("Other")]
         public Camera mainCamera = null;
@@ -131,7 +134,7 @@ namespace Florian {
             for (int i = 0; i < playersController.Length; i++) {
                 if (playersController[i] != null) {
                     GameObject lastSpawned = SpawnKart(Vector3.zero, "P" + (i + 1));
-                    players.Add(lastSpawned.GetComponentInChildren<MountKartingController>());
+                    players.Add(lastSpawned.GetComponentInChildren<Movement>());
                     players[players.Count - 1].SetCamera(cameraNumber, NumberOfPlayerControllers);
                     players[players.Count - 1].ChangeTexture(playersColor[multiplayerPanel.playerScreens[i].indexPortrait]);
                     cameraNumber++;
@@ -147,6 +150,8 @@ namespace Florian {
             }
 
             ShowMultPanel(false);
+
+            race.StartRace(players.ToArray());
         }
 
         #endregion
@@ -214,13 +219,15 @@ namespace Florian {
 
         private GameObject SpawnKart(Vector3 pos, string playerName) {
             GameObject insta = SpawnKart(pos);
-            insta.GetComponentInChildren<MountKartingController>().SetController(playerName);
+            insta.name = playerName;
+            insta.GetComponentInChildren<Movement>().SetController(playerName);
             return insta;
         }
 
         private GameObject SpawnKart(Vector3 pos, string playerName, Controller controller) {
             GameObject insta = SpawnKart(pos);
-            insta.GetComponentInChildren<MountKartingController>().SetController(playerName, controller);
+            insta.name = playerName;
+            insta.GetComponentInChildren<Movement>().SetController(playerName, controller);
             return insta;
         }
 

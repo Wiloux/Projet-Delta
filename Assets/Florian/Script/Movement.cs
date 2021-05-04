@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using TMPro;
 using DG.Tweening;
 using ToolsBoxEngine;
 
-
-namespace Florian
-{
-
-    public class Movement : MonoBehaviour
-    {
+namespace Florian {
+    public class Movement : Character {
         private Rigidbody _rb;
         public GameObject model;
         public Camera playerCamera;
@@ -37,61 +34,74 @@ namespace Florian
         public bool airborn;
         public LayerMask layerMask;
 
-        void Start()
-        {
+        [Header("Other")]
+        public TextMeshProUGUI placementText = null;
+        public TextMeshProUGUI lapsText = null;
+        public int maxLaps = 2;
+
+        #region Properties
+
+        public int Placement {
+            set {
+                placementText.text = value.ToString();
+            }
+        }
+
+        public int Laps {
+            set {
+                lapsText.text = value.ToString() + "/" + maxLaps;
+            }
+        }
+
+        #endregion
+
+        #region Unity callbacks
+
+        void Start() {
             _rb = GetComponent<Rigidbody>();
             SetController(playerName);
         }
 
-
-        void Update()
-        {
+        void Update() {
             turnSpeed = TurnSpeedHandler(speed);
 
-            if (player.GetButton("Accelerate") && speed < maxSpeed)
-            {
+            if (player.GetButton("Accelerate") && speed < maxSpeed) {
                 speed += accelerationSpeed * Time.deltaTime;
-            }
-            else if (speed > 0)
-            {
+            } else if (speed > 0) {
                 speed -= accelerationSpeed * Time.deltaTime;
             }
 
-            if (player.GetButton("Decelerate") && speed > 0)
-            {
+            if (player.GetButton("Decelerate") && speed > 0) {
                 speed -= decelerationSpeed * Time.deltaTime;
             }
 
-            if (player.GetAxis("Horizontal") != 0)
-            {
+            if (player.GetAxis("Horizontal") != 0) {
                 int direction = player.GetAxis("Horizontal") > 0 ? 1 : -1;
                 transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * Time.deltaTime, Space.Self);
-                model.transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * 1.2f * Time.deltaTime, Space.Self);
-            }
-            else
-            {
+                //model.transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * 1.2f * Time.deltaTime, Space.Self);
+            } else {
                 model.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.OutBack);
             }
 
-            _rb.AddForce(transform.forward * speed, ForceMode.Acceleration);
+            //_rb.AddForce(transform.forward * speed, ForceMode.Acceleration);
+            _rb.velocity = (transform.forward * speed).Override(_rb.velocity.y, Axis.Y);
 
             airborn = isGrounded();
-            if (player.GetButton("Jump") && airborn)
-            {
+            if (player.GetButton("Jump") && airborn) {
                 Jump();
             }
             Gravity();
         }
 
-        public void SetController(string name)
-        {
+        #endregion
+
+        public void SetController(string name) {
             player = ReInput.players.GetPlayer(name);
             if (player != null) { Debug.Log("Controller found : " + player.name); } else { Debug.LogWarning("Controller not found"); return; }
             playerName = name;
         }
 
-        public void SetController(string name, Controller controller)
-        {
+        public void SetController(string name, Controller controller) {
             player = ReInput.players.GetPlayer(name);
             player.controllers.ClearAllControllers();
             player.controllers.AddController(controller, true);
@@ -99,44 +109,33 @@ namespace Florian
             playerName = name;
         }
 
-        public float TurnSpeedHandler(float speed)
-        {
+        public float TurnSpeedHandler(float speed) {
             return Mathf.Lerp(maxTurnSpeed, maxTurnSpeed * minTurnSpeedPercentage, speed / maxSpeed);
         }
 
-        public void Gravity()
-        {
+        public void Gravity() {
             _rb.AddForce(gravity * Vector3.down, ForceMode.Acceleration);
         }
 
-        bool isGrounded()
-        {
+        bool isGrounded() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(transform.position + (transform.up * 0.2f), Vector3.down, out hitFloor, 2.0f, layerMask))
-            {
+            if (Physics.Raycast(transform.position + (transform.up * 0.2f), Vector3.down, out hitFloor, 2.0f, layerMask)) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
-        public void SetCamera(int playerId, int maxPlayer)
-        {
+        public void SetCamera(int playerId, int maxPlayer) {
             playerCamera.rect = Tools.GetPlayerRect(playerId, maxPlayer);
         }
 
-        public void ChangeTexture(Material mat)
-        {
+        public void ChangeTexture(Material mat) {
             body.GetComponent<MeshRenderer>().material = mat;
         }
 
-        public void Jump()
-        {
+        public void Jump() {
             _rb.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
         }
-
-
     }
 }

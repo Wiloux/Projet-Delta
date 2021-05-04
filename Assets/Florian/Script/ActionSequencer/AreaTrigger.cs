@@ -6,6 +6,8 @@ namespace Florian.ActionSequencer {
     [RequireComponent(typeof(BoxCollider))]
     [ExecuteInEditMode]
     public class AreaTrigger : MonoBehaviour {
+        public enum TriggerType { ON_ENTER, ON_EXIT }
+
         private ActionSequencer enterActions;
         private ActionSequencer exitActions;
 
@@ -74,6 +76,23 @@ namespace Florian.ActionSequencer {
             for (int i = 0; i < boxCollider.Length; i++) {
                 Gizmos.DrawCube(transform.position + boxCollider[i].center, boxCollider[i].size);
             }
+        }
+
+        public void SetCollider(Vector3 size) {
+            for (int i = 0; i < boxCollider.Length; i++) {
+                boxCollider[i].size = size;
+            }
+        }
+
+        public T AddAction<T>(TriggerType triggerType) where T : Action {
+            switch (triggerType) {
+                case TriggerType.ON_ENTER:
+                    return enterActions.AddAction<T>();
+                case TriggerType.ON_EXIT:
+                    return exitActions.AddAction<T>();
+            }
+
+            return null;
         }
     }
 }
