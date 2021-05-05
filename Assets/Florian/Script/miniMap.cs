@@ -47,6 +47,7 @@ namespace Florian
             PlayerMapInfo pInfo = new PlayerMapInfo();
             pInfo.pTransform = transform;
             pInfo.pInMapGameObject = Instantiate(pInMapPrefab, pInMapPrefab.transform.parent);
+            pInfo.pInMapGameObject.SetActive(true);
             pInfo.pInMapGameObject.GetComponent<Image>().sprite = sprite;
             pInfo.pInMapPos = pInfo.pInMapGameObject.GetComponent<RectTransform>();
             players.Add(pInfo);
