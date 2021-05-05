@@ -31,6 +31,7 @@ namespace Florian
         public Camera mainCamera = null;
         [Range(2f, 20f)] public float switchCameraInterval = 10f;
         private int actualCameraId;
+        public miniMap miniMap;
 
         #region Properties
 
@@ -155,6 +156,7 @@ namespace Florian
         private void BeginGame()
         {
             mainCamera.gameObject.SetActive(false);
+            miniMap.map.gameObject.SetActive(true);
             int cameraNumber = 1;
             List<CharacterInfo> miniMapInfo = new List<CharacterInfo>();
 
@@ -164,7 +166,6 @@ namespace Florian
                 {
                     GameObject lastSpawned = SpawnKart(Vector3.zero, "P" + (i + 1));
                     players.Add(lastSpawned.GetComponentInChildren<Movement>());
-               //     lastSpawned.GetComponent<miniMap>().AddPlayer(lastSpawned.transform, multiplayerPanel.portraitSprites[multiplayerPanel.playerScreens[i].indexPortrait]);
                     players[players.Count - 1].SetCamera(cameraNumber, NumberOfPlayerControllers);
                     players[players.Count - 1].ChangeTexture(playersColor[multiplayerPanel.playerScreens[i].indexPortrait]);
                     cameraNumber++;
@@ -172,15 +173,20 @@ namespace Florian
             }
 
 
+
+            //Check amount of players and calculate map position
             for (int i = 0; i < playersController.Length; i++)
             {
                 if (playersController[i] != null)
                 {
-                    for (int j = 0; j < players.Count; j++)
-                    {
-                        players[i].GetComponent<miniMap>().AddPlayer(players[j].gameObject.transform, multiplayerPanel.portraitSprites[multiplayerPanel.playerScreens[j].indexPortrait]);
-                    }
+                    miniMap.CheckDisplayMode(players.Count);
+                   
                 }
+            }
+
+            for (int j = 0; j < players.Count; j++)
+            {
+                miniMap.AddPlayer(players[j].gameObject.transform, multiplayerPanel.portraitSprites[multiplayerPanel.playerScreens[j].indexPortrait]);
             }
             // 3 cam = 4 random
             if (NumberOfPlayerControllers == 3)

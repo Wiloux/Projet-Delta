@@ -9,6 +9,7 @@ namespace Florian
     {
         public GameObject pInMapPrefab;
 
+        [System.Serializable]
         public struct PlayerMapInfo
         {
             public Transform pTransform;
@@ -17,6 +18,7 @@ namespace Florian
         }
 
         public List<PlayerMapInfo> players = new List<PlayerMapInfo>();
+        public RectTransform map;
         public RectTransform playerInMap;
         public RectTransform map2dEnd;
         public Transform map3dParent;
@@ -26,6 +28,7 @@ namespace Florian
 
         private void Start()
         {
+
         }
 
         private void Update()
@@ -51,6 +54,38 @@ namespace Florian
             pInfo.pInMapGameObject.GetComponent<Image>().sprite = sprite;
             pInfo.pInMapPos = pInfo.pInMapGameObject.GetComponent<RectTransform>();
             players.Add(pInfo);
+        }
+
+        public void CheckDisplayMode(int pAmount)
+        {
+            switch (pAmount)
+            {
+                case 1:
+                    map.anchorMin = new Vector2(0, 1);
+                    map.anchorMax = new Vector2(0, 1);
+                    map.anchoredPosition = new Vector2(257, -233);
+                    map.localScale = new Vector3(3.2f, 3.2f, 3.2f);
+                    break;
+                case 2:
+                    map.anchorMin = new Vector2(0, 0.5f);
+                    map.anchorMax = new Vector2(0, 0.5f);
+                    map.anchoredPosition = new Vector2(357, 12);
+                    map.localScale = new Vector3(4.3f, 4.3f, 4.3f);
+                    break;
+                case 3:
+                    map.anchorMin = new Vector2(0, 0.5f);
+                    map.anchorMax = new Vector2(0, 0.5f);
+                    map.anchoredPosition = new Vector2(1426, -267);
+                    map.localScale = new Vector3(4, 4, 4);
+                    break;
+                case 4:
+                    map.anchorMin = new Vector2(0.5f, 0.5f);
+                    map.anchorMax = new Vector2(0.5f, 0.5f);
+                    map.anchoredPosition = Vector2.zero;
+                    map.localScale = new Vector3(2.7f, 2.7f, 2.7f);
+                    break;
+            }
+
         }
 
         private static Vector3 Divide(Vector3 a, Vector3 b)
