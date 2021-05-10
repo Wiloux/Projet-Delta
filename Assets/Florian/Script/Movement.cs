@@ -12,6 +12,7 @@ namespace Florian {
         public GameObject model;
         public Camera playerCamera;
         public Transform body;
+        public CameraController cameraController;
 
         [Header("Movement velocity")]
         public float speed;
@@ -19,10 +20,14 @@ namespace Florian {
         public float turnSpeed;
         public float accelerationSpeed;
         public float decelerationSpeed;
+        public bool isAccelerate;
+        public bool isDecelerate;
 
         [Header("Orientation")]
         public float maxTurnSpeed;
         public float minTurnSpeedPercentage;
+        public int direction;
+        public bool isTurn;
 
         [Header("Rewired")]
         private Rewired.Player player;
@@ -64,19 +69,25 @@ namespace Florian {
 
         void Update() {
             turnSpeed = TurnSpeedHandler(speed);
+            isAccelerate = false;
+            isDecelerate = false;
+            isTurn = false;
 
             if (player.GetButton("Accelerate") && speed < maxSpeed) {
+                isAccelerate = true;
                 speed += accelerationSpeed * Time.deltaTime;
             } else if (speed > 0) {
                 speed -= accelerationSpeed * Time.deltaTime;
             }
 
             if (player.GetButton("Decelerate") && speed > 0) {
+                isDecelerate = true;
                 speed -= decelerationSpeed * Time.deltaTime;
             }
 
             if (player.GetAxis("Horizontal") != 0) {
-                int direction = player.GetAxis("Horizontal") > 0 ? 1 : -1;
+                isTurn = true;
+                direction = player.GetAxis("Horizontal") > 0 ? 1 : -1;
                 transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * Time.deltaTime, Space.Self);
                 //model.transform.Rotate(new Vector2(0, 1) * direction * turnSpeed * 1.2f * Time.deltaTime, Space.Self);
             } else {

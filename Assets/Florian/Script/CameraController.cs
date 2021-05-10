@@ -12,7 +12,6 @@ namespace Florian
         [SerializeField] private Movement movement;
         [SerializeField] private CameraManager cam;
         [SerializeField] private float _rotationSpeed;
-        [SerializeField] private float _cameraRadius;
         [SerializeField] private bool _onJoyMode;
 
         [Header("Acceleration")]
@@ -43,7 +42,7 @@ namespace Florian
             Cursor.lockState = CursorLockMode.Locked;
         }
         
-        /*private void Update()
+        private void Update()
         {
             if (movement.isAccelerate && movement.speed != movement.maxSpeed && !movement.isTurn)
             {
@@ -79,6 +78,6 @@ namespace Florian
 
             if (!movement.airborn)
                 cam.CameraMove(airPosition, airRotation, airDuration);
-        }*/
+        }
     }
 }
