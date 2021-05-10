@@ -10,7 +10,7 @@ namespace Florian
         [Header("Camera")]
         [SerializeField] private Transform _target;
         [SerializeField] private Movement movement;
-        [SerializeField] private Camera cam;
+        [SerializeField] private CameraManager cam;
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private float _cameraRadius;
         [SerializeField] private bool _onJoyMode;

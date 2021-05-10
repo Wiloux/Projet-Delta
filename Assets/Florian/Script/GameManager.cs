@@ -5,10 +5,8 @@ using UnityEngine.SceneManagement;
 using ToolsBoxEngine;
 using Rewired;
 
-namespace Florian
-{
-    public class GameManager : MonoBehaviour
-    {
+namespace Florian {
+    public class GameManager : MonoBehaviour {
         const int MAX_PLAYER = 4;
         public static GameManager instance;
 
@@ -35,15 +33,11 @@ namespace Florian
 
         #region Properties
 
-        private int NumberOfPlayerControllers
-        {
-            get
-            {
+        private int NumberOfPlayerControllers {
+            get {
                 int num = 0;
-                for (int i = 0; i < playersController.Length; i++)
-                {
-                    if (playersController[i] != null)
-                    {
+                for (int i = 0; i < playersController.Length; i++) {
+                    if (playersController[i] != null) {
                         num++;
                     }
                 }
@@ -51,8 +45,7 @@ namespace Florian
             }
         }
 
-        private bool MultPanelActive
-        {
+        private bool MultPanelActive {
             get { if (multiplayerPanel == null) { return false; } return multiplayerPanel.gameObject.activeSelf; }
         }
 
@@ -60,16 +53,14 @@ namespace Florian
 
         #region Unity callbacks
 
-        private void Awake()
-        {
+        private void Awake() {
             instance = this;
 
             assignedJoysticks = new List<int>();
             ReInput.ControllerConnectedEvent += OnControllerConnected;
         }
 
-        void Start()
-        {
+        void Start() {
             ShowMultPanel(true);
 
             playersController = new Controller[MAX_PLAYER];
@@ -77,10 +68,8 @@ namespace Florian
             AssignAllJoysticksToSystemPlayer(true);
         }
 
-        void Update()
-        {
-            if (MultPanelActive)
-            {
+        void Update() {
+            if (MultPanelActive) {
                 UpdateMultPanel();
             }
         }
@@ -89,41 +78,31 @@ namespace Florian
 
         #region MultiplayerPanel
 
-        private void ShowMultPanel(bool state = true)
-        {
+        private void ShowMultPanel(bool state = true) {
             if (multiplayerPanel == null) { return; }
             multiplayerPanel.gameObject.SetActive(state);
         }
 
-        private void UpdateMultPanel()
-        {
+        private void UpdateMultPanel() {
             if (multiplayerPanel == null) { return; }
 
             // P1 Start game
-            if (playersController[0] != null && ReInput.players.GetPlayer("P1").GetButtonDown("Start game"))
-            {
+            if (playersController[0] != null && ReInput.players.GetPlayer("P1").GetButtonDown("Start game")) {
                 Debug.Log("Started \\o/");
                 BeginGame();
             }
 
             // Change Portraits
-            for (int i = 0; i < playersController.Length; i++)
-            {
-                if (playersController[i] != null)
-                {
+            for (int i = 0; i < playersController.Length; i++) {
+                if (playersController[i] != null) {
                     Player player = ReInput.players.GetPlayer("P" + (i + 1));
-                    if (player.GetButtonDown("Leave game"))
-                    {
+                    if (player.GetButtonDown("Leave game")) {
                         RemoveController(i);
                         multiplayerPanel.transform.GetChild(i).GetChild(0).gameObject.SetActive(true);
                         multiplayerPanel.transform.GetChild(i).GetChild(1).gameObject.SetActive(false);
-                    }
-                    else if (player.GetButtonDown("Left"))
-                    {
+                    } else if (player.GetButtonDown("Left")) {
                         multiplayerPanel.ChangePortraitSprite(i, -1);
-                    }
-                    else if (player.GetButtonDown("Right"))
-                    {
+                    } else if (player.GetButtonDown("Right")) {
                         multiplayerPanel.ChangePortraitSprite(i, 1);
                     }
                 }
@@ -132,19 +111,15 @@ namespace Florian
             // Join game
             Controller controller = null;
 
-            if (ReInput.players.GetSystemPlayer().GetButtonDown("Join game"))
-            {
+            if (ReInput.players.GetSystemPlayer().GetButtonDown("Join game")) {
                 controller = ReInput.players.GetSystemPlayer().controllers.GetLastActiveController();
             }
 
             if (controller == null) { return; }
 
-            if (AddController(controller))
-            {
-                for (int i = 0; i < playersController.Length; i++)
-                {
-                    if (playersController[i] != null)
-                    {
+            if (AddController(controller)) {
+                for (int i = 0; i < playersController.Length; i++) {
+                    if (playersController[i] != null) {
                         multiplayerPanel.transform.GetChild(i).GetChild(0).gameObject.SetActive(false);
                         multiplayerPanel.transform.GetChild(i).GetChild(1).gameObject.SetActive(true);
                         multiplayerPanel.ChangePortraitSprite(i, 0);
@@ -153,17 +128,14 @@ namespace Florian
             }
         }
 
-        private void BeginGame()
-        {
+        private void BeginGame() {
             mainCamera.gameObject.SetActive(false);
             miniMap.map.gameObject.SetActive(true);
             int cameraNumber = 1;
             List<CharacterInfo> miniMapInfo = new List<CharacterInfo>();
 
-            for (int i = 0; i < playersController.Length; i++)
-            {
-                if (playersController[i] != null)
-                {
+            for (int i = 0; i < playersController.Length; i++) {
+                if (playersController[i] != null) {
                     GameObject lastSpawned = SpawnKart(Vector3.zero, "P" + (i + 1));
                     players.Add(lastSpawned.GetComponentInChildren<Movement>());
                     players[players.Count - 1].SetCamera(cameraNumber, NumberOfPlayerControllers);
@@ -175,22 +147,18 @@ namespace Florian
 
 
             //Check amount of players and calculate map position
-            for (int i = 0; i < playersController.Length; i++)
-            {
-                if (playersController[i] != null)
-                {
+            for (int i = 0; i < playersController.Length; i++) {
+                if (playersController[i] != null) {
                     miniMap.CheckDisplayMode(players.Count);
-                   
+
                 }
             }
 
-            for (int j = 0; j < players.Count; j++)
-            {
+            for (int j = 0; j < players.Count; j++) {
                 miniMap.AddPlayer(players[j].gameObject.transform, multiplayerPanel.portraitSprites[multiplayerPanel.playerScreens[j].indexPortrait]);
             }
             // 3 cam = 4 random
-            if (NumberOfPlayerControllers == 3)
-            {
+            if (NumberOfPlayerControllers == 3) {
                 mainCamera.gameObject.SetActive(true);
                 mainCamera.rect = Tools.GetPlayerRect(4, 4);
                 SwitchToNextCamera(0);
@@ -206,33 +174,25 @@ namespace Florian
 
         #region Controllers
 
-        private void OnControllerConnected(ControllerStatusChangedEventArgs args)
-        {
+        private void OnControllerConnected(ControllerStatusChangedEventArgs args) {
             if (args.controllerType != ControllerType.Joystick) { return; }
             if (assignedJoysticks.Contains(args.controllerId)) { return; }
 
             ReInput.players.GetSystemPlayer().controllers.AddController(args.controllerType, args.controllerId, true);
         }
 
-        private void AssignAllJoysticksToSystemPlayer(bool removeFromOtherPlayers)
-        {
+        private void AssignAllJoysticksToSystemPlayer(bool removeFromOtherPlayers) {
             IList<Joystick> joysticks = ReInput.controllers.Joysticks;
-            for (int i = 0; i < ReInput.controllers.joystickCount; i++)
-            {
+            for (int i = 0; i < ReInput.controllers.joystickCount; i++) {
                 ReInput.players.GetSystemPlayer().controllers.AddController(joysticks[i], removeFromOtherPlayers);
             }
         }
 
-        private bool AddController(Controller controller)
-        {
-            for (int i = 0; i < playersController.Length; i++)
-            {
-                if (controller == playersController[i])
-                {
+        private bool AddController(Controller controller) {
+            for (int i = 0; i < playersController.Length; i++) {
+                if (controller == playersController[i]) {
                     return false;
-                }
-                else if (playersController[i] == null)
-                {
+                } else if (playersController[i] == null) {
                     playersController[i] = controller;
 
                     Player player = ReInput.players.GetPlayer("P" + (i + 1));
@@ -245,8 +205,7 @@ namespace Florian
             return false;
         }
 
-        private bool RemoveController(int index)
-        {
+        private bool RemoveController(int index) {
             if (playersController[index] == null) { return false; }
 
             ReInput.players.GetSystemPlayer().controllers.AddController(playersController[index], true);
@@ -258,50 +217,43 @@ namespace Florian
 
         #region Menu
 
-        public void ChangeScene(int sceneId)
-        {
+        public void ChangeScene(int sceneId) {
             SceneManager.LoadScene(sceneId);
         }
 
-        public void Quit()
-        {
+        public void Quit() {
             Application.Quit();
         }
 
         #endregion
 
-        private GameObject SpawnKart(Vector3 pos)
-        {
+        private GameObject SpawnKart(Vector3 pos) {
             GameObject insta = Instantiate(kart, pos, Quaternion.identity);
             insta.SetActive(true);
             return insta;
         }
 
-        private GameObject SpawnKart(Vector3 pos, string playerName)
-        {
+        private GameObject SpawnKart(Vector3 pos, string playerName) {
             GameObject insta = SpawnKart(pos);
             insta.name = playerName;
             insta.GetComponentInChildren<Movement>().SetController(playerName);
             return insta;
         }
 
-        private GameObject SpawnKart(Vector3 pos, string playerName, Controller controller)
-        {
+        private GameObject SpawnKart(Vector3 pos, string playerName, Controller controller) {
             GameObject insta = SpawnKart(pos);
             insta.name = playerName;
             insta.GetComponentInChildren<Movement>().SetController(playerName, controller);
             return insta;
         }
 
-        private void SwitchToNextCamera()
-        {
+        private void SwitchToNextCamera() {
             actualCameraId++;
             SwitchToNextCamera(actualCameraId);
             StartCoroutine(Delay(switchCameraInterval, SwitchToNextCamera));
         }
 
-        private void SwitchToNextCamera(int index)
-        {
+        private void SwitchToNextCamera(int index) {
             actualCameraId = index;
             actualCameraId %= NumberOfPlayerControllers;
             mainCamera.transform.parent = players[actualCameraId].playerCamera.transform;
@@ -309,8 +261,7 @@ namespace Florian
             mainCamera.transform.localRotation = Quaternion.identity;
         }
 
-        IEnumerator Delay(float time, Tools.BasicDelegate function)
-        {
+        IEnumerator Delay(float time, Tools.BasicDelegate function) {
             yield return new WaitForSeconds(time);
             function();
         }

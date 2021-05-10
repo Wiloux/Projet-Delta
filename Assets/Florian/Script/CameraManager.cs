@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Florian
 {
-    public class Camera : MonoBehaviour
+    public class CameraManager : MonoBehaviour
     {
         [Header("Initial Transform")]
         public Vector3 _initPos;
