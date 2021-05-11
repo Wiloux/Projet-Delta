@@ -20,7 +20,12 @@ namespace Florian
             _rotationY = Mathf.Clamp(_rotationY, -31f, 60f);
 
             transform.LookAt(target.position);
-            target.rotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
+            target.localRotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
+        }
+
+        public void ResetCameraJoystickPos(Transform target) {
+            _rotationX = 0f;
+            _rotationY = 0f;
         }
 
         public void CameraRotateAroundPlayer(float offsetX, float offsetY, Transform target)
