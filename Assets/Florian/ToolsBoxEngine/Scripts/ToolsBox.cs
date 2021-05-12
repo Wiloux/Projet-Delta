@@ -62,6 +62,38 @@ namespace ToolsBoxEngine {
         }
     }
 
+    [Serializable]
+    public class AmplitudeCurve {
+        public AnimationCurve curve;
+        public float duration;
+        public float amplitude;
+        [HideInInspector] public float timer;
+
+        #region Constructeurs
+
+        public AmplitudeCurve(AnimationCurve curve, float duration, float timer) {
+            this.curve = curve;
+            this.duration = duration;
+            this.timer = timer;
+        }
+
+        public AmplitudeCurve(AnimationCurve curve) : this(curve, 1f, 0f) { }
+
+        public AmplitudeCurve() : this(AnimationCurve.Linear(0f, 0f, 1f, 1f)) { }
+
+        #endregion
+
+        public float GetRatio() {
+            float ratio = timer / duration;
+            ratio = curve.Evaluate(ratio);
+            return ratio;
+        }
+
+        public AmplitudeCurve Clone() {
+            return new AmplitudeCurve(curve, duration, timer);
+        }
+    }
+
     #endregion
 
     public static class Tools {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using ToolsBoxEngine;
 
 namespace Florian {
     public class CameraController : MonoBehaviour {
@@ -14,6 +15,7 @@ namespace Florian {
 
         [Header("Acceleration")]
         [SerializeField] private Vector3 accelPosition;
+        [SerializeField] private Vector3 accelDelta;
         [SerializeField] private float accelDuration;
 
         [Header("Deceleration")]
@@ -40,34 +42,47 @@ namespace Florian {
         }
 
         private void Update() {
-            if (movement.isAccelerate && movement.speed != movement.maxSpeed && !movement.isTurn) {
-                cam.CameraMovePosition(accelPosition, accelDuration);
+            // Acceleration
+            if (movement.isAccelerate && movement.Speed < movement.maxSpeed && !movement.isTurn) {
+                Vector3 accelpos = Vector3.Lerp(accelPosition, accelPosition + accelDelta, Mathf.Clamp01(movement.Speed / movement.maxSpeed));
+                cam.CameraMovePosition(accelpos, accelDuration);
                 _onJoyMode = true;
             }
 
-            if (movement.isDecelerate && movement.speed > 0 && !movement.isTurn)
+            // Deceleration
+            if (movement.isDecelerate && movement.Speed > 0 && !movement.isTurn)
                 cam.CameraMovePosition(decelPosition, decelDuration);
 
-            if (movement.speed < 0.5f && movement.airborn) {
+            // Arrêt
+            if (movement.Speed < 0.5f && !movement.airborn) {
                 if (_onJoyMode) {
                     _onJoyMode = false;
-                    //cam.ResetTarget(0.2f, _target);
                     cam.ResetCameraJoystickPos(_target);
                 }
                 cam.CameraJoystickRotation(player.GetAxis("CamHorizontal"), player.GetAxis("CamVertical"), _rotationSpeed, _target);
             }
 
-            if (movement.isTurn && movement.speed > 1f) {
+            // Tourner
+            if (movement.isTurn && movement.Speed > 1f) {
                 cam.ResetTarget(accelDuration, _target);
-                cam.CameraMove(new Vector3((turnPosition.x * movement.direction), turnPosition.y, turnPosition.z), turnRotation * movement.direction, turnDuration);
+                Vector3 pos = turnPosition;
+                if (movement.isAccelerate) {
+                    pos = Vector3.Lerp(accelPosition, accelPosition + accelDelta, Mathf.Clamp01(movement.Speed / movement.maxSpeed));
+                } else if (movement.isDecelerate) {
+                    pos = decelPosition;
+                }
+
+                cam.CameraMove(new Vector3(turnPosition.x * movement.HorizontalDirection, turnPosition.y, pos.z), turnRotation * movement.HorizontalDirection, turnDuration);
             } else {
+                // Reset du non turn
                 cam.ResetTarget(accelDuration, _target);
                 cam.CameraMoveRotation(new Vector3(0, 0, 0), accelDuration);
                 if (!movement.isAccelerate && !movement.isDecelerate)
                     cam.CameraMovePosition(cam._initPos, 1f);
             }
 
-            if (!movement.airborn)
+            // Airborn
+            if (movement.airborn)
                 cam.CameraMove(airPosition, airRotation, airDuration);
         }
     }

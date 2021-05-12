@@ -595,7 +595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1452320077669587837
 Transform:
   m_ObjectHideFlags: 0
@@ -628,20 +628,20 @@ MonoBehaviour:
   model: {fileID: 342681392965598424}
   playerCamera: {fileID: 3490258877651621939}
   body: {fileID: 342681392965598418}
-  cameraController: {fileID: 3490258877651621950}
   speed: 0
-  maxSpeed: 30
-  turnSpeed: 0
+  maxSpeed: 50
+  backwardSpeed: 10
+  turnSpeed: 30
   accelerationSpeed: 10
   decelerationSpeed: 20
   isAccelerate: 0
+  isTurn: 0
   isDecelerate: 0
+  direction: 0
   maxTurnSpeed: 80
   minTurnSpeedPercentage: 0.6
-  direction: 0
-  isTurn: 0
   playerName: P1
-  gravity: 1
+  gravity: 100
   jumpForce: 0
   airborn: 1
   layerMask:
@@ -650,6 +650,173 @@ MonoBehaviour:
   placementText: {fileID: 1452320076616648693}
   lapsText: {fileID: 1452320075828873028}
   maxLaps: 2
+  acceleration:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.001648
+        inSlope: -0.08023869
+        outSlope: -0.08023869
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.4175844
+      - serializedVersion: 3
+        time: 0.7411777
+        value: 0.6681628
+        inSlope: -1.5229775
+        outSlope: -1.5229775
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.17540298
+        outWeight: 0.08877228
+      - serializedVersion: 3
+        time: 0.92993253
+        value: 0.12668781
+        inSlope: -2.5886834
+        outSlope: -2.5886834
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.5315631
+      - serializedVersion: 3
+        time: 1.0018921
+        value: -0.00070038345
+        inSlope: -0.25081894
+        outSlope: -0.25081894
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.39705443
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 200
+    timer: 0
+  deceleration:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.0037384033
+        value: 0.110839844
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 40
+    timer: 0
+  frictions:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.001648
+        inSlope: -0.02712608
+        outSlope: -0.02712608
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.32226843
+      - serializedVersion: 3
+        time: 0.5685795
+        value: 0.8574164
+        inSlope: -0.6988241
+        outSlope: -0.6988241
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.28811482
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.9125486
+        value: 0.32802644
+        inSlope: -2.662624
+        outSlope: -2.662624
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: -0.0030807545
+        inSlope: -5.5898
+        outSlope: -5.5898
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.5942597
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 10
+    timer: 0
+  decelerateTime: 0.2
+  turn:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.001648
+        inSlope: -0.02712608
+        outSlope: -0.02712608
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.32226843
+      - serializedVersion: 3
+        time: 0.37605613
+        value: 0.8621557
+        inSlope: -0.6988241
+        outSlope: -0.6988241
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.28811482
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.74249715
+        value: 0.4553254
+        inSlope: -0.84467053
+        outSlope: -0.84467053
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.9942895
+        value: 0.30950725
+        inSlope: -0.31769082
+        outSlope: -0.31769082
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.43231872
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 50
+    timer: 0
 --- !u!136 &1452320077669587839
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -783,10 +950,11 @@ MonoBehaviour:
   _rotationSpeed: 1.4
   _onJoyMode: 1
   accelPosition: {x: 0, y: 1.665, z: -6}
+  accelDelta: {x: 0, y: 0, z: -6}
   accelDuration: 1
   decelPosition: {x: 0, y: 1.665, z: -2}
   decelDuration: 1
-  turnPosition: {x: 0.8, y: 1.665, z: -4.2}
+  turnPosition: {x: 0.8, y: 1.665, z: 0}
   turnRotation: {x: 0, y: 0, z: -8}
   turnDuration: 1
   airPosition: {x: 0, y: 2.3, z: -5}
