@@ -40,6 +40,10 @@ namespace Florian {
         public bool airborn;
         public LayerMask layerMask;
 
+        [Header("Anims")]
+        public Animator riderAnim;
+        public Animator animalAnim;
+
         [Header("Other")]
         public TextMeshProUGUI placementText = null;
         public TextMeshProUGUI lapsText = null;
@@ -121,11 +125,38 @@ namespace Florian {
             this.horizontalDirection = horizontalDirection;
             UpdateMovements();
             Gravity();
+            UpdateAnims(); 
             //UpdateRotation();
             Debug.Log("Vel : " + velocity);
         }
 
         #endregion
+
+        private void UpdateAnims()
+        {
+            if (player.GetButton("Accelerate"))
+            {
+                if (player.GetButtonDown("Accelerate"))
+                {
+                    animalAnim.SetTrigger("whipped");
+                    riderAnim.SetTrigger("whip");
+                }
+            }
+                    animalAnim.SetBool("stop", isDecelerate);
+
+            if (velocity != Vector3.zero && !isDecelerate)
+            {
+                animalAnim.SetBool("isMoving", true);
+            }
+            else
+            {
+                animalAnim.SetBool("isMoving", false);
+            }
+
+            animalAnim.SetFloat("velocity", velocity.sqrMagnitude / maxSpeed);
+
+
+        }
 
         private void UpdateMovements() {
             bool isMoving = (horizontalDirection != 0f || accelerationIteration > 0);
