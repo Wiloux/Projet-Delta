@@ -6753,7 +6753,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1659437661
 Transform:
   m_ObjectHideFlags: 0
@@ -8010,6 +8010,15 @@ MonoBehaviour:
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 3
+    - _id: 16
+      _name: Look back
+      _type: 1
+      _descriptiveName: Look back
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 3
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -8040,7 +8049,7 @@ MonoBehaviour:
       - categoryId: 2
         actionIds: 080000000c000000090000000a0000000b000000
       - categoryId: 3
-        actionIds: 0e0000000f000000
+        actionIds: 0e0000000f00000010000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -8608,6 +8617,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 16
+        _elementType: 1
+        _elementIdentifierId: 18
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     - id: 6
       categoryId: 3
       layoutId: 0
@@ -8630,6 +8650,17 @@ MonoBehaviour:
         _actionId: 15
         _elementType: 0
         _elementIdentifierId: 3
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 16
+        _elementType: 1
+        _elementIdentifierId: 15
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
@@ -8797,7 +8828,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 5
-    actionIdCounter: 16
+    actionIdCounter: 17
     actionCategoryIdCounter: 4
     inputBehaviorIdCounter: 1
     mapCategoryIdCounter: 4
@@ -9272,7 +9303,7 @@ Transform:
   m_GameObject: {fileID: 4876468074312546145}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 8.2, y: 0.11, z: 74.5}
-  m_LocalScale: {x: 25, y: 1, z: 30.09}
+  m_LocalScale: {x: 150, y: 1, z: 150}
   m_Children: []
   m_Father: {fileID: 6722473455923110259}
   m_RootOrder: 32
@@ -10095,7 +10126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &6722473455608371544
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10247,7 +10278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &6722473455783264517
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11419,7 +11450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &6722473456544074164
 BoxCollider:
   m_ObjectHideFlags: 0
