@@ -694,7 +694,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     duration: 1
-    amplitude: 200
+    amplitude: 800
     timer: 0
   deceleration:
     curve:
@@ -815,7 +815,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     duration: 1
-    amplitude: 50
+    amplitude: 150
     timer: 0
 --- !u!136 &1452320077669587839
 CapsuleCollider:

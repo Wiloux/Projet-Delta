@@ -97,7 +97,7 @@ namespace Florian {
             float horizontalDirection = 0f;
 
             if (player.GetButton("Cheat")) {
-                accelerationIteration++;
+                //accelerationIteration++;
                 decelerateTimer = decelerateTime;
             }
 
