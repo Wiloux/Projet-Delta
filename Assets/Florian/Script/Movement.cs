@@ -144,8 +144,6 @@ namespace Florian {
                 if (velocity.z < -backwardSpeed) {
                     velocity = Vector3.forward * -backwardSpeed;
                 }
-
-                accelerationIteration = 0;
             } else if (accelerationIteration > 0) {
                 for (int i = 0; i < accelerationIteration; i++) {
                     float acceleration = ComputeCurve(this.acceleration);
@@ -155,7 +153,6 @@ namespace Florian {
                         velocity = Vector3.forward * maxSpeed;
                     }
                 }
-                accelerationIteration = 0;
             } else {
                 if (decelerateTimer > 0) {
                     decelerateTimer -= Time.deltaTime;
@@ -169,6 +166,7 @@ namespace Florian {
                 }
             }
 
+            accelerationIteration = 0;
             ApplySpeed();
         }
 
