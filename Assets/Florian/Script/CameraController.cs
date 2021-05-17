@@ -39,6 +39,7 @@ namespace Florian {
         [Header("Look back")]
         [SerializeField] private Vector3 lookBackPosition;
         private Vector3 lookBackRotation = new Vector3(0, -180f, 0);
+        private bool lookingBack = false;
 
         [Header("Rewired")]
         public string playerName;
@@ -53,8 +54,14 @@ namespace Florian {
 
         private void Update() {
             if (player.GetButton("Look back")) {
-                cam.CameraMove(lookBackPosition, lookBackRotation, 0.1f);
+                cam.CameraMove(lookBackPosition, lookBackRotation, 0f);
+                lookingBack = true;
             } else {
+                if(lookingBack) {
+                    cam.CameraMove(cam._initPos, cam._initRot, 0f);
+                    lookingBack = false;
+                }
+
                 float percentageSpeed = Mathf.Clamp01(movement.Speed / movement.maxSpeed);
                 float zPos = Mathf.Lerp(_minZ, _maxZ, percentageSpeed);
                 if (movement.Speed == 0) { zPos = cam._initPos.z; }

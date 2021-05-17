@@ -67,6 +67,11 @@ namespace Florian {
             StartCoroutine(TargetTransformReset(time, target));
         }
 
+        public void SetCamera(Vector3 pos, Vector3 rot) {
+            transform.localRotation = Quaternion.Euler(rot);
+            transform.localPosition = pos;
+        }
+
         IEnumerator TargetTransformReset(float time, Transform target) {
             Vector3 currentRotCameraRoot = target.localRotation.eulerAngles;
             float timepassed = 0;
@@ -144,6 +149,10 @@ namespace Florian {
         }
 
         IEnumerator MoveCamera(Vector3 endPos, Vector3 endRot, float time) {
+            if (time <= 0f) {
+                SetCamera(endPos, endRot);
+            }
+
             Vector3 initRot = transform.localRotation.eulerAngles;
             Vector3 initPos = transform.localPosition;
             float timepassed = 0;
