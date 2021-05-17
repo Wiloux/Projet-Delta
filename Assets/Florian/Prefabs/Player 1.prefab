@@ -623,13 +623,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452320077669587833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.4, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 342681392965598418}
   - {fileID: 3490258879589202274}
   - {fileID: 1452320075658424499}
   - {fileID: 434275333870889165}
+  - {fileID: 3628299225586460079}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -648,30 +649,6 @@ MonoBehaviour:
   model: {fileID: 3069770842193377960}
   playerCamera: {fileID: 3490258877651621939}
   body: {fileID: 342681392965598418}
-  speed: 0
-  maxSpeed: 50
-  backwardSpeed: 10
-  turnSpeed: 30
-  accelerationSpeed: 10
-  decelerationSpeed: 20
-  isAccelerate: 0
-  isTurn: 0
-  isDecelerate: 0
-  direction: 0
-  maxTurnSpeed: 80
-  minTurnSpeedPercentage: 0.6
-  playerName: P1
-  gravity: 100
-  jumpForce: 0
-  airborn: 1
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  riderAnim: {fileID: 1215836830}
-  animalAnim: {fileID: 4282974931131541835}
-  placementText: {fileID: 1452320076616648693}
-  lapsText: {fileID: 1452320075828873028}
-  maxLaps: 2
   acceleration:
     curve:
       serializedVersion: 2
@@ -716,8 +693,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     duration: 1
-    amplitude: 800
+    amplitude: 350
     timer: 0
+  maxSpeed: 40
+  backwardSpeed: 10
+  isAccelerate: 0
   deceleration:
     curve:
       serializedVersion: 2
@@ -744,53 +724,36 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     duration: 1
-    amplitude: 50
+    amplitude: 70
     timer: 0
+  isDecelerate: 0
   frictions:
     curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.001648
-        inSlope: -0.02712608
-        outSlope: -0.02712608
+        value: 0
+        inSlope: 2
+        outSlope: 2
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.32226843
+        outWeight: 0
       - serializedVersion: 3
-        time: 0.5685795
-        value: 0.8574164
-        inSlope: -0.6988241
-        outSlope: -0.6988241
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.28811482
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.9125486
-        value: 0.32802644
-        inSlope: -2.3701835
-        outSlope: -2.3701835
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1.0056152
-        value: 0.030091852
-        inSlope: -5.5898
-        outSlope: -5.5898
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.5942597
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     duration: 1
-    amplitude: 10
+    amplitude: 5
     timer: 0
   decelerateTime: 0.2
   turn:
@@ -837,8 +800,68 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     duration: 1
-    amplitude: 150
+    amplitude: 80
     timer: 0
+  isTurn: 0
+  direction: 0
+  playerName: P1
+  gravityCurve:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -0.010557158
+        value: -0.0030807545
+        inSlope: 5.5898
+        outSlope: 5.5898
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.5942597
+      - serializedVersion: 3
+        time: 0.07749051
+        value: 0.32802644
+        inSlope: 2.6445918
+        outSlope: 2.6445918
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.42380512
+        value: 0.8574164
+        inSlope: 0.6988241
+        outSlope: 0.6988241
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.28811482
+      - serializedVersion: 3
+        time: 0.99626166
+        value: 1.001648
+        inSlope: 0.02712608
+        outSlope: 0.02712608
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.32226843
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 3
+    timer: 0
+  groundCheck: {fileID: 3628299225586460079}
+  jumpForce: 0
+  airborn: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  riderAnim: {fileID: 1215836830}
+  animalAnim: {fileID: 4282974931131541835}
+  placementText: {fileID: 1452320076616648693}
+  lapsText: {fileID: 1452320075828873028}
+  maxLaps: 2
 --- !u!136 &1452320077669587839
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -888,6 +911,36 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &2351475789719609389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3628299225586460079}
+  m_Layer: 0
+  m_Name: Ground check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3628299225586460079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2351475789719609389}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.95, z: -0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1452320077669587837}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3490258877651621938
 GameObject:
   m_ObjectHideFlags: 0
@@ -2286,13 +2339,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a4fa9bb3c6473844a751591ebeb5f4c, type: 3}
---- !u!1 &4181234245980801261 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -5967330040413077275, guid: 9a4fa9bb3c6473844a751591ebeb5f4c, type: 3}
-  m_PrefabInstance: {fileID: 1668991121357473800}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2010887216481842521 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a4fa9bb3c6473844a751591ebeb5f4c, type: 3}
+  m_PrefabInstance: {fileID: 1668991121357473800}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4181234245980801261 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5967330040413077275, guid: 9a4fa9bb3c6473844a751591ebeb5f4c, type: 3}
   m_PrefabInstance: {fileID: 1668991121357473800}
   m_PrefabAsset: {fileID: 0}

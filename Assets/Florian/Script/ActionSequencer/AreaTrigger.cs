@@ -71,15 +71,18 @@ namespace Florian.ActionSequencer {
         }
 
         private void OnDrawGizmos() {
+            Matrix4x4 baseMatrix = Gizmos.matrix;
+
             Color color = gizmosColor;
             Gizmos.color = color;
             Matrix4x4 matrix = Gizmos.matrix;
             matrix.SetTRS(transform.position, transform.localRotation, Vector3.one);
-            Debug.Log(matrix.rotation);
             Gizmos.matrix = matrix;
             for (int i = 0; i < boxCollider.Length; i++) {
                 Gizmos.DrawCube(Vector3.zero + boxCollider[i].center, boxCollider[i].size);
             }
+
+            Gizmos.matrix = baseMatrix;
         }
 
         public void SetCollider(Vector3 size) {
