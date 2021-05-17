@@ -98,6 +98,7 @@ namespace Florian {
                 velocity.y = 0f;
             }
 
+            bool resetDecelerateTimer = false;
             float horizontalDirection = 0f;
 
             if (player.GetButton("Cheat")) {
@@ -109,7 +110,8 @@ namespace Florian {
                 if (player.GetButtonDown("Accelerate")) {
                     accelerationIteration++;
                 }
-                decelerateTimer = decelerateTime;
+                resetDecelerateTimer = true;
+                //decelerateTimer = decelerateTime;
             }
 
             if (player.GetButton("Decelerate")) {
@@ -118,8 +120,14 @@ namespace Florian {
 
             if (player.GetAxis("Horizontal") != 0) {
                 horizontalDirection += player.GetAxis("Horizontal");
-                decelerateTimer = 0f;
+                resetDecelerateTimer = false;
             }
+
+            if (player.GetButtonDown("Horizontal")) {
+                resetDecelerateTimer = true;
+            }
+
+            decelerateTimer = resetDecelerateTimer ? decelerateTime : decelerateTimer;
 
             //float angle = Vector3.Angle(Vector3.forward, transform.forward);
             //movementDirection = Quaternion.AngleAxis(angle, Vector3.up) * direction.normalized;
@@ -128,7 +136,7 @@ namespace Florian {
             //Gravity();
             UpdateAnims();
             //UpdateRotation();
-            Debug.Log("Vel : " + velocity);
+            Debug.Log(playerName + " ! Velocity : " + velocity);
         }
 
         #endregion

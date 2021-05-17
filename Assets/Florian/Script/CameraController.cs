@@ -89,7 +89,6 @@ namespace Florian {
                         cam.ResetCameraJoystickPos(Vector3.zero);
                         //cameraMoving = cam.ResetTransform(0.1f, _target);
                     }
-                    Debug.Log("// " + cam._rotationX + " .. " + cam._rotationY);
                     cam.CameraJoystickRotation(player.GetAxis("CamHorizontal"), player.GetAxis("CamVertical"), _rotationSpeed, _target);
                 }
 
