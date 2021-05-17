@@ -608,9 +608,10 @@ GameObject:
   - component: {fileID: 1452320077669587836}
   - component: {fileID: 1452320077669587839}
   - component: {fileID: 1452320077669587838}
+  - component: {fileID: 5565627194245853760}
   m_Layer: 0
   m_Name: Player 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -646,6 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6425ce7ad0195f4478e036ad3e7dda78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rb: {fileID: 0}
   model: {fileID: 3069770842193377960}
   playerCamera: {fileID: 3490258877651621939}
   body: {fileID: 342681392965598418}
@@ -892,6 +894,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &5565627194245853760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452320077669587833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbff5379e701a46b7f555810aa54ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 1452320077669587836}
+  _pushForce: 10
+  _pushRadius: 20
+  _cooldown: 10
 --- !u!95 &1215836830
 Animator:
   serializedVersion: 3

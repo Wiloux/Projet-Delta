@@ -260,11 +260,11 @@ namespace Florian {
                             int index = points[i][j];
                             distances.Add(Vector3.Distance(characters[index].transform.position, checkpoints[checkpointReached[index] + 1]));
                             almanac.Add(distances[distances.Count - 1], index);
-                            Debug.LogWarning("Player : " + characters[index].name + " // " + distances[distances.Count - 1]);
+                            //Debug.LogWarning("Player : " + characters[index].name + " // " + distances[distances.Count - 1]);
                         }
                         distances.Sort();
                         for (int j = 0; j < distances.Count; j++) {
-                            Debug.LogWarning("/// " + distances[j] + " .. " + characters[almanac[distances[j]]].name + " .. " + almanac[distances[j]]);
+                            //Debug.LogWarning("/// " + distances[j] + " .. " + characters[almanac[distances[j]]].name + " .. " + almanac[distances[j]]);
                             placements[place] = almanac[distances[j]];
                             place++;
                         }
