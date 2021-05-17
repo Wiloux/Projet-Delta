@@ -8667,11 +8667,7 @@ MonoBehaviour:
       - _actionCategoryId: 0
         _actionId: 16
         _elementType: 1
-<<<<<<< Updated upstream
         _elementIdentifierId: 18
-=======
-        _elementIdentifierId: 17
->>>>>>> Stashed changes
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
@@ -8711,11 +8707,7 @@ MonoBehaviour:
       - _actionCategoryId: 0
         _actionId: 16
         _elementType: 1
-<<<<<<< Updated upstream
         _elementIdentifierId: 15
-=======
-        _elementIdentifierId: 14
->>>>>>> Stashed changes
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
@@ -9242,70 +9234,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4876468074312546145}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
-<<<<<<< Updated upstream
-=======
---- !u!1001 &1668991121502773124
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1452320077669587833, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_Name
-      value: Player 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587833, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 39.903862
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 27.350277
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 143.49399
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452320077669587837, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b9ccbfcd9db233f48a411043a494d827, type: 3}
->>>>>>> Stashed changes
 --- !u!1 &4876468074312546145
 GameObject:
   m_ObjectHideFlags: 0
@@ -9374,13 +9302,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4876468074312546145}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-<<<<<<< Updated upstream
   m_LocalPosition: {x: 8.2, y: 0.11, z: 74.5}
   m_LocalScale: {x: 150, y: 1, z: 150}
-=======
-  m_LocalPosition: {x: 8.2, y: 0.18, z: 74.5}
-  m_LocalScale: {x: 25, y: 1, z: 30.09}
->>>>>>> Stashed changes
   m_Children: []
   m_Father: {fileID: 6722473455923110259}
   m_RootOrder: 32

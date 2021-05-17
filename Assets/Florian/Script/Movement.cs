@@ -15,35 +15,27 @@ namespace Florian {
         public Transform body;
 
         [Header("Movement velocity")]
-        [SerializeField] private AmplitudeCurve acceleration = null;
+        public float speed;
         public float maxSpeed;
         [SerializeField] private float backwardSpeed = 10f;
+        public float turnSpeed;
+        public float accelerationSpeed;
+        public float decelerationSpeed;
         public bool isAccelerate;
-
-        [SerializeField] private AmplitudeCurve deceleration = null;
-        public bool isDecelerate;
-
-        [SerializeField] private AmplitudeCurve frictions = null;
-        [SerializeField] private float decelerateTime = 0.2f;
-        private float decelerateTimer = 0.2f;
-
-        [SerializeField] private AmplitudeCurve turn = null;
         public bool isTurn;
+        public bool isDecelerate;
         public float direction;
 
-        private Vector3 velocity = Vector3.zero;
-        private float horizontalDirection = 0f;
-        private int accelerationIteration = 0;
+        [Header("Orientation")]
+        public float maxTurnSpeed;
+        public float minTurnSpeedPercentage;
 
         [Header("Rewired")]
         private Rewired.Player player;
         public string playerName;
 
         [Header("Air Detection")]
-        [SerializeField] private AmplitudeCurve gravityCurve = null;
-        [SerializeField] private Transform groundCheck = null;
-
-        //public float gravity;
+        public float gravity;
         public float jumpForce;
         public bool airborn;
         public LayerMask layerMask;
@@ -52,6 +44,18 @@ namespace Florian {
         public TextMeshProUGUI placementText = null;
         public TextMeshProUGUI lapsText = null;
         public int maxLaps = 2;
+
+        [Header("Rework")]
+        [SerializeField] private AmplitudeCurve acceleration = null;
+        [SerializeField] private AmplitudeCurve deceleration = null;
+        [SerializeField] private AmplitudeCurve frictions = null;
+        [SerializeField] private float decelerateTime = 0.2f;
+        private float decelerateTimer = 0.2f;
+        [SerializeField] private AmplitudeCurve turn = null;
+
+        private Vector3 velocity = Vector3.zero;
+        private float horizontalDirection = 0f;
+        private int accelerationIteration = 0;
 
         #region Properties
 
@@ -68,7 +72,7 @@ namespace Florian {
         }
 
         public float Speed {
-            get { return velocity.magnitude * Mathf.Sign(velocity.z); }
+            get { return velocity.magnitude; }
         }
 
         public float HorizontalDirection {
@@ -90,14 +94,10 @@ namespace Florian {
             isTurn = false;
             airborn = !isGrounded();
 
-            if(!airborn) {
-                velocity.y = 0f;
-            }
-
             float horizontalDirection = 0f;
 
             if (player.GetButton("Cheat")) {
-                accelerationIteration++;
+                //accelerationIteration++;
                 decelerateTimer = decelerateTime;
             }
 
@@ -114,91 +114,57 @@ namespace Florian {
 
             if (player.GetAxis("Horizontal") != 0) {
                 horizontalDirection += player.GetAxis("Horizontal");
-                decelerateTimer = 0f;
             }
 
             //float angle = Vector3.Angle(Vector3.forward, transform.forward);
             //movementDirection = Quaternion.AngleAxis(angle, Vector3.up) * direction.normalized;
             this.horizontalDirection = horizontalDirection;
             UpdateMovements();
-<<<<<<< Updated upstream
             Gravity();
-=======
-            //Gravity();
-            UpdateAnims();
->>>>>>> Stashed changes
             //UpdateRotation();
             Debug.Log("Vel : " + velocity);
         }
 
         #endregion
 
-<<<<<<< Updated upstream
-=======
-        private void UpdateAnims() {
-            if (velocity != Vector3.zero && !isDecelerate) {
-                animalAnim.SetBool("isMoving", true);
-                animalAnim.speed = Mathf.Lerp(0.75f, 1.5f, velocity.sqrMagnitude / (maxSpeed * maxSpeed));
-            } else {
-                animalAnim.SetBool("isMoving", false);
-                animalAnim.speed = 1f;
-            }
-
-
-            if (player.GetButton("Accelerate")) {
-                if (player.GetButtonDown("Accelerate")) {
-                    animalAnim.SetTrigger("whipped");
-                    riderAnim.SetTrigger("whip");
-                }
-            }
-            animalAnim.SetBool("stop", isDecelerate);
-
-            animalAnim.SetFloat("velocity", velocity.sqrMagnitude / (maxSpeed * maxSpeed));
-        }
-
->>>>>>> Stashed changes
         private void UpdateMovements() {
             bool isMoving = (horizontalDirection != 0f || accelerationIteration > 0);
 
-            if (!airborn) {
-                if (horizontalDirection != 0f) {
-                    isTurn = true;
-                    Turn();
-                } else {
-                    isTurn = false;
+            if (horizontalDirection != 0f) {
+                isTurn = true;
+                Turn();
+            } else {
+                isTurn = false;
+            }
+
+            if (isDecelerate) {
+                float deceleration = ComputeCurve(this.deceleration);
+                velocity += Vector3.forward * -deceleration * Time.deltaTime;
+
+                if (velocity.z < -backwardSpeed) {
+                    velocity = Vector3.forward * -backwardSpeed;
                 }
+            } else if (accelerationIteration > 0) {
+                for (int i = 0; i < accelerationIteration; i++) {
+                    float acceleration = ComputeCurve(this.acceleration);
+                    velocity += Vector3.forward * acceleration * Time.deltaTime;
 
-                if (isDecelerate) {
-                    float deceleration = ComputeCurve(this.deceleration);
-                    velocity += Vector3.forward * -deceleration * Time.deltaTime;
-
-                    if (velocity.z < -backwardSpeed) {
-                        velocity = Vector3.forward * -backwardSpeed;
+                    if (velocity.sqrMagnitude > maxSpeed * maxSpeed) {
+                        velocity = Vector3.forward * maxSpeed;
                     }
-                } else if (accelerationIteration > 0) {
-                    for (int i = 0; i < accelerationIteration; i++) {
-                        float acceleration = ComputeCurve(this.acceleration);
-                        velocity += Vector3.forward * acceleration * Time.deltaTime;
-
-                        if (velocity.sqrMagnitude > maxSpeed * maxSpeed) {
-                            velocity = Vector3.forward * maxSpeed;
-                        }
-                    }
+                }
+            } else {
+                if (decelerateTimer > 0) {
+                    decelerateTimer -= Time.deltaTime;
                 } else {
-                    if (decelerateTimer > 0) {
-                        decelerateTimer -= Time.deltaTime;
-                    } else {
-                        float frictions = ComputeCurve(this.frictions);
-                        velocity += -frictions * velocity.normalized * Time.deltaTime;
+                    float frictions = ComputeCurve(this.frictions);
+                    velocity += -frictions * velocity.normalized * Time.deltaTime;
 
-                        if (Mathf.Abs(frictions) <= 0f || Mathf.Abs(frictions) >= this.frictions.amplitude) {
-                            velocity = Vector3.zero;
-                        }
+                    if (Mathf.Abs(frictions) <= 0f || Mathf.Abs(frictions) >= this.frictions.amplitude) {
+                        velocity = Vector3.zero;
                     }
                 }
             }
-
-            velocity += ComputeGravity() * Vector3.down;
 
             accelerationIteration = 0;
             ApplySpeed();
@@ -256,19 +222,17 @@ namespace Florian {
             return Quaternion.AngleAxis(angle, Vector3.up) * vector;
         }
 
-        private float ComputeGravity() {
-            float percentage = Mathf.Clamp01(velocity.y / gravityCurve.amplitude);
-            float perCurve = gravityCurve.curve.Evaluate(percentage);
-            return perCurve * gravityCurve.amplitude;
+        public float TurnSpeedHandler(float speed) {
+            return Mathf.Lerp(maxTurnSpeed, maxTurnSpeed * minTurnSpeedPercentage, speed / maxSpeed);
         }
 
-        //public void Gravity() {
-        //    _rb.AddForce(gravity * Vector3.down, ForceMode.Acceleration);
-        //}
+        public void Gravity() {
+            _rb.AddForce(gravity * Vector3.down, ForceMode.Acceleration);
+        }
 
         bool isGrounded() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, 0.2f, layerMask)) {
+            if (Physics.Raycast(transform.position + (transform.up * 0.2f), Vector3.down, out hitFloor, 2.0f, layerMask)) {
                 return true;
             } else {
                 return false;

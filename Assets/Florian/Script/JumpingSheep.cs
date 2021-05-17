@@ -42,7 +42,7 @@ namespace Florian
         private void Stomp()
         {
             _nbrStomp++;
-            //movement.gravity = _megaGravity;
+            movement.gravity = _megaGravity;
 
         }
 

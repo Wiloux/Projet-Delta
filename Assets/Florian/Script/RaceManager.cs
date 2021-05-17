@@ -125,7 +125,7 @@ namespace Florian {
                 (characters[i] as Movement).Laps = 0;
             }
 
-            TeleportCharacters(checkpoints[0], new Vector3(0, 90f, 0));
+            TeleportCharacters(checkpoints[0], new Vector3(0, 0, 0));
 
             raceStarted = true;
         }
