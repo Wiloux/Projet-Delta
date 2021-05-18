@@ -117,7 +117,7 @@ namespace Florian {
                     float frictions = ComputeCurve(this.frictions);
                     velocity += -frictions * velocity.normalized * Time.deltaTime;
 
-                    if (velocity.z <= 5f) {
+                    if (Mathf.Clamp01(Speed / maxSpeed) <= 0.1f) {
                         velocity = Vector3.zero;
                     }
                 }
@@ -174,6 +174,30 @@ namespace Florian {
         public void Accelerate() {
             accelerationIteration++;
             ResetDecelerateTimer();
+        }
+
+        public void AddVelocity(Vector3 velocity) {
+            this.velocity += velocity;
+        }
+
+        public void Slow(Vector3 velocity) {
+            AddVelocity(velocity.Redirect(Vector3.back));
+        }
+
+        public void NegateVelocity(params Axis[] axis) {
+            for (int i = 0; i < axis.Length; i++) {
+                switch (axis[i]) {
+                    case Axis.X:
+                        velocity.x = 0;
+                        break;
+                    case Axis.Y:
+                        velocity.y = 0;
+                        break;
+                    case Axis.Z:
+                        velocity.z = 0;
+                        break;
+                }
+            }
         }
 
         #endregion

@@ -254,6 +254,11 @@ namespace ToolsBoxEngine {
             return result;
         }
 
+        public static Vector3 Redirect(this Vector3 vector, Vector3 direction) {
+            float angle = Vector3.SignedAngle(vector, direction, Vector3.up);
+            return Quaternion.AngleAxis(angle, Vector3.up) * vector;
+        }
+
         #endregion
 
         #region Utilities
