@@ -606,6 +606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1452320077669587837}
   - component: {fileID: 1452320077669587836}
+  - component: {fileID: 47675566480821665}
   - component: {fileID: 1452320077669587839}
   - component: {fileID: 1452320077669587838}
   - component: {fileID: 5565627194245853760}
@@ -647,10 +648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6425ce7ad0195f4478e036ad3e7dda78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rb: {fileID: 0}
-  model: {fileID: 3069770842193377960}
-  playerCamera: {fileID: 3490258877651621939}
-  body: {fileID: 342681392965598418}
   acceleration:
     curve:
       serializedVersion: 2
@@ -805,8 +802,7 @@ MonoBehaviour:
     amplitude: 80
     timer: 0
   isTurn: 0
-  direction: 0
-  playerName: P1
+  velocity: {x: 0, y: 0, z: 0}
   gravityCurve:
     curve:
       serializedVersion: 2
@@ -859,8 +855,25 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+--- !u!114 &47675566480821665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452320077669587833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae4f1de803d9ec49afda8743ccb75b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  physics: {fileID: 0}
+  model: {fileID: 958435150950494839}
+  body: {fileID: 5891103246836439423}
+  playerName: P1
   riderAnim: {fileID: 1215836830}
   animalAnim: {fileID: 4282974931131541835}
+  playerCamera: {fileID: 3490258877651621939}
   placementText: {fileID: 1452320076616648693}
   lapsText: {fileID: 1452320075828873028}
   maxLaps: 2
@@ -906,7 +919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8bbff5379e701a46b7f555810aa54ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 1452320077669587836}
   _pushForce: 10
   _pushRadius: 20
   _cooldown: 10
@@ -1057,7 +1069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 3490258879589202274}
-  movement: {fileID: 1452320077669587836}
+  movement: {fileID: 47675566480821665}
   cam: {fileID: 3490258877651621951}
   _rotationSpeed: 1.4
   _minZ: -2
@@ -1595,9 +1607,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -2773423817125483245, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
   m_PrefabInstance: {fileID: 111572259472920358}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3069770842193377960 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3104781357824505230, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
+--- !u!4 &5891103246836439423 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5786286938310694489, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
   m_PrefabInstance: {fileID: 111572259472920358}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1668991121357473800

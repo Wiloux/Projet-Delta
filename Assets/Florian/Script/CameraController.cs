@@ -8,7 +8,7 @@ namespace Florian {
     public class CameraController : MonoBehaviour {
         [Header("Camera")]
         [SerializeField] private Transform _target;
-        [SerializeField] private Movement movement;
+        [SerializeField] private MovementController movement;
         [SerializeField] private CameraManager cam;
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private float _minZ;
@@ -62,12 +62,12 @@ namespace Florian {
                     lookingBack = false;
                 }
 
-                float percentageSpeed = Mathf.Clamp01(movement.Speed / movement.maxSpeed);
+                float percentageSpeed = Mathf.Clamp01(movement.Speed / movement.MaxSpeed);
                 float zPos = Mathf.Lerp(_minZ, _maxZ, percentageSpeed);
                 if (movement.Speed == 0) { zPos = cam._initPos.z; }
 
                 // Acceleration
-                if (movement.isAccelerate && movement.Speed < movement.maxSpeed && !movement.isTurn) {
+                if (movement.Accelerating && movement.Speed < movement.MaxSpeed && !movement.Turning) {
                     //Vector3 accelpos = Vector3.Lerp(accelPosition, accelPosition + accelDelta, Mathf.Clamp01(movement.Speed / movement.maxSpeed));
                     if (zPos > cam._initPos.z) { zPos = Mathf.Lerp(cam._initPos.z, _maxZ, percentageSpeed); }
 
@@ -76,14 +76,14 @@ namespace Florian {
                 }
 
                 // Deceleration
-                if (movement.isDecelerate && movement.Speed > 0 && !movement.isTurn) {
-                    zPos = Mathf.Lerp(_minZ, _maxZ, Mathf.Clamp01(movement.Speed / (movement.maxSpeed + decelerationOffset)));
+                if (movement.Decelerating && movement.Speed > 0 && !movement.Turning) {
+                    zPos = Mathf.Lerp(_minZ, _maxZ, Mathf.Clamp01(movement.Speed / (movement.MaxSpeed + decelerationOffset)));
 
                     cam.CameraMovePosition(decelPosition.Override(zPos, Axis.Z), decelDuration);
                 }
 
                 // Arrêt
-                if (movement.Speed < 0.5f && !movement.airborn) {
+                if (movement.Speed < 0.5f && !movement.Airborn) {
                     if (!_onJoyMode) {
                         _onJoyMode = true;
                         cam.ResetCameraJoystickPos(Vector3.zero);
@@ -93,25 +93,25 @@ namespace Florian {
                 }
 
                 // Tourner
-                if (movement.isTurn && movement.Speed > 1f) {
+                if (movement.Turning && movement.Speed > 1f) {
                     cam.ResetTarget(accelDuration, _target);
 
                     Vector3 turnRotation = Vector3.Lerp(turnRotationMin, turnRotationMax, percentageSpeed);
                     cam.CameraMove(
-                        new Vector3(turnPosition.x * movement.HorizontalDirection, turnPosition.y, zPos),
-                        turnRotation * movement.HorizontalDirection,
+                        new Vector3(turnPosition.x * movement.physics.HorizontalDirection, turnPosition.y, zPos),
+                        turnRotation * movement.physics.HorizontalDirection,
                         turnDuration
                     );
                 } else {
                     // Reset du non turn
                     cam.ResetTarget(accelDuration, _target);
                     cam.CameraMoveRotation(new Vector3(0, 0, 0), accelDuration);
-                    if (!movement.isAccelerate && !movement.isDecelerate)
+                    if (!movement.Accelerating && !movement.Decelerating)
                         cam.CameraMovePosition(cam._initPos.Override(zPos, Axis.Z), 1f);
                 }
 
                 // Airborn
-                if (movement.airborn)
+                if (movement.Airborn)
                     cam.CameraMove(airPosition, airRotation, airDuration);
             }
         }

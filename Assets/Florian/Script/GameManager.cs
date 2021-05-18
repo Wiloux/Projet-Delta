@@ -24,7 +24,7 @@ namespace Florian
 
         [Header("Players")]
         public GameObject kart = null;
-        [HideInInspector] public List<Movement> players = null;
+        [HideInInspector] public List<MovementController> players = null;
         public Material[] playersColor = null;
 
         [Header("Other")]
@@ -164,7 +164,7 @@ namespace Florian
                 if (playersController[i] != null)
                 {
                     GameObject lastSpawned = SpawnKart(Vector3.zero, "P" + (i + 1));
-                    players.Add(lastSpawned.GetComponentInChildren<Movement>());
+                    players.Add(lastSpawned.GetComponentInChildren<MovementController>());
                     players[players.Count - 1].SetCamera(cameraNumber, NumberOfPlayerControllers);
                     players[players.Count - 1].ChangeTexture(playersColor[multiplayerPanel.playerScreens[i].indexPortrait]);
                     cameraNumber++;
@@ -191,8 +191,6 @@ namespace Florian
                 }
             }
 
-
-
             //Check amount of players and calculate map position
             for (int i = 0; i < playersController.Length; i++)
             {
@@ -207,6 +205,7 @@ namespace Florian
             {
                 miniMap.AddPlayer(players[j].gameObject.transform, multiplayerPanel.portraitSprites[multiplayerPanel.playerScreens[j].indexPortrait]);
             }
+
             // 3 cam = 4 random
             if (NumberOfPlayerControllers == 3)
             {
@@ -300,7 +299,7 @@ namespace Florian
         {
             GameObject insta = SpawnKart(pos);
             insta.name = playerName;
-            insta.GetComponentInChildren<Movement>().SetController(playerName);
+            insta.GetComponentInChildren<MovementController>().SetController(playerName);
             return insta;
         }
 
@@ -308,7 +307,7 @@ namespace Florian
         {
             GameObject insta = SpawnKart(pos);
             insta.name = playerName;
-            insta.GetComponentInChildren<Movement>().SetController(playerName, controller);
+            insta.GetComponentInChildren<MovementController>().SetController(playerName, controller);
             return insta;
         }
 

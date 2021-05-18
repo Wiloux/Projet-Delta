@@ -89,7 +89,7 @@ namespace Florian {
             for (int i = 0; i < placements.Length; i++) {
                 for (int j = 0; j < characters.Count; j++) {
                     if (placements[i] == j) {
-                        Movement player = characters[j] as Movement;
+                        MovementController player = characters[j] as MovementController;
                         player.Placement = i + 1;
                     }
                 }
@@ -98,7 +98,7 @@ namespace Florian {
             for (int i = 0; i < NumberOfCharacters; i++) {
                 if (LapsDone(i)) {
                     DoALapse(i);
-                    Movement player = characters[i] as Movement;
+                    MovementController player = characters[i] as MovementController;
                     player.Laps = laps[i];
                     if (HasEnded(i)) {
                         if (EveryoneEnded) {
@@ -121,8 +121,8 @@ namespace Florian {
                 laps.Add(0);
                 checkpointReached.Add(0);
                 placements[i] = 0;
-                (characters[i] as Movement).maxLaps = lapsNumber;
-                (characters[i] as Movement).Laps = 0;
+                (characters[i] as MovementController).maxLaps = lapsNumber;
+                (characters[i] as MovementController).Laps = 0;
             }
 
             TeleportCharacters(checkpoints[0], new Vector3(0, 90f, 0));
@@ -260,11 +260,11 @@ namespace Florian {
                             int index = points[i][j];
                             distances.Add(Vector3.Distance(characters[index].transform.position, checkpoints[checkpointReached[index] + 1]));
                             almanac.Add(distances[distances.Count - 1], index);
-                            //Debug.LogWarning("Player : " + characters[index].name + " // " + distances[distances.Count - 1]);
+                            Debug.LogWarning("Player : " + characters[index].name + " // " + distances[distances.Count - 1]);
                         }
                         distances.Sort();
                         for (int j = 0; j < distances.Count; j++) {
-                            //Debug.LogWarning("/// " + distances[j] + " .. " + characters[almanac[distances[j]]].name + " .. " + almanac[distances[j]]);
+                            Debug.LogWarning("/// " + distances[j] + " .. " + characters[almanac[distances[j]]].name + " .. " + almanac[distances[j]]);
                             placements[place] = almanac[distances[j]];
                             place++;
                         }
