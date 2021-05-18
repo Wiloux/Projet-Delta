@@ -32,6 +32,7 @@ namespace Florian
         [Range(2f, 20f)] public float switchCameraInterval = 10f;
         private int actualCameraId;
         public miniMap miniMap;
+        public GameObject valueRefs;
 
         #region Properties
 
@@ -172,19 +173,35 @@ namespace Florian
                     switch (multiplayerPanel.playerScreens[i].indexPortrait)
                     {
                         case 0:
-                            lastSpawned.AddComponent<AttractingWhip>();
-                            lastSpawned.AddComponent<JumpingSheep>();
+                            Fear lastFear = lastSpawned.AddComponent<Fear>();
+                            Fear refFear = valueRefs.GetComponent<Fear>();
+                            lastFear.sphereSize = refFear.sphereSize;
+                            lastFear.slowAmount = refFear.slowAmount;
+                            lastFear.coolDownDuration = refFear.coolDownDuration;
+                            JumpingSheep lastJumping = lastSpawned.AddComponent<JumpingSheep>();
+                            JumpingSheep refJumping = lastSpawned.GetComponent<JumpingSheep>();
+                            lastJumping._megaGravity = refJumping._megaGravity;
+                            lastJumping._megaJumpForce = refJumping._megaJumpForce;
+                            lastJumping._stompRadius = refJumping._stompRadius;
                             break;
                         case 1:
-                            lastSpawned.AddComponent<AttractingWhip>();
-                            lastSpawned.AddComponent<JumpingSheep>();
+                            Fear lastFear1 = lastSpawned.AddComponent<Fear>();
+                            Fear refFear1 = valueRefs.GetComponent<Fear>();
+                            lastFear1.sphereSize = refFear1.sphereSize;
+                            lastFear1.slowAmount = refFear1.slowAmount;
+                            lastFear1.coolDownDuration = refFear1.coolDownDuration;
+                            JumpingSheep lastJumping1 = lastSpawned.AddComponent<JumpingSheep>();
+                            JumpingSheep refJumping1 = lastSpawned.GetComponent<JumpingSheep>();
+                            lastJumping1._megaGravity = refJumping1._megaGravity;
+                            lastJumping1._megaJumpForce = refJumping1._megaJumpForce;
+                            lastJumping1._stompRadius = refJumping1._stompRadius;
                             break;
                         case 2:
-                            lastSpawned.AddComponent<Ride>();
+                            lastSpawned.AddComponent<Shark>();
                             lastSpawned.AddComponent<MountThrowing>();
                             break;
                         case 3:
-                            lastSpawned.AddComponent<Ride>();
+                            lastSpawned.AddComponent<Shark>();
                             lastSpawned.AddComponent<MountThrowing>();
                             break;
                     }

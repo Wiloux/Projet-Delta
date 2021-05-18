@@ -648,6 +648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6425ce7ad0195f4478e036ad3e7dda78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0, z: 0}
   acceleration:
     curve:
       serializedVersion: 2
@@ -802,7 +803,6 @@ MonoBehaviour:
     amplitude: 80
     timer: 0
   isTurn: 0
-  velocity: {x: 0, y: 0, z: 0}
   gravityCurve:
     curve:
       serializedVersion: 2
@@ -850,8 +850,8 @@ MonoBehaviour:
     amplitude: 3
     timer: 0
   groundCheck: {fileID: 3628299225586460079}
-  jumpForce: 0
   airborn: 1
+  jumpForce: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -1518,6 +1518,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 65.02927
       objectReference: {fileID: 0}
+    - target: {fileID: 5171707147960288264, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f0b5a82abee54374d8a2c6219ebde5d2, type: 2}
     - target: {fileID: 5579280256239574877, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -42.99264

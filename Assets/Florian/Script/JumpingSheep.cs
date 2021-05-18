@@ -11,12 +11,12 @@ namespace Florian
         private bool _jump = false;
 
         [Header("MegaJump")]
-        [SerializeField] private float _megaJumpForce;
+        public float _megaJumpForce;
 
         [Header("Stomp")]
-        [SerializeField] private int _nbrStomp = 0;
-        [SerializeField] private float _megaGravity;
-        [SerializeField] private float _stompRadius;
+        public int _nbrStomp = 0;
+        public float _megaGravity;
+        public float _stompRadius;
 
         private void Update()
         {
