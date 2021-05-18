@@ -117,7 +117,6 @@ namespace Florian {
             physics.SetHorizontalDirection(horizontalDirection);
             physics.UpdateMovements();
             UpdateAnims();
-            Debug.Log(playerName + " ! Velocity : " + Speed);
         }
 
         private void UpdateAnims() {
