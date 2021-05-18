@@ -15,7 +15,7 @@ namespace Florian {
         public Transform body;
 
         [Header("Rewired")]
-        private Rewired.Player player;
+        public Rewired.Player player;
         public string playerName;
 
         [Header("Anims")]
