@@ -8,28 +8,68 @@ namespace Florian
     {
         [SerializeField] private float _pushForce;
         [SerializeField] private float _pushRadius;
-        [SerializeField] private int _cooldown;
-        private float _timer = 0f;
+        public float _cooldown;
+        public float _timer;
 
         private void Update()
         {
-             _timer += Time.deltaTime;
-            if (_timer > _cooldown)
+            if (_timer > 0)
+                _timer -= Time.deltaTime;
+
+            if (_timer < 0)
                 _timer = 0;
         }
 
-        private void Push(float horizontal)
+        public void Push(float horizontal)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _pushRadius);
+            if (horizontal > 0)
+                StartCoroutine(RightColliders());
+            else if (horizontal < 0)
+                StartCoroutine(LeftColliders());
+        }
 
-            foreach (Collider pushedObject in colliders)
+        IEnumerator RightColliders()
+        {
+            Collider[] rightColliders = Physics.OverlapSphere(transform.right + transform.localPosition, _pushRadius);
+
+            foreach (Collider pushedObject in rightColliders)
             {
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
                 {
+                    Debug.Log(pushedObject.name);
                     Rigidbody pushedBody = pushedObject.GetComponent<Rigidbody>();
-                    pushedBody.AddForce(_pushForce * transform.right * horizontal, ForceMode.Impulse);
+                    pushedObject.GetComponent<Movement>().AddVelocity(pushedObject.transform.worldToLocalMatrix.MultiplyVector(transform.right) * _pushForce);
+                    //pushedBody.AddForce(_pushForce * transform.right, ForceMode.Impulse);
+                    _timer = _cooldown;
+                    yield return new WaitForEndOfFrame();
                 }
             }
         }
+
+        IEnumerator LeftColliders()
+        {
+            Collider[] leftColliders = Physics.OverlapSphere(-transform.right + transform.localPosition, _pushRadius);
+
+            foreach (Collider pushedObject in leftColliders)
+            {
+                if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
+                {
+                    Debug.Log(pushedObject.name);
+                    Rigidbody pushedBody = pushedObject.GetComponent<Rigidbody>();
+                    pushedObject.GetComponent<Movement>().AddVelocity(pushedObject.transform.worldToLocalMatrix.MultiplyVector(-transform.right) * _pushForce);
+                    //pushedBody.AddForce(_pushForce * -transform.right, ForceMode.Impulse);
+                    _timer = _cooldown;
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+        }
+        
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(transform.right + transform.localPosition, _pushRadius);
+            Gizmos.DrawSphere(-transform.right + transform.localPosition, _pushRadius);
+        }
+
     }
 }
