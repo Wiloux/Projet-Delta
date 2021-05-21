@@ -921,9 +921,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8bbff5379e701a46b7f555810aa54ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pushForce: 10
-  _pushRadius: 20
-  _cooldown: 5
+  _pushForce: 20
+  _pushRadius: 1.11
+  _cooldown: 2
   _timer: 0
 --- !u!95 &1215836830
 Animator:
