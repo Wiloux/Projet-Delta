@@ -10,7 +10,6 @@ namespace Florian {
     public class MovementController : Character {
         public Movement physics;
         private FlanksAttack flanksAttack;
-        private JumpingSheep jumpingSheep;
 
         [Header("Bodys")]
         public GameObject model;
@@ -88,9 +87,6 @@ namespace Florian {
 
             flanksAttack = GetComponent<FlanksAttack>();
             if (flanksAttack == null) { Debug.LogError("Flank attack not found on controller object"); }
-
-            jumpingSheep = GetComponent<JumpingSheep>();
-            if (jumpingSheep == null) { Debug.LogError("Jumping Sheep not found on controller object"); }
         }
 
         void Update() {
@@ -131,14 +127,6 @@ namespace Florian {
             if (player.GetButton("Attack") && player.GetAxis("Horizontal") != 0 && flanksAttack._timer == 0f) {
                 Debug.Log("Attack flank " + Mathf.Sign(player.GetAxis("Horizontal")));
                 flanksAttack.Push(Mathf.Sign(player.GetAxis("Horizontal")));
-            }
-
-            if (player.GetButtonDown("Jump"))
-            {
-                if (!Airborn)
-                    jumpingSheep.MegaJump();
-                else
-                    jumpingSheep.Stomp();
             }
 
             physics.SetHorizontalDirection(horizontalDirection);
