@@ -10,22 +10,39 @@ public class Fear : MonoBehaviour
     private MovementController mvtController;
 
     public float sphereSize;
+    public AmplitudeCurve sphereGrowthCurve = null;
+    public float sphereGrowthSpd;
     public float slowAmount;
+    public float castingTime;
     private float coolDown;
     public float coolDownDuration;
+    private Material sphereMat;
+    private MeshRenderer sphereRend;
+    private ParticleSystem ps;
+    private bool disapear;
     // Start is called before the first frame update
     void Start()
     {
+        sphereRend = GameObject.Find("Vfx/RageBall").GetComponent<MeshRenderer>();
+        ps = GameObject.Find("Vfx/Rage").GetComponent<ParticleSystem>();
         mvtController = GetComponent<MovementController>();
-        sphereSize = 50;
+        sphereRend.gameObject.SetActive(false);
+        sphereMat = sphereRend.material;
+
+        sphereGrowthCurve.amplitude = sphereSize;
+        //  sphereMat = Resources.Load("Assets/Resources/Mat/RageBall" + GetComponent<MovementController>().playerName + "", typeof(Material)) as Material;
+        // Debug.Log("Assets/Resources/Mat/RageBall" + GetComponent<MovementController>().playerName + "");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (mvtController.player.GetButtonDown("Action") && coolDown <= 0)
+        //    if (sphereRend.transform.gameObject.activeInHierarchy)
+        sphereGrowthCurve.timer += Time.deltaTime;
+        if (sphereGrowthCurve.timer >= sphereGrowthCurve.duration)
         {
-            coolDown = coolDownDuration;
+            sphereGrowthCurve.timer = 0;
+            disapear = true;
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, sphereSize);
             foreach (Collider hitCollider in hitColliders)
             {
@@ -35,13 +52,42 @@ public class Fear : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            sphereRend.gameObject.transform.localScale = new Vector3(sphereGrowthCurve.GetRatio() * sphereSize, sphereGrowthCurve.GetRatio() * sphereSize, sphereGrowthCurve.GetRatio() * sphereSize);
+        }
+
+        if (disapear)
+        {
+            sphereMat.SetFloat("OverallAlpha", -0.01f * Time.deltaTime);
+            if (sphereMat.GetFloat("OverallAlpha") <= 0)
+            {
+                Debug.Log(
+                    "xd");
+                disapear = false;
+                sphereRend.gameObject.SetActive(false);
+            }
+        }
+
+        if (mvtController.player.GetButtonDown("Action") && coolDown <= 0)
+        {
+            StartCoroutine(Cast());
+        }
         else if (coolDown > 0)
         {
             coolDown -= Time.deltaTime;
         }
-
     }
 
+    private IEnumerator Cast()
+    {
+        ps.Play();
+        sphereMat.SetFloat("OverallAlpha", 0.08f);
+        coolDown = coolDownDuration;
+        yield return new WaitForSeconds(castingTime);
+        sphereGrowthCurve.timer = 0;
+        sphereRend.gameObject.SetActive(true);
+    }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
