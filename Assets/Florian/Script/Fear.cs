@@ -97,6 +97,7 @@ public class Fear : MonoBehaviour
         _t = 0.08f;
         coolDown = coolDownDuration;
         yield return new WaitForSeconds(castingTime);
+        mvtController.riderAnim.SetTrigger("fear");
         sphereGrowthCurve.timer = 0;
         sphereRend.gameObject.SetActive(true);
     }
