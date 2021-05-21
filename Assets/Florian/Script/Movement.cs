@@ -14,27 +14,27 @@ namespace Florian {
         private float horizontalDirection = 0f;
 
         [Header("Acceleration")]
-        [SerializeField] private AmplitudeCurve acceleration = null;
+        public AmplitudeCurve acceleration = null;
         public float maxSpeed;
-        [SerializeField] private float backwardSpeed = 10f;
+        public float backwardSpeed = 10f;
         [HideInInspector] public bool isAccelerate;
         private int accelerationIteration = 0;
 
         [Header("Deceleration")]
-        [SerializeField] private AmplitudeCurve deceleration = null;
+        public AmplitudeCurve deceleration = null;
         [HideInInspector] public bool isDecelerate;
 
         [Header("Frictions")]
-        [SerializeField] private AmplitudeCurve frictions = null;
+        public AmplitudeCurve frictions = null;
         [SerializeField] private float decelerateTime = 0.2f;
         private float decelerateTimer = 0.2f;
 
         [Header("Turn")]
-        [SerializeField] private AmplitudeCurve turn = null;
+        public AmplitudeCurve turn = null;
         [HideInInspector] public bool isTurn;
 
         [Header("Air Detection")]
-        [SerializeField] private AmplitudeCurve gravityCurve = null;
+        public AmplitudeCurve gravityCurve = null;
         [SerializeField] private Transform groundCheck = null;
         [HideInInspector] public bool airborn;
 
@@ -69,12 +69,9 @@ namespace Florian {
 
         void Start() {
             _rb = GetComponent<Rigidbody>();
-            TimedChange(ref maxSpeed, "maxSpeed", 5f, 10f);
         }
 
         void Update() {
-            Debug.Log(maxSpeed);
-
             isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
             isTurn = false;
@@ -250,38 +247,6 @@ namespace Florian {
 
             return result;
         }
-
-        //private void Change<T>(ref T variable) {
-        //    Ref<T> referencedVar = GetRef(ref variable);
-        //    StartCoroutine(Delay((Ref<T> i) => Test(i), referencedVar, 1f));
-        //}
-
-        //private void Change(ref float variable) {
-        //    Ref<float> referencedVar = GetRef(ref variable);
-        //    referencedVar.Value = 5f;
-        //    Debug.Log(referencedVar.Value + " .. " + variable);
-        //    int a = 3;
-        //    ref int b = ref a;
-        //    b = 5;
-        //    // a = 5, b = 5
-        //}
-
-        //private Ref<T> GetRef<T>(ref T variable) {
-        //    return new Ref<T>(ref variable);
-        //}
-
-        //public IEnumerator Delay<T>(Tools.BasicDelegateTwoArgs<T> function, T variable, T value, float time) {
-        //    yield return new WaitForSeconds(time);
-        //    function(variable, value);
-        //}
-
-        //public void Test<T>(T arg) {
-        //    Debug.Log(arg + " Type : " + arg.GetType().ToString());
-        //}
-
-        //public void Test<T>(Ref<T> arg) {
-        //    Debug.Log(arg.Value);
-        //}
 
         #endregion
 
