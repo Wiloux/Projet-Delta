@@ -9,6 +9,7 @@ using ToolsBoxEngine;
 namespace Florian {
     public class MovementController : Character {
         public Movement physics;
+        private FlanksAttack flanksAttack;
 
         [Header("Bodys")]
         public GameObject model;
@@ -29,6 +30,9 @@ namespace Florian {
         public TextMeshProUGUI placementText = null;
         public TextMeshProUGUI lapsText = null;
         public int maxLaps = 2;
+
+        [Header("Controls")]
+        public bool lockMovements = false;
 
         #region Properties
 
@@ -80,38 +84,49 @@ namespace Florian {
             if (physics == null) {
                 physics = GetComponent<Movement>();
             }
+
+            flanksAttack = GetComponent<FlanksAttack>();
+            if (flanksAttack == null) { Debug.LogError("Flank attack not found on controller object"); }
         }
 
         void Update() {
-            bool resetDecelerateTimer = false;
             float horizontalDirection = 0f;
 
-            if (player.GetButton("Cheat")) {
-                physics.Accelerate();
-            }
+            if (!lockMovements && !Airborn) {
+                bool resetDecelerateTimer = false;
 
-            if (player.GetButton("Accelerate")) {
-                if (player.GetButtonDown("Accelerate")) {
+                if (player.GetButton("Cheat")) {
                     physics.Accelerate();
                 }
-                resetDecelerateTimer = true;
+
+                if (player.GetButton("Accelerate")) {
+                    if (player.GetButtonDown("Accelerate")) {
+                        physics.Accelerate();
+                    }
+                    resetDecelerateTimer = true;
+                }
+
+                if (player.GetButton("Decelerate")) {
+                    physics.Decelerate();
+                }
+
+                if (player.GetAxis("Horizontal") != 0) {
+                    horizontalDirection += player.GetAxis("Horizontal");
+                    resetDecelerateTimer = false;
+                }
+
+                if (player.GetButtonDown("Horizontal")) {
+                    resetDecelerateTimer = true;
+                }
+
+                if (resetDecelerateTimer) {
+                    physics.ResetDecelerateTimer();
+                }
             }
 
-            if (player.GetButton("Decelerate")) {
-                physics.Decelerate();
-            }
-
-            if (player.GetAxis("Horizontal") != 0) {
-                horizontalDirection += player.GetAxis("Horizontal");
-                resetDecelerateTimer = false;
-            }
-
-            if (player.GetButtonDown("Horizontal")) {
-                resetDecelerateTimer = true;
-            }
-
-            if (resetDecelerateTimer) {
-                physics.ResetDecelerateTimer();
+            if (player.GetButton("Attack") && player.GetAxis("Horizontal") != 0 && flanksAttack._timer == 0f) {
+                Debug.Log("Attack flank " + Mathf.Sign(player.GetAxis("Horizontal")));
+                flanksAttack.Push(Mathf.Sign(player.GetAxis("Horizontal")));
             }
 
             physics.SetHorizontalDirection(horizontalDirection);

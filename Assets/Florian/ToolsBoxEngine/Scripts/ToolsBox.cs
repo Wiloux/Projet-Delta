@@ -94,6 +94,32 @@ namespace ToolsBoxEngine {
         }
     }
 
+    public class TimedEvent<T> {
+        public bool ended;
+        public event Tools.BasicDelegateTwoArgs<T> events;
+        public T arg1, arg2;
+
+        public TimedEvent(Tools.BasicDelegateTwoArgs<T> events, ref T arg1, T arg2) {
+            ended = false;
+            this.events += events;
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+        }
+
+        public bool IsEnded() {
+            if (ended) {
+                events(ref arg1, arg2);
+                return true;
+            }
+            return false;
+        }
+
+        public IEnumerator Start(float time) {
+            yield return new WaitForSeconds(time);
+            ended = true;
+        }
+    }
+
     #endregion
 
     public static class Tools {
@@ -103,6 +129,10 @@ namespace ToolsBoxEngine {
         public delegate void BasicDelegate();
 
         public delegate void BasicDelegate<T>(T arg);
+
+        public delegate void BasicDelegateTwoArgs<T>(ref T arg1, T arg2);
+
+        public delegate void BasicDelegate<T1, T2>(T1 arg1, T2 arg2);
 
         public delegate T BasicDelegateReturn<T>(T arg);
 

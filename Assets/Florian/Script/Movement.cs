@@ -69,9 +69,12 @@ namespace Florian {
 
         void Start() {
             _rb = GetComponent<Rigidbody>();
+            TimedChange(ref maxSpeed, "maxSpeed", 5f, 10f);
         }
 
         void Update() {
+            Debug.Log(maxSpeed);
+
             isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
             isTurn = false;
@@ -84,7 +87,7 @@ namespace Florian {
 
         #endregion
 
-        #region UpdateMovements
+        #region Update Movements
 
         public void UpdateMovements() {
             if (horizontalDirection != 0f) {
@@ -104,10 +107,8 @@ namespace Florian {
             } else if (accelerationIteration > 0) {
                 for (int i = 0; i < accelerationIteration; i++) {
                     float acceleration = ComputeCurve(this.acceleration);
-                    velocity += Vector3.forward * acceleration * Time.deltaTime;
-
-                    if (velocity.sqrMagnitude > maxSpeed * maxSpeed) {
-                        velocity = Vector3.forward * maxSpeed;
+                    if (velocity.sqrMagnitude < maxSpeed * maxSpeed) {
+                        velocity += Vector3.forward * acceleration * Time.deltaTime;
                     }
                 }
             } else {
@@ -199,6 +200,88 @@ namespace Florian {
                 }
             }
         }
+
+        public void Impulse(Vector3 force) {
+            //StartCoroutine(Delay((AmplitudeCurve i) => Test(i), acceleration, 1f));
+        }
+
+        public void TimedChange<T>(ref T variable, string variableName, T value, float time) {
+            T baseValue = variable;
+            variable = value;
+
+            StartCoroutine(Delay((string s, T t) => ModifyValue(s, t), variableName, baseValue, time));
+        }
+
+        private IEnumerator Delay<T1, T2>(Tools.BasicDelegate<T1, T2> function, T1 arg1, T2 arg2, float time) {
+            yield return new WaitForSeconds(time);
+            function(arg1, arg2);
+        }
+
+        private void ModifyValue<T>(string variableName, T value) {
+            //(float)Convert.ChangeType(value, typeof(float));
+            switch (variableName) {
+                case "maxSpeed":
+                    maxSpeed = To(value, 0f);
+                    break;
+                case "gravityCurve.amplitude":
+                    gravityCurve.amplitude = To(value, 0f);
+                    break;
+                case "deceleration.amplitude":
+                    deceleration.amplitude = To(value, 0f);
+                    break;
+                case "frictions.amplitude":
+                    frictions.amplitude = To(value, 0f);
+                    break;
+                default:
+                    Debug.LogWarning("Value not known : " + variableName);
+                    break;
+            }
+        }
+
+        private static T To<T>(object input, T value) {
+            T result = value;
+            try {
+                if (input == null || input == DBNull.Value) { return result; }
+
+                result = (T)Convert.ChangeType(input, typeof(T));
+            } catch (Exception e) {
+                Debug.LogError(e);
+            }
+
+            return result;
+        }
+
+        //private void Change<T>(ref T variable) {
+        //    Ref<T> referencedVar = GetRef(ref variable);
+        //    StartCoroutine(Delay((Ref<T> i) => Test(i), referencedVar, 1f));
+        //}
+
+        //private void Change(ref float variable) {
+        //    Ref<float> referencedVar = GetRef(ref variable);
+        //    referencedVar.Value = 5f;
+        //    Debug.Log(referencedVar.Value + " .. " + variable);
+        //    int a = 3;
+        //    ref int b = ref a;
+        //    b = 5;
+        //    // a = 5, b = 5
+        //}
+
+        //private Ref<T> GetRef<T>(ref T variable) {
+        //    return new Ref<T>(ref variable);
+        //}
+
+        //public IEnumerator Delay<T>(Tools.BasicDelegateTwoArgs<T> function, T variable, T value, float time) {
+        //    yield return new WaitForSeconds(time);
+        //    function(variable, value);
+        //}
+
+        //public void Test<T>(T arg) {
+        //    Debug.Log(arg + " Type : " + arg.GetType().ToString());
+        //}
+
+        //public void Test<T>(Ref<T> arg) {
+        //    Debug.Log(arg.Value);
+        //}
 
         #endregion
 
