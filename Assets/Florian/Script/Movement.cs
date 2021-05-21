@@ -37,9 +37,11 @@ namespace Florian {
         public AmplitudeCurve gravityCurve = null;
         [SerializeField] private Transform groundCheck = null;
         [HideInInspector] public bool airborn;
+        private bool jumping = false;
 
         public float jumpForce;
         public LayerMask layerMask;
+        public bool stun;
 
         #region Properties
 
@@ -77,7 +79,7 @@ namespace Florian {
             isTurn = false;
             airborn = !isGrounded();
 
-            if (!airborn) {
+            if (!airborn && !jumping) {
                 velocity.y = 0f;
             }
         }
@@ -87,21 +89,21 @@ namespace Florian {
         #region Update Movements
 
         public void UpdateMovements() {
-            if (horizontalDirection != 0f) {
+            if (horizontalDirection != 0f && !stun) {
                 isTurn = true;
                 Turn();
             } else {
                 isTurn = false;
             }
 
-            if (isDecelerate) {
+            if (isDecelerate && !stun) {
                 float deceleration = ComputeCurve(this.deceleration);
                 velocity += Vector3.forward * -deceleration * Time.deltaTime;
 
                 if (velocity.z < -backwardSpeed) {
                     velocity = Vector3.forward * -backwardSpeed;
                 }
-            } else if (accelerationIteration > 0) {
+            } else if (accelerationIteration > 0 && !stun) {
                 for (int i = 0; i < accelerationIteration; i++) {
                     float acceleration = ComputeCurve(this.acceleration);
                     if (velocity.sqrMagnitude < maxSpeed * maxSpeed) {
@@ -115,13 +117,14 @@ namespace Florian {
                     float frictions = ComputeCurve(this.frictions);
                     velocity += -frictions * velocity.normalized * Time.deltaTime;
 
-                    if (Mathf.Clamp01(Speed / maxSpeed) <= 0.1f) {
-                        velocity = Vector3.zero;
+                    if (Mathf.Clamp01(Mathf.Abs(Speed) / maxSpeed) <= 0.1f) {
+                        //velocity = Vector3.zero;
                     }
                 }
             }
 
             velocity += ComputeGravity() * Vector3.down;
+            Debug.Log(velocity);
 
             accelerationIteration = 0;
             ApplySpeed();
@@ -145,11 +148,9 @@ namespace Florian {
             transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.deltaTime, Space.Self);
         }
 
-        public void Jump() {
-            _rb.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
-        }
-
         private void ApplySpeed() {
+            if (velocity.y < 0f)
+                jumping = false;
             if (_rb != null) {
                 _rb.velocity = RelativeDirection(velocity);
             } else {
@@ -175,6 +176,8 @@ namespace Florian {
         }
 
         public void AddVelocity(Vector3 velocity) {
+            if (velocity.y > 0f)
+                jumping = true;
             this.velocity += velocity;
         }
 
@@ -228,6 +231,9 @@ namespace Florian {
                     break;
                 case "frictions.amplitude":
                     frictions.amplitude = To(value, 0f);
+                    break;
+                case "stun":
+                    stun = To(value, false);
                     break;
                 default:
                     Debug.LogWarning("Value not known : " + variableName);
