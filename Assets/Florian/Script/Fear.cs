@@ -20,6 +20,8 @@ public class Fear : MonoBehaviour
     private MeshRenderer sphereRend;
     private ParticleSystem ps;
     private bool disapear;
+
+    public float _t;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,12 +39,30 @@ public class Fear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //    if (sphereRend.transform.gameObject.activeInHierarchy)
+        if (mvtController.player.GetButtonDown("Action") && coolDown <= 0)
+        {
+            StartCoroutine(Cast());
+        }
+        else if (coolDown > 0)
+        {
+            coolDown -= Time.deltaTime;
+        }
+
+        if (!sphereRend.transform.gameObject.activeSelf)
+            return;
+
+
         sphereGrowthCurve.timer += Time.deltaTime;
+
+        if (sphereGrowthCurve.timer / sphereGrowthCurve.duration > 0.5f)
+        {
+            disapear = true;
+        }
+
         if (sphereGrowthCurve.timer >= sphereGrowthCurve.duration)
         {
             sphereGrowthCurve.timer = 0;
-            disapear = true;
+
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, sphereSize);
             foreach (Collider hitCollider in hitColliders)
             {
@@ -59,30 +79,22 @@ public class Fear : MonoBehaviour
 
         if (disapear)
         {
-            sphereMat.SetFloat("OverallAlpha", -0.01f * Time.deltaTime);
+            _t += -0.14f * Time.deltaTime;
+            sphereMat.SetFloat("OverallAlpha", _t);
             if (sphereMat.GetFloat("OverallAlpha") <= 0)
             {
-                Debug.Log(
-                    "xd");
                 disapear = false;
                 sphereRend.gameObject.SetActive(false);
             }
         }
 
-        if (mvtController.player.GetButtonDown("Action") && coolDown <= 0)
-        {
-            StartCoroutine(Cast());
-        }
-        else if (coolDown > 0)
-        {
-            coolDown -= Time.deltaTime;
-        }
     }
 
     private IEnumerator Cast()
     {
         ps.Play();
         sphereMat.SetFloat("OverallAlpha", 0.08f);
+        _t = 0.08f;
         coolDown = coolDownDuration;
         yield return new WaitForSeconds(castingTime);
         sphereGrowthCurve.timer = 0;
