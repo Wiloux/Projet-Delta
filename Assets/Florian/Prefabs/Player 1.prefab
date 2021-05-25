@@ -851,6 +851,7 @@ MonoBehaviour:
     amplitude: 3
     timer: 0
   groundCheck: {fileID: 3628299225586460079}
+  groundRayDistance: 0.2
   airborn: 1
   jumpForce: 0
   layerMask:
@@ -922,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8bbff5379e701a46b7f555810aa54ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pushForce: 10
+  _pushForce: 50
   _pushRadius: 1.11
   _cooldown: 2
   _timer: 0

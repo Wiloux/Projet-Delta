@@ -181,7 +181,7 @@ namespace Florian
                             lastFear.sphereGrowthCurve = refFear.sphereGrowthCurve;
                             lastFear.castingTime = refFear.castingTime;
                             JumpingSheep lastJumping = lastSpawned.AddComponent<JumpingSheep>();
-                            JumpingSheep refJumping = lastSpawned.GetComponent<JumpingSheep>();
+                            JumpingSheep refJumping = valueRefs.GetComponent<JumpingSheep>();
                             //lastJumping._megaGravity = refJumping._megaGravity;
                             lastJumping._megaJumpForce = refJumping._megaJumpForce;
                             lastJumping._stompRadius = refJumping._stompRadius;

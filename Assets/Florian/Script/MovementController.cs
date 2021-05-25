@@ -6,8 +6,10 @@ using Florian;
 using TMPro;
 using ToolsBoxEngine;
 
-namespace Florian {
-    public class MovementController : Character {
+namespace Florian
+{
+    public class MovementController : Character
+    {
         public Movement physics;
         private FlanksAttack flanksAttack;
         private JumpingSheep jumpingSheep;
@@ -40,41 +42,50 @@ namespace Florian {
 
         #region Getters
 
-        public float Speed {
+        public float Speed
+        {
             get { return physics.Speed; }
         }
 
-        public float MaxSpeed {
+        public float MaxSpeed
+        {
             get { return physics.maxSpeed; }
         }
 
-        public bool IsMoving {
+        public bool IsMoving
+        {
             get { return (physics.velocity.sqrMagnitude == 0); }
         }
 
-        public bool Accelerating {
+        public bool Accelerating
+        {
             get { return physics.Accelerating; }
         }
 
-        public bool Decelerating {
+        public bool Decelerating
+        {
             get { return physics.Decelerating; }
         }
 
-        public bool Turning {
+        public bool Turning
+        {
             get { return physics.Turning; }
         }
 
-        public bool Airborn {
+        public bool Airborn
+        {
             get { return physics.airborn; }
         }
 
         #endregion
 
-        public int Placement {
+        public int Placement
+        {
             set { placementText.text = value.ToString(); }
         }
 
-        public int Laps {
+        public int Laps
+        {
             set { lapsText.text = value.ToString() + "/" + maxLaps; }
         }
 
@@ -82,8 +93,10 @@ namespace Florian {
 
         #region Unity Callbacks
 
-        void Start() {
-            if (physics == null) {
+        void Start()
+        {
+            if (physics == null)
+            {
                 physics = GetComponent<Movement>();
             }
 
@@ -97,7 +110,8 @@ namespace Florian {
             if (mountThrowing == null) { Debug.LogError("mount Throwing not found on controller object"); }
         }
 
-        void Update() {
+        void Update()
+        {
             float horizontalDirection = 0f;
 
             /*if (mountThrowing._isThrowing)
@@ -106,58 +120,70 @@ namespace Florian {
                     horizontalDirection += player.GetAxis("Horizontal");
             }*/
 
-            if (!lockMovements && !Airborn) {
+            if (!lockMovements && !Airborn && !physics.stun)
+            {
                 bool resetDecelerateTimer = false;
 
-                if (player.GetButton("Cheat")) {
+                if (player.GetButton("Cheat"))
+                {
                     physics.Accelerate();
                 }
 
-                if (player.GetButton("Accelerate")) {
-                    if (player.GetButtonDown("Accelerate")) {
+                if (player.GetButton("Accelerate"))
+                {
+                    if (player.GetButtonDown("Accelerate"))
+                    {
                         physics.Accelerate();
                     }
                     resetDecelerateTimer = true;
                 }
 
-                if (player.GetButton("Decelerate")) {
+                if (player.GetButton("Decelerate"))
+                {
                     physics.Decelerate();
                 }
 
-                if (player.GetAxis("Horizontal") != 0) {
+                if (player.GetAxis("Horizontal") != 0)
+                {
                     horizontalDirection += player.GetAxis("Horizontal");
                     resetDecelerateTimer = false;
                 }
 
-                if (player.GetButtonDown("Horizontal")) {
+                if (player.GetButtonDown("Horizontal"))
+                {
                     resetDecelerateTimer = true;
                 }
 
-                if (resetDecelerateTimer) {
+                if (resetDecelerateTimer)
+                {
                     physics.ResetDecelerateTimer();
                 }
             }
 
-            if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer == 0f) {
-                flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
-
-                if (player.GetAxisRaw("Attack") > 0f)
-                    riderAnim.SetTrigger("attackD");
-                else if(player.GetAxisRaw("Attack") < 0f)
-                    riderAnim.SetTrigger("attackG");
-            }
-
-            /*if (mountThrowing._isThrowing)
-                mountThrowing.MountThrowUpdate();
-            if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
-                mountThrowing.MountThrow();*/
-
-            if (player.GetButtonDown("Jump"))
+            if (!physics.stun && !lockMovements)
             {
-                if (!Airborn && jumpingSheep._nbrStomp != 0)
-                    jumpingSheep.MegaJump();
-                else if(Airborn)
-                    jumpingSheep.Stomp();
+                if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f)
+                {
+                    flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
+                    flanksAttack._timer = flanksAttack._cooldown;
+                    if (player.GetAxisRaw("Attack") > 0f)
+                        riderAnim.SetTrigger("attackD");
+                    else if (player.GetAxisRaw("Attack") < 0f)
+                        riderAnim.SetTrigger("attackG");
+                }
+
+                /*if (mountThrowing._isThrowing)
+                    mountThrowing.MountThrowUpdate();
+                if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
+                    mountThrowing.MountThrow();*/
+
+                if (player.GetButtonDown("Jump"))
+                {
+                    if (!Airborn && jumpingSheep._nbrStomp != 0)
+                        jumpingSheep.MegaJump();
+                    else if (Airborn && jumpingSheep._nbrStomp >= 2)
+                        jumpingSheep.Stomp();
+                }
             }
 
             physics.SetHorizontalDirection(horizontalDirection);
@@ -165,24 +191,28 @@ namespace Florian {
             UpdateAnims();
         }
 
-        private void UpdateAnims() {
-            if (IsMoving && !physics.Decelerating) {
+        private void UpdateAnims()
+        {
+            if (IsMoving && !physics.Decelerating)
+            {
                 animalAnim.SetBool("isMoving", true);
                 animalAnim.speed = Mathf.Lerp(0.75f, 1.5f, physics.Speed / physics.maxSpeed);
-            } else {
+            }
+            else
+            {
                 animalAnim.SetBool("isMoving", false);
                 animalAnim.speed = 1f;
             }
 
-
-            if (player.GetButton("Accelerate")) {
-                if (player.GetButtonDown("Accelerate")) {
+            if (player.GetButton("Accelerate"))
+            {
+                if (player.GetButtonDown("Accelerate"))
+                {
                     animalAnim.SetTrigger("whipped");
                     riderAnim.SetTrigger("whip");
                 }
             }
             animalAnim.SetBool("stop", physics.Decelerating);
-
             animalAnim.SetFloat("velocity", physics.Speed / physics.maxSpeed);
         }
 
@@ -190,13 +220,15 @@ namespace Florian {
 
         #region Setters
 
-        public void SetController(string name) {
+        public void SetController(string name)
+        {
             player = ReInput.players.GetPlayer(name);
             if (player != null) { Debug.Log("Controller found : " + player.name); } else { Debug.LogWarning("Controller not found"); return; }
             playerName = name;
         }
 
-        public void SetController(string name, Controller controller) {
+        public void SetController(string name, Controller controller)
+        {
             player = ReInput.players.GetPlayer(name);
             player.controllers.ClearAllControllers();
             player.controllers.AddController(controller, true);
@@ -204,13 +236,16 @@ namespace Florian {
             playerName = name;
         }
 
-        public void SetCamera(int playerId, int maxPlayer) {
+        public void SetCamera(int playerId, int maxPlayer)
+        {
             playerCamera.rect = Tools.GetPlayerRect(playerId, maxPlayer);
         }
 
-        public void ChangeTexture(Material mat) {
+        public void ChangeTexture(Material mat)
+        {
             MeshRenderer renderder = body.GetComponent<MeshRenderer>();
-            if (renderder) {
+            if (renderder)
+            {
                 renderder.material = mat;
             }
         }

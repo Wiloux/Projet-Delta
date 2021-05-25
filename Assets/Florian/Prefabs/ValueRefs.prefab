@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627ddb7c71ab0e84da137bd6254db1f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _megaJumpForce: 0
+  _megaJumpForce: 100
   _megaAccelForce: 10
-  _nbrStomp: 0
-  _stompRadius: 0
+  _nbrStomp: 3
+  _stompRadius: 10
   _stompForce: 10
   _stompSpeed: 50
   cooldown: 5
@@ -67,8 +67,8 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     duration: 1
-    amplitude: 0
-    timer: 0
+    amplitude: 20
+    timer: 0.0668484
   sphereGrowthSpd: 3
   slowAmount: 20
   castingTime: 0.5

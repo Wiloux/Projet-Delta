@@ -21,6 +21,7 @@ namespace Florian
         public float _stompForce = 10f;
         public float _stompSpeed = 50f;
         public float cooldown = 5f;
+        public float stunTime = 1.5f;
 
         private void Start()
         {
@@ -88,10 +89,9 @@ namespace Florian
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
                 {
                     MovementController movementController = pushedObject.GetComponent<MovementController>();
-                    //Vector3 direction = (pushedObject.transform.position - transform.position).normalized;
                     movementController.physics.AddVelocity(Vector3.back * _stompForce);
                     movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 5f, 1f);
-                    movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, 2.5f);
+                    movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, stunTime);
                 }
             }
         }

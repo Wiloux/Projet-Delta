@@ -15,9 +15,6 @@ namespace Florian
         {
             if (_timer > 0)
                 _timer -= Time.deltaTime;
-
-            if (_timer < 0)
-                _timer = 0;
         }
 
         public void Push(float horizontal)
@@ -34,12 +31,9 @@ namespace Florian
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
                 {
                     MovementController movementController = pushedObject.GetComponent<MovementController>();
-                    movementController.physics.AddVelocity(
-                        pushedObject.transform.worldToLocalMatrix.MultiplyVector(transform.right * horizontal) * _pushForce
-                    );
+                    movementController.physics.AddVelocity(pushedObject.transform.worldToLocalMatrix.MultiplyVector(transform.right * horizontal) * _pushForce);
                     movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 15f, 1f);
-                    movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, 2.5f);
-                    _timer = _cooldown;
+                    //movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, 2.5f);
                 }
             }
 

@@ -225,6 +225,7 @@ namespace Florian {
 
         private IEnumerator Delay<T1, T2>(Tools.BasicDelegate<T1, T2> function, T1 arg1, T2 arg2, float time) {
             yield return new WaitForSeconds(time);
+            Debug.LogWarning(this.gameObject.name + " !! " + function.ToString());
             function(arg1, arg2);
         }
 

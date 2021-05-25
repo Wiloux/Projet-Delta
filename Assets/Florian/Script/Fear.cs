@@ -39,7 +39,7 @@ public class Fear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(mvtController);
+
         if (mvtController.player.GetButtonDown("Action") && coolDown <= 0)
         {
             StartCoroutine(Cast());
