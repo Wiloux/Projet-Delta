@@ -89,7 +89,8 @@ namespace Florian
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
                 {
                     MovementController movementController = pushedObject.GetComponent<MovementController>();
-                    movementController.physics.AddVelocity(Vector3.back * _stompForce);
+                    //movementController.physics.AddVelocity(Vector3.back * _stompForce);
+                    movementController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * _stompForce);
                     movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 5f, 1f);
                     movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, stunTime);
                 }

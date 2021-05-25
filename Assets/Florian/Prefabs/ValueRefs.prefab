@@ -18,7 +18,8 @@ MonoBehaviour:
   _stompRadius: 10
   _stompForce: 10
   _stompSpeed: 50
-  cooldown: 5
+  cooldown: 1
+  stunTime: 1.5
 --- !u!114 &5254293877782598869
 MonoBehaviour:
   m_ObjectHideFlags: 0

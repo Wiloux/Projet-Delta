@@ -124,9 +124,10 @@ namespace Florian
             {
                 bool resetDecelerateTimer = false;
 
-                if (player.GetButton("Cheat"))
+                if (player.GetButtonDown("Cheat"))
                 {
-                    physics.Accelerate();
+                    //physics.Accelerate();
+                    jumpingSheep.Stomp();
                 }
 
                 if (player.GetButton("Accelerate"))

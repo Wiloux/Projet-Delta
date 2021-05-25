@@ -184,6 +184,7 @@ namespace Florian
                             JumpingSheep refJumping = valueRefs.GetComponent<JumpingSheep>();
                             //lastJumping._megaGravity = refJumping._megaGravity;
                             lastJumping._megaJumpForce = refJumping._megaJumpForce;
+                            lastJumping.cooldown = refJumping.cooldown;
                             lastJumping._stompRadius = refJumping._stompRadius;
                             break;
                         case 1:
