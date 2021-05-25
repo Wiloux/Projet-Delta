@@ -610,6 +610,7 @@ GameObject:
   - component: {fileID: 1452320077669587839}
   - component: {fileID: 1452320077669587838}
   - component: {fileID: 5565627194245853760}
+  - component: {fileID: 283452311205505186}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Player
@@ -856,6 +857,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+  stun: 0
 --- !u!114 &47675566480821665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -922,9 +924,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pushForce: 10
-  _pushRadius: 20
-  _cooldown: 5
+  _pushRadius: 1.11
+  _cooldown: 2
   _timer: 0
+--- !u!114 &283452311205505186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452320077669587833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a981f63562f77cc4cb8d3285ae4b1d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _throwVerticalForce: 1
+  _throwHorizontalForce: 20
+  _throwForce: 10
+  _throwBoxDimension: {x: 5, y: 5, z: 5}
+  _airbornTime: 1
+  _cooldown: 0
+  _timer: 0
+  _isThrowing: 0
 --- !u!95 &1215836830
 Animator:
   serializedVersion: 3
@@ -1632,9 +1654,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
---- !u!1 &958435150950494839 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
+--- !u!4 &434275333870889165 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
   m_PrefabInstance: {fileID: 111572259472920358}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6345206680137720373 stripped
@@ -1642,14 +1664,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -2773423817125483245, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
   m_PrefabInstance: {fileID: 111572259472920358}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &434275333870889165 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
-  m_PrefabInstance: {fileID: 111572259472920358}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5891103246836439423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5786286938310694489, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
+  m_PrefabInstance: {fileID: 111572259472920358}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &958435150950494839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
   m_PrefabInstance: {fileID: 111572259472920358}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1668991121357473800

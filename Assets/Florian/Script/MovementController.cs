@@ -10,6 +10,8 @@ namespace Florian {
     public class MovementController : Character {
         public Movement physics;
         private FlanksAttack flanksAttack;
+        private JumpingSheep jumpingSheep;
+        private MountThrowing mountThrowing;
 
         [Header("Bodys")]
         public GameObject model;
@@ -87,6 +89,12 @@ namespace Florian {
 
             flanksAttack = GetComponent<FlanksAttack>();
             if (flanksAttack == null) { Debug.LogError("Flank attack not found on controller object"); }
+
+            jumpingSheep = GetComponent<JumpingSheep>();
+            if (jumpingSheep == null) { Debug.LogError("jumping Sheep not found on controller object"); }
+
+            mountThrowing = GetComponent<MountThrowing>();
+            if (mountThrowing == null) { Debug.LogError("mount Throwing not found on controller object"); }
         }
 
         void Update() {
@@ -125,8 +133,25 @@ namespace Florian {
             }
 
             if (player.GetButton("Attack") && player.GetAxis("Horizontal") != 0 && flanksAttack._timer == 0f) {
-                Debug.Log("Attack flank " + Mathf.Sign(player.GetAxis("Horizontal")));
                 flanksAttack.Push(Mathf.Sign(player.GetAxis("Horizontal")));
+
+                if (player.GetAxis("Horizontal") > 0f && player.GetButton("Attack"))
+                    riderAnim.SetTrigger("attackD");
+                else if(player.GetAxis("Horizontal") < 0f && player.GetButton("Attack"))
+                    riderAnim.SetTrigger("attackG");
+            }
+
+            if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
+                mountThrowing.MountThrow();
+            if (mountThrowing._isThrowing)
+                mountThrowing.MountThrowUpdate();
+
+            if (player.GetButtonDown("Jump"))
+            {
+                if (!Airborn && jumpingSheep._nbrStomp != 3)
+                    jumpingSheep.MegaJump();
+                else if(Airborn && jumpingSheep._nbrStomp != 3)
+                    jumpingSheep.Stomp();
             }
 
             physics.SetHorizontalDirection(horizontalDirection);
