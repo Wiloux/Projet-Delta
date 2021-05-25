@@ -923,8 +923,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8bbff5379e701a46b7f555810aa54ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pushForce: 50
-  _pushRadius: 1.11
+  _pushForce: 25
+  _pushRadius: 1.6
   _cooldown: 2
   _timer: 0
 --- !u!95 &1215836830
