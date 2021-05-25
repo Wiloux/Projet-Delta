@@ -36,6 +36,7 @@ namespace Florian {
         [Header("Air Detection")]
         public AmplitudeCurve gravityCurve = null;
         [SerializeField] private Transform groundCheck = null;
+        [SerializeField] private float groundRayDistance = 0.2f;
         [HideInInspector] public bool airborn;
         private bool jumping = false;
 
@@ -177,11 +178,22 @@ namespace Florian {
         public void AddVelocity(Vector3 velocity) {
             if (velocity.y > 0f)
                 jumping = true;
+
             this.velocity += velocity;
         }
 
-        public void Slow(Vector3 velocity) {
-            AddVelocity(velocity.Redirect(Vector3.back));
+        public void Slow(float slow) {
+            if (velocity.z > 0f) {
+                AddVelocity(Vector3.back * Mathf.Abs(slow));
+                if (velocity.z < 0f) {
+                    velocity.z = 0f;
+                }
+            } else if (velocity.z < 0f) {
+                AddVelocity(Vector3.forward * Mathf.Abs(slow));
+                if (velocity.z > 0f) {
+                    velocity.z = 0f;
+                }
+            }
         }
 
         public void NegateVelocity(params Axis[] axis) {
@@ -275,7 +287,7 @@ namespace Florian {
 
         bool isGrounded() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, 0.2f, layerMask)) {
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, layerMask)) {
                 return true;
             } else {
                 return false;

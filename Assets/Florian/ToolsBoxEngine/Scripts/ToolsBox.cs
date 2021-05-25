@@ -304,9 +304,9 @@ namespace ToolsBoxEngine {
                 case 2:
                     switch (playerId) {
                         case 1:
-                            return new Rect(0, 0, 1, 0.5f);
-                        case 2:
                             return new Rect(0, 0.5f, 1, 0.5f);
+                        case 2:
+                            return new Rect(0, 0, 1, 0.5f);
                     }
                     break;
                 case 3:

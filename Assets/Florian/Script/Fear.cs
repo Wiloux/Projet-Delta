@@ -25,9 +25,9 @@ public class Fear : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sphereRend = GameObject.Find("Vfx/RageBall").GetComponent<MeshRenderer>();
-        ps = GameObject.Find("Vfx/Rage").GetComponent<ParticleSystem>();
         mvtController = GetComponent<MovementController>();
+        sphereRend = GameObject.Find(mvtController.playerName + "/Vfx/RageBall").GetComponent<MeshRenderer>();
+        ps = GameObject.Find(mvtController.playerName + "/Vfx/Rage").GetComponent<ParticleSystem>();
         sphereRend.gameObject.SetActive(false);
         sphereMat = sphereRend.material;
 
@@ -39,6 +39,7 @@ public class Fear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(mvtController);
         if (mvtController.player.GetButtonDown("Action") && coolDown <= 0)
         {
             StartCoroutine(Cast());
@@ -68,7 +69,7 @@ public class Fear : MonoBehaviour
             {
                 if (hitCollider.GetComponent<MovementController>() && hitCollider.transform.name != transform.name)
                 {
-                    hitCollider.GetComponent<MovementController>().physics.Slow(slowAmount * Vector3.forward);
+                    hitCollider.GetComponent<MovementController>().physics.Slow(slowAmount);
                 }
             }
         }
