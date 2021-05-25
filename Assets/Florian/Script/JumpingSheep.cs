@@ -8,60 +8,66 @@ namespace Florian
     public class JumpingSheep : MonoBehaviour
     {
         private MovementController _movementController;
+        private Coroutine charging = null;
+        private Material _woolMaterial = null;
 
         [Header("MegaJump")]
         public float _megaJumpForce = 100f;
         public float _megaAccelForce = 10f;
 
         [Header("Stomp")]
-        public int _nbrStomp = 0;
+        public int _nbrStomp = 3;
         public float _stompRadius = 40f;
         public float _stompForce = 10f;
         public float _stompSpeed = 50f;
-        public float cooldown = 10f;
-        private bool _isBlack = false;
-
+        public float cooldown = 5f;
 
         private void Start()
         {
             _movementController = GetComponent<MovementController>();
-        }
-
-        private void Update()
-        {
-            if (!_isBlack)
-                ChangeWoolColor();
-            else
-                StartCoroutine(CooldownWoolColor());
+            _woolMaterial = GameObject.Find(_movementController.playerName + "/mouton anilm/mouton pour test unity003").GetComponent<SkinnedMeshRenderer>().material;
         }
 
         public void MegaJump()
         {
             _movementController.physics.AddVelocity(new Vector3(0f, _megaJumpForce, _megaAccelForce));
-            //test changer gravité
-            _nbrStomp++;
+            _nbrStomp--;
+            RetrieveACharge();
         }
 
         public void Stomp()
         {
             _movementController.physics.AddVelocity(transform.worldToLocalMatrix.MultiplyVector(-transform.up) * _stompSpeed);
             StartCoroutine(CheckGrounded());
-            _nbrStomp = 3;
-        }
-
-        private void ChangeWoolColor()
-        {
-            if (_nbrStomp >= 3)
-            {
-                _isBlack = true;
-            }
-        }
-
-        IEnumerator CooldownWoolColor()
-        {
-            _isBlack = false;
-            yield return new WaitForSeconds(cooldown);
             _nbrStomp = 0;
+            if(charging != null)
+            {
+                StopCoroutine(charging);
+                charging = null;
+            }
+            RetrieveACharge();
+        }
+
+        private void RetrieveACharge()
+        {
+            if (charging != null)
+                return;
+            charging = StartCoroutine(ChargeRetrieve(cooldown));
+        }
+
+        IEnumerator ChargeRetrieve( float time)
+        {
+            for (int i = 0; i < time * 60f; i++)
+            {
+                float lerp = i / (time * 60f);
+                Color woolColor = Color.Lerp(Color.black, Color.white, Mathf.Lerp(0, 1 / 3f, lerp) + (_nbrStomp / 3f));
+                _woolMaterial.color = woolColor;
+                yield return new WaitForSeconds(1 / 60f);
+            }
+            _nbrStomp++;
+            charging = null;
+            if (_nbrStomp < 3)
+                RetrieveACharge();
         }
 
         IEnumerator CheckGrounded()

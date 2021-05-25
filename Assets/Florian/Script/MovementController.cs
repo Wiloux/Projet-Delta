@@ -100,6 +100,12 @@ namespace Florian {
         void Update() {
             float horizontalDirection = 0f;
 
+            /*if (mountThrowing._isThrowing)
+            {
+                if (player.GetAxis("Horizontal") != 0)
+                    horizontalDirection += player.GetAxis("Horizontal");
+            }*/
+
             if (!lockMovements && !Airborn) {
                 bool resetDecelerateTimer = false;
 
@@ -132,25 +138,25 @@ namespace Florian {
                 }
             }
 
-            if (player.GetButton("Attack") && player.GetAxis("Horizontal") != 0 && flanksAttack._timer == 0f) {
-                flanksAttack.Push(Mathf.Sign(player.GetAxis("Horizontal")));
+            if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer == 0f) {
+                flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
 
-                if (player.GetAxis("Horizontal") > 0f && player.GetButton("Attack"))
+                if (player.GetAxisRaw("Attack") > 0f)
                     riderAnim.SetTrigger("attackD");
-                else if(player.GetAxis("Horizontal") < 0f && player.GetButton("Attack"))
+                else if(player.GetAxisRaw("Attack") < 0f)
                     riderAnim.SetTrigger("attackG");
             }
 
-            if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
-                mountThrowing.MountThrow();
-            if (mountThrowing._isThrowing)
+            /*if (mountThrowing._isThrowing)
                 mountThrowing.MountThrowUpdate();
+            if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
+                mountThrowing.MountThrow();*/
 
             if (player.GetButtonDown("Jump"))
             {
-                if (!Airborn && jumpingSheep._nbrStomp != 3)
+                if (!Airborn && jumpingSheep._nbrStomp != 0)
                     jumpingSheep.MegaJump();
-                else if(Airborn && jumpingSheep._nbrStomp != 3)
+                else if(Airborn)
                     jumpingSheep.Stomp();
             }
 

@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627ddb7c71ab0e84da137bd6254db1f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
   _megaJumpForce: 0
+  _megaAccelForce: 10
   _nbrStomp: 0
-  _megaGravity: 0
   _stompRadius: 0
+  _stompForce: 10
+  _stompSpeed: 50
+  cooldown: 5
 --- !u!114 &5254293877782598869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,9 +70,10 @@ MonoBehaviour:
     amplitude: 0
     timer: 0
   sphereGrowthSpd: 3
-  slowAmount: 2
+  slowAmount: 20
   castingTime: 0.5
   coolDownDuration: 4
+  _t: 0
 --- !u!114 &5506766403758355852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,6 +98,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a981f63562f77cc4cb8d3285ae4b1d83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _throwVerticalForce: 0
+  _throwHorizontalForce: 0
+  _throwForce: 0
+  _throwBoxDimension: {x: 0, y: 0, z: 0}
+  _airbornTime: 0
+  _cooldown: 0
+  _timer: 0
+  _isThrowing: 0
 --- !u!1001 &6844712602205460719
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -77,9 +77,9 @@ namespace Florian {
             isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
             isTurn = false;
-            airborn = !isGrounded();
+            airborn = !isGrounded() || jumping;
 
-            if (!airborn && !jumping) {
+            if (!airborn) {
                 velocity.y = 0f;
             }
         }
@@ -233,6 +233,9 @@ namespace Florian {
                     break;
                 case "stun":
                     stun = To(value, false);
+                    break;
+                case "turn.amplitude":
+                    turn.amplitude = To(value, 0f);
                     break;
                 default:
                     Debug.LogWarning("Value not known : " + variableName);

@@ -27,13 +27,13 @@ namespace Florian
         {
             _playerMovementController.physics.AddVelocity(new Vector3(0f, _throwVerticalForce, _throwHorizontalForce));
             _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.gravityCurve.amplitude, "gravityCurve.amplitude", _playerMovementController.physics.gravityCurve.amplitude * 0.01f, _airbornTime);
+            _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.turn.amplitude, "turn.amplitude", _playerMovementController.physics.turn.amplitude * 0.5f, _airbornTime * 2f);
             StartCoroutine(WaitNegateVelocity(_airbornTime));
             _isThrowing = true;
         }
 
         public void MountThrowUpdate()
         {
-            Debug.Log(_isThrowing);
             if (!_playerMovementController.Airborn)
                 _isThrowing = false;
 
@@ -43,6 +43,7 @@ namespace Florian
             {
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
                 {
+                    _isThrowing = false;
                     Debug.Log("pushed");
                     MovementController pushedMovementController = pushedObject.GetComponent<MovementController>();
                     pushedMovementController.physics.AddVelocity(Vector3.right * _throwForce);
@@ -52,17 +53,22 @@ namespace Florian
                     _playerMovementController.physics.NegateVelocity(Axis.Z);
 
                     _timer = _cooldown;
+                    return;
                 }
                 else if (pushedObject.tag == "Obstacle" || pushedObject.tag == "Wall")
                 {
+                    _isThrowing = false;
                     _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.stun, "stun", true, 2.5f);
                     _playerMovementController.physics.NegateVelocity(Axis.Z);
+                    return;
                 }
-                else
-                {
-                    _playerMovementController.physics.NegateVelocity(Axis.Z);
-                    _playerMovementController.physics.AddVelocity(new Vector3(0f, _throwVerticalForce, _throwHorizontalForce));
-                }
+            }
+
+            if (!_playerMovementController.Airborn)
+            {
+                Vector3 playerVelocity = _playerMovementController.physics.velocity;
+                _playerMovementController.physics.NegateVelocity(Axis.Z);
+                _playerMovementController.physics.AddVelocity(new Vector3(0f, 0f, playerVelocity.z / 2f));
             }
         }
 
