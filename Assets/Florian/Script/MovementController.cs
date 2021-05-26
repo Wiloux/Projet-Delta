@@ -127,7 +127,7 @@ namespace Florian
                 if (player.GetButtonDown("Cheat"))
                 {
                     //physics.Accelerate();
-                    jumpingSheep.Stomp();
+                    //jumpingSheep.Stomp();
                 }
 
                 if (player.GetButton("Accelerate"))

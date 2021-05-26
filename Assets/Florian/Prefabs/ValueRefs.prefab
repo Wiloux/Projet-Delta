@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627ddb7c71ab0e84da137bd6254db1f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _megaJumpForce: 100
+  _megaJumpForce: 50
   _megaAccelForce: 10
   _nbrStomp: 3
   _stompRadius: 10
   _stompForce: 10
   _stompSpeed: 50
-  cooldown: 1
+  cooldown: 3
   stunTime: 1.5
 --- !u!114 &5254293877782598869
 MonoBehaviour:
@@ -69,7 +69,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     duration: 1
     amplitude: 20
-    timer: 0.0668484
+    timer: 0.064008
   sphereGrowthSpd: 3
   slowAmount: 20
   castingTime: 0.5

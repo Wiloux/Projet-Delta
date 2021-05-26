@@ -78,7 +78,7 @@ namespace Florian {
             isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
             isTurn = false;
-            airborn = !isGrounded() || jumping;
+            airborn = !IsGrounded() || jumping;
 
             if (!airborn) {
                 velocity.y = 0f;
@@ -128,6 +128,7 @@ namespace Florian {
 
             accelerationIteration = 0;
             ApplySpeed();
+            SlopeTilt();
         }
 
         private float ComputeCurve(AmplitudeCurve curve) {
@@ -146,6 +147,16 @@ namespace Florian {
         private void Turn() {
             float turnSpeed = turn.amplitude * turn.curve.Evaluate(Mathf.Clamp01(velocity.magnitude / maxSpeed));
             transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.deltaTime, Space.Self);
+        }
+
+        private void SlopeTilt() {
+            if (IsGrounded()) {
+                RaycastHit hitFloor;
+                if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, layerMask)) {
+                    float angle = Vector3.SignedAngle(Vector3.up, hitFloor.normal, transform.right);
+                    transform.localEulerAngles = transform.localEulerAngles.Override(angle, Axis.X);
+                }
+            }
         }
 
         private void ApplySpeed() {
@@ -212,9 +223,7 @@ namespace Florian {
             }
         }
 
-        public void Impulse(Vector3 force) {
-            //StartCoroutine(Delay((AmplitudeCurve i) => Test(i), acceleration, 1f));
-        }
+        #region TimedChanged
 
         public void TimedChange<T>(ref T variable, string variableName, T value, float time) {
             T baseValue = variable;
@@ -271,6 +280,8 @@ namespace Florian {
 
         #endregion
 
+        #endregion
+
         #region Setters
 
         public void ResetDecelerateTimer() {
@@ -286,7 +297,7 @@ namespace Florian {
             return Quaternion.AngleAxis(angle, Vector3.up) * vector;
         }
 
-        bool isGrounded() {
+        private bool IsGrounded() {
             RaycastHit hitFloor;
             if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, layerMask)) {
                 return true;
