@@ -32,7 +32,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33094f0a610dfaa499fd4668aad58c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereSize: 20
   sphereGrowthCurve:
     curve:
       serializedVersion: 2
@@ -70,11 +69,11 @@ MonoBehaviour:
     duration: 1
     amplitude: 20
     timer: 0.064008
-  sphereGrowthSpd: 3
   slowAmount: 20
   castingTime: 0.5
+  castable: 1
   coolDownDuration: 4
-  _t: 0
+  alphaTimer: 0
 --- !u!114 &5506766403758355852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,6 +86,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645d74d069d05fa44961c6904ad82d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushForce: 25
+  pushRadius: 10
+  poweredPushForce: 35
+  poweredPushRadius: 20
+  pressTimer: 0
+  _cooldown: 1
+  _timer: 0
 --- !u!114 &7513981837336215260
 MonoBehaviour:
   m_ObjectHideFlags: 0

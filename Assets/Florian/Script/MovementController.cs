@@ -14,6 +14,8 @@ namespace Florian
         private FlanksAttack flanksAttack;
         private JumpingSheep jumpingSheep;
         private MountThrowing mountThrowing;
+        private Shark sharkAttack;
+        private bool sharkSide;
         private Fear fear;
 
         [Header("Bodys")]
@@ -110,6 +112,9 @@ namespace Florian
             mountThrowing = GetComponent<MountThrowing>();
             if (mountThrowing == null) { Debug.LogError("mount Throwing not found on controller object"); }
 
+            sharkAttack = GetComponent<Shark>();
+            if (mountThrowing == null) { Debug.LogError("shark not found on controller object"); }
+
             fear = GetComponent<Fear>();
             if (fear == null) { Debug.LogError("fear not found on controller object"); }
         }
@@ -167,14 +172,53 @@ namespace Florian
 
             if (!physics.stun && !lockMovements)
             {
-                if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f)
+                if (sharkAttack == null)
                 {
-                    flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
-                    flanksAttack._timer = flanksAttack._cooldown;
-                    if (player.GetAxisRaw("Attack") > 0f)
-                        riderAnim.SetTrigger("attackD");
-                    else if (player.GetAxisRaw("Attack") < 0f)
-                        riderAnim.SetTrigger("attackG");
+                    if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f)
+                    {
+                        flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
+                        flanksAttack._timer = flanksAttack._cooldown;
+                        if (player.GetAxisRaw("Attack") > 0f)
+                            riderAnim.SetTrigger("attackD");
+                        else if (player.GetAxisRaw("Attack") < 0f)
+                            riderAnim.SetTrigger("attackG");
+                    }
+                }
+                else
+                {
+                    if (player.GetAxisRaw("Attack") != 0f && sharkAttack._timer <= 0f)
+                    {
+                        sharkAttack.pressTimer += Time.deltaTime;
+                        if (player.GetAxisRaw("Attack") > 0f)
+                        {
+                            sharkSide = true;
+                            riderAnim.SetBool("chargingAttackD", true);
+                        }
+                        else
+                        {
+                            sharkSide = false;
+                            riderAnim.SetBool("chargingAttackG", true);
+                        }
+                    } else if (player.GetAxisRaw("Attack") == 0f && sharkAttack.pressTimer != 0.0f)
+                    {
+                        if (sharkSide)
+                        sharkAttack.ComputeAttack(1);
+                        else
+                        sharkAttack.ComputeAttack(-1);
+
+                        sharkAttack.pressTimer = 0.0f;
+                        sharkAttack._timer = sharkAttack._cooldown;
+
+
+                        if (sharkSide)
+                        {
+                            riderAnim.SetBool("chargingAttackD", false);
+                        }
+                        else if (!sharkSide)
+                        {
+                            riderAnim.SetBool("chargingAttackG", false);
+                        }
+                    }
                 }
 
                 /*if (mountThrowing._isThrowing)

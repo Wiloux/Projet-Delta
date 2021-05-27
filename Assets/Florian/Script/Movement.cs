@@ -146,7 +146,7 @@ namespace Florian {
 
             accelerationIteration = 0;
             ApplySpeed();
-            SlopeTilt();
+         // SlopeTilt();
         }
 
         private float ComputeCurve(AmplitudeCurve curve) {

@@ -200,7 +200,13 @@ namespace Florian
                             lastJumping1._stompRadius = refJumping1._stompRadius;
                             break;
                         case 2:
-                            lastSpawned.AddComponent<Shark>();
+                            Shark refShark = valueRefs.GetComponent<Shark>();                            
+                            Shark lastShark = lastSpawned.AddComponent<Shark>();
+                            lastShark._cooldown = refShark._cooldown;
+                            lastShark.poweredPushForce = refShark.poweredPushForce;
+                            lastShark.poweredPushRadius = refShark.poweredPushRadius;
+                            lastShark.pushForce = refShark.pushForce;
+                            lastShark.pushRadius = refShark.pushRadius;
                             lastSpawned.AddComponent<MountThrowing>();
                             break;
                         case 3:
