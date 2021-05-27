@@ -9,8 +9,18 @@ using ToolsBoxEngine;
 
 namespace Florian {
     public class Movement : MonoBehaviour {
+        private struct TimedChangeCoroutineStruct<T> {
+            public Coroutine routine;
+            public T value;
+
+            public TimedChangeCoroutineStruct(Coroutine routine, T value) {
+                this.routine = routine;
+                this.value = value;
+            }
+        }
+
         private Rigidbody _rb;
-        [HideInInspector] public Vector3 velocity = Vector3.zero;
+        /*[HideInInspector]*/ public Vector3 velocity = Vector3.zero;
         private float horizontalDirection = 0f;
 
         [Header("Acceleration")]
@@ -37,12 +47,19 @@ namespace Florian {
         public AmplitudeCurve gravityCurve = null;
         [SerializeField] private Transform groundCheck = null;
         [SerializeField] private float groundRayDistance = 0.2f;
+        [SerializeField] private float slopeRotateSpeed = 0.5f;
         [HideInInspector] public bool airborn;
         private bool jumping = false;
 
         public float jumpForce;
         public LayerMask layerMask;
-        public bool stun;
+        [HideInInspector] public bool stun;
+
+        [Header("Recovery")]
+        [SerializeField] private float slowRecoveryTime = 2f;
+        private bool slowable = true;
+
+        private Dictionary<string, TimedChangeCoroutineStruct<object>> timedChangedRoutines = null;
 
         #region Properties
 
@@ -72,6 +89,7 @@ namespace Florian {
 
         void Start() {
             _rb = GetComponent<Rigidbody>();
+            timedChangedRoutines = new Dictionary<string, TimedChangeCoroutineStruct<object>>();
         }
 
         void Update() {
@@ -154,7 +172,10 @@ namespace Florian {
                 RaycastHit hitFloor;
                 if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, layerMask)) {
                     float angle = Vector3.SignedAngle(Vector3.up, hitFloor.normal, transform.right);
-                    transform.localEulerAngles = transform.localEulerAngles.Override(angle, Axis.X);
+                    Vector3 from = Tools.AcuteAngle(transform.localEulerAngles);
+                    Vector3 toRotate = from.Override(angle, Axis.X);
+                    transform.localEulerAngles = Vector3.MoveTowards(from, toRotate, slopeRotateSpeed);
+                    //transform.localEulerAngles = toRotate;
                 }
             }
         }
@@ -194,6 +215,8 @@ namespace Florian {
         }
 
         public void Slow(float slow) {
+            if (!slowable) { return; }
+
             if (velocity.z > 0f) {
                 AddVelocity(Vector3.back * Mathf.Abs(slow));
                 if (velocity.z < 0f) {
@@ -205,6 +228,9 @@ namespace Florian {
                     velocity.z = 0f;
                 }
             }
+
+            slowable = false;
+            StartCoroutine(Delay((string s, bool b) => ModifyValue(s, b), "slowable", true, slowRecoveryTime));
         }
 
         public void NegateVelocity(params Axis[] axis) {
@@ -229,12 +255,18 @@ namespace Florian {
             T baseValue = variable;
             variable = value;
 
-            StartCoroutine(Delay((string s, T t) => ModifyValue(s, t), variableName, baseValue, time));
+            if (timedChangedRoutines.ContainsKey(variableName)) {
+                baseValue = (T)timedChangedRoutines[variableName].value;
+                StopCoroutine(timedChangedRoutines[variableName].routine);
+                timedChangedRoutines.Remove(variableName);
+            }
+
+            Coroutine routine = StartCoroutine(Delay((string s, T t) => ModifyValue(s, t), variableName, baseValue, time));
+            timedChangedRoutines.Add(variableName, new TimedChangeCoroutineStruct<object>(routine, baseValue));
         }
 
         private IEnumerator Delay<T1, T2>(Tools.BasicDelegate<T1, T2> function, T1 arg1, T2 arg2, float time) {
             yield return new WaitForSeconds(time);
-            Debug.LogWarning(this.gameObject.name + " !! " + function.ToString());
             function(arg1, arg2);
         }
 
@@ -258,6 +290,9 @@ namespace Florian {
                     break;
                 case "turn.amplitude":
                     turn.amplitude = To(value, 0f);
+                    break;
+                case "slowable":
+                    slowable = To(value, false);
                     break;
                 default:
                     Debug.LogWarning("Value not known : " + variableName);
@@ -299,7 +334,7 @@ namespace Florian {
 
         private bool IsGrounded() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, layerMask)) {
+            if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
                 return true;
             } else {
                 return false;

@@ -175,10 +175,9 @@ namespace Florian
                         case 0:
                             Fear lastFear = lastSpawned.AddComponent<Fear>();
                             Fear refFear = valueRefs.GetComponent<Fear>();
-                            lastFear.sphereSize = refFear.sphereSize;
+                            lastFear.sphereGrowthCurve = refFear.sphereGrowthCurve.Clone();
                             lastFear.slowAmount = refFear.slowAmount;
                             lastFear.coolDownDuration = refFear.coolDownDuration;
-                            lastFear.sphereGrowthCurve = refFear.sphereGrowthCurve;
                             lastFear.castingTime = refFear.castingTime;
                             JumpingSheep lastJumping = lastSpawned.AddComponent<JumpingSheep>();
                             JumpingSheep refJumping = valueRefs.GetComponent<JumpingSheep>();
@@ -190,9 +189,8 @@ namespace Florian
                         case 1:
                             Fear lastFear1 = lastSpawned.AddComponent<Fear>();
                             Fear refFear1 = valueRefs.GetComponent<Fear>();
-                            lastFear1.sphereSize = refFear1.sphereSize;
+                            lastFear1.sphereGrowthCurve = refFear1.sphereGrowthCurve.Clone();
                             lastFear1.slowAmount = refFear1.slowAmount;
-                            lastFear1.sphereGrowthCurve = refFear1.sphereGrowthCurve;
                             lastFear1.castingTime = refFear1.castingTime;
                             lastFear1.coolDownDuration = refFear1.coolDownDuration;
                             JumpingSheep lastJumping1 = lastSpawned.AddComponent<JumpingSheep>();

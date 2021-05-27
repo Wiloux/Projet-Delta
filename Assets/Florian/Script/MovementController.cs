@@ -14,6 +14,7 @@ namespace Florian
         private FlanksAttack flanksAttack;
         private JumpingSheep jumpingSheep;
         private MountThrowing mountThrowing;
+        private Fear fear;
 
         [Header("Bodys")]
         public GameObject model;
@@ -108,6 +109,9 @@ namespace Florian
 
             mountThrowing = GetComponent<MountThrowing>();
             if (mountThrowing == null) { Debug.LogError("mount Throwing not found on controller object"); }
+
+            fear = GetComponent<Fear>();
+            if (fear == null) { Debug.LogError("fear not found on controller object"); }
         }
 
         void Update()
@@ -184,6 +188,16 @@ namespace Florian
                         jumpingSheep.MegaJump();
                     else if (Airborn && jumpingSheep._nbrStomp >= 2)
                         jumpingSheep.Stomp();
+                }
+
+                if (fear != null) {
+                    fear.AbilityUpdate();
+                }
+
+                if (player.GetButtonDown("Action")) {
+                    if (fear != null && fear.castable) {
+                        fear.Activate();
+                    }
                 }
             }
 

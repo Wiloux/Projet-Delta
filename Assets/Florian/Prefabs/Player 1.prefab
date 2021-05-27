@@ -852,12 +852,14 @@ MonoBehaviour:
     timer: 0
   groundCheck: {fileID: 3628299225586460079}
   groundRayDistance: 0.2
+  slopeRotateSpeed: 0.5
   airborn: 1
   jumpForce: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 1
   stun: 0
+  slowRecoveryTime: 2
 --- !u!114 &47675566480821665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -894,8 +896,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pushForce: 25
-  _pushRadius: 2.5
-  _cooldown: 2
+  _pushRadius: 10
+  _cooldown: 1
   _timer: 0
 --- !u!136 &1452320077669587839
 CapsuleCollider:
@@ -1218,7 +1220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.000034332
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
       propertyPath: m_LocalPosition.y

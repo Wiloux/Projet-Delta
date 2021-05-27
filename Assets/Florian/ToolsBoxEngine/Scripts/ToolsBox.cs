@@ -71,13 +71,14 @@ namespace ToolsBoxEngine {
 
         #region Constructeurs
 
-        public AmplitudeCurve(AnimationCurve curve, float duration, float timer) {
+        public AmplitudeCurve(AnimationCurve curve, float duration, float timer, float amplitude) {
             this.curve = curve;
             this.duration = duration;
             this.timer = timer;
+            this.amplitude = amplitude;
         }
 
-        public AmplitudeCurve(AnimationCurve curve) : this(curve, 1f, 0f) { }
+        public AmplitudeCurve(AnimationCurve curve) : this(curve, 1f, 0f, 1f) { }
 
         public AmplitudeCurve() : this(AnimationCurve.Linear(0f, 0f, 1f, 1f)) { }
 
@@ -90,7 +91,7 @@ namespace ToolsBoxEngine {
         }
 
         public AmplitudeCurve Clone() {
-            return new AmplitudeCurve(curve, duration, timer);
+            return new AmplitudeCurve(curve, duration, timer, amplitude);
         }
     }
 
@@ -298,6 +299,15 @@ namespace ToolsBoxEngine {
 
         #region Utilities
 
+        public static void DebugLog(string separator, params string[] strings) {
+            string toPrint = "";
+            for (int i = 0; i < strings.Length - 1; i++) {
+                toPrint += strings[i] + separator;
+            }
+            toPrint += strings[strings.Length - 1];
+            Debug.Log(toPrint);
+        }
+
         public static float Remap(this float value, float from1, float to1, float from2, float to2) {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
@@ -344,6 +354,7 @@ namespace ToolsBoxEngine {
             if (angle > 180f) {
                 angle = angle - 360f;
             }
+
             return angle;
         }
 
