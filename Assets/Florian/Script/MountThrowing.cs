@@ -27,7 +27,7 @@ namespace Florian
         {
             _playerMovementController.physics.AddVelocity(new Vector3(0f, _throwVerticalForce, _throwHorizontalForce));
             _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.gravityCurve.amplitude, "gravityCurve.amplitude", _playerMovementController.physics.gravityCurve.amplitude * 0.01f, _airbornTime);
-            _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.turn.amplitude, "turn.amplitude", _playerMovementController.physics.turn.amplitude * 0.5f, _airbornTime * 2f);
+            _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.turn.amplitude, "turn.amplitude", _playerMovementController.physics.turn.amplitude * 0.8f, _airbornTime * 2f);
             StartCoroutine(WaitNegateVelocity(_airbornTime));
             _isThrowing = true;
         }
@@ -37,19 +37,19 @@ namespace Florian
             if (!_playerMovementController.Airborn)
                 _isThrowing = false;
 
-            Collider[] colliders = Physics.OverlapBox(transform.forward + transform.localPosition, _throwBoxDimension);
+            Collider[] colliders = Physics.OverlapBox(transform.forward * 2f + transform.localPosition, _throwBoxDimension);
 
             foreach (Collider pushedObject in colliders)
             {
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
                 {
                     _isThrowing = false;
-                    Debug.Log("pushed");
                     MovementController pushedMovementController = pushedObject.GetComponent<MovementController>();
                     pushedMovementController.physics.AddVelocity(Vector3.right * _throwForce);
                     pushedMovementController.physics.TimedChange(ref pushedMovementController.physics.frictions.amplitude, "frictions.amplitude", pushedMovementController.physics.frictions.amplitude * 5f, 1f);
                     pushedMovementController.physics.TimedChange(ref pushedMovementController.physics.stun, "stun", true, 2.5f);
 
+                    _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.gravityCurve.amplitude, "gravityCurve.amplitude", 4f, 1f);
                     _playerMovementController.physics.NegateVelocity(Axis.Z);
 
                     _timer = _cooldown;
@@ -76,6 +76,12 @@ namespace Florian
         {
             yield return new WaitForSeconds(time);
             _playerMovementController.physics.NegateVelocity(Axis.Y);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(transform.forward * 2f + transform.localPosition, _throwBoxDimension);
         }
     }
 }

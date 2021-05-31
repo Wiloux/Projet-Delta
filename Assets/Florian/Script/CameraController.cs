@@ -87,7 +87,6 @@ namespace Florian {
                     if (!_onJoyMode) {
                         _onJoyMode = true;
                         cam.ResetCameraJoystickPos(Vector3.zero);
-                        //cameraMoving = cam.ResetTransform(0.1f, _target);
                     }
                     cam.CameraJoystickRotation(player.GetAxis("CamHorizontal"), player.GetAxis("CamVertical"), _rotationSpeed, _target);
                 }
@@ -106,7 +105,7 @@ namespace Florian {
                     // Reset du non turn
                     cam.ResetTarget(accelDuration, _target);
                     cam.CameraMoveRotation(new Vector3(0, 0, 0), accelDuration);
-                    if (!movement.Accelerating && !movement.Decelerating)
+                    if (!movement.Accelerating && !movement.Decelerating && movement.Speed > 0.5f)
                         cam.CameraMovePosition(cam._initPos.Override(zPos, Axis.Z), 1f);
                 }
 

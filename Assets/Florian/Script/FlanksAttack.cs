@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Florian {
     public class FlanksAttack : MonoBehaviour {
         [SerializeField] private float _pushForce;
-        [SerializeField] private float _pushRadius;
+        [SerializeField] private Vector3 _throwBoxDimension;
         public float _cooldown;
         public float _timer;
 
@@ -19,7 +19,7 @@ namespace Florian {
         }
 
         private void Colliders(float horizontal) {
-            Collider[] colliders = Physics.OverlapSphere(transform.right * horizontal + transform.localPosition, _pushRadius);
+            Collider[] colliders = Physics.OverlapBox(transform.right * horizontal * 2f + transform.localPosition, _throwBoxDimension);
 
             foreach (Collider pushedObject in colliders) {
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name) {
@@ -32,10 +32,11 @@ namespace Florian {
 
         }
 
-        private void OnDrawGizmos() {
+        /*private void OnDrawGizmos()
+        {
             Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(transform.right + transform.localPosition, _pushRadius);
-            Gizmos.DrawSphere(-transform.right + transform.localPosition, _pushRadius);
-        }
+            Gizmos.DrawCube(transform.right * 2f + transform.localPosition, _throwBoxDimension);
+            Gizmos.DrawCube(-transform.right * 2f + transform.localPosition, _throwBoxDimension);
+        }*/
     }
 }
