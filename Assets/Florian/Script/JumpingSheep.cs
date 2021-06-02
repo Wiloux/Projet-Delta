@@ -31,6 +31,7 @@ namespace Florian
 
         public void MegaJump()
         {
+            GetComponent<VFXManager>().JumpSkillFX(2f);
             _movementController.physics.AddVelocity(new Vector3(0f, _megaJumpForce, _megaAccelForce));
             _nbrStomp--;
             RetrieveACharge();
@@ -77,6 +78,7 @@ namespace Florian
             {
                 yield return new WaitForEndOfFrame();
             }
+            GetComponent<VFXManager>().StompSkillFX(2f);
             Bump();
         }
 
@@ -93,6 +95,7 @@ namespace Florian
                     movementController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * _stompForce);
                     movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 5f, 1f);
                     movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, stunTime);
+                    pushedObject.GetComponent<VFXManager>().Stunned(stunTime);
                 }
             }
         }
