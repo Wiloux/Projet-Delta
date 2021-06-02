@@ -123,11 +123,11 @@ namespace Florian
         {
             float horizontalDirection = 0f;
 
-            /*if (mountThrowing._isThrowing)
+            if (mountThrowing != null && mountThrowing._isThrowing)
             {
                 if (player.GetAxis("Horizontal") != 0)
                     horizontalDirection += player.GetAxis("Horizontal");
-            }*/
+            }
 
             if (!lockMovements && !Airborn && !physics.stun)
             {
@@ -221,10 +221,10 @@ namespace Florian
                     }
                 }
 
-                /*if (mountThrowing._isThrowing)
+                if (mountThrowing._isThrowing)
                     mountThrowing.MountThrowUpdate();
                 if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
-                    mountThrowing.MountThrow();*/
+                    mountThrowing.MountThrow();
 
                 if (player.GetButtonDown("Jump"))
                 {
