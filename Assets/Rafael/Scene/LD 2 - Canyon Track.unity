@@ -525,6 +525,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LD 2 - Canyon track A_B v01
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1c2a6d2c494d1fc4cafd48f2a49a21b2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c2a6d2c494d1fc4cafd48f2a49a21b2, type: 3}
 --- !u!1 &232852833 stripped
@@ -1386,7 +1390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f923cadecf4ee1349b485e4319258d10, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f923cadecf4ee1349b485e4319258d10, type: 3}
