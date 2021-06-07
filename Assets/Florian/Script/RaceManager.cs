@@ -132,7 +132,7 @@ namespace Florian {
         }
 
         public void TeleportCharacters(Vector3 position, Character character) {
-            character.transform.position = position.Override(position.y + 5f, Axis.Y);
+            character.transform.position = position.Override(5f, Axis.Y);
             Debug.Log(character.transform.position + " .. " + position);
         }
 
@@ -143,7 +143,11 @@ namespace Florian {
         }
 
         public void TeleportCharacters(Vector3 position, Vector3 orientation, Character character) {
+<<<<<<< HEAD
             character.transform.position = position.Override(position.y +  5f, Axis.Y);
+=======
+            character.transform.position = position.Override(5f, Axis.Y);
+>>>>>>> parent of 680f88d (Nouveau 3C + shaders)
             character.transform.localEulerAngles = orientation;
             Debug.Log(character.transform.position + " .. " + position);
         }
