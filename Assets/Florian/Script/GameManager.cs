@@ -181,7 +181,6 @@ namespace Florian
                             lastFear.castingTime = refFear.castingTime;
                             JumpingSheep lastJumping = lastSpawned.AddComponent<JumpingSheep>();
                             JumpingSheep refJumping = valueRefs.GetComponent<JumpingSheep>();
-                            //lastJumping._megaGravity = refJumping._megaGravity;
                             lastJumping._megaJumpForce = refJumping._megaJumpForce;
                             lastJumping.cooldown = refJumping.cooldown;
                             lastJumping._stompRadius = refJumping._stompRadius;
@@ -195,8 +194,8 @@ namespace Florian
                             lastFear1.coolDownDuration = refFear1.coolDownDuration;
                             JumpingSheep lastJumping1 = lastSpawned.AddComponent<JumpingSheep>();
                             JumpingSheep refJumping1 = lastSpawned.GetComponent<JumpingSheep>();
-                            //lastJumping1._megaGravity = refJumping1._megaGravity;
                             lastJumping1._megaJumpForce = refJumping1._megaJumpForce;
+                            lastJumping1.cooldown = refJumping1.cooldown;
                             lastJumping1._stompRadius = refJumping1._stompRadius;
                             break;
                         case 2:
