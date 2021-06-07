@@ -651,6 +651,150 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
+  crusadeSpeed: 20
+  highSpeed: 40
+  overSpeed: 50
+  baseAcceleration:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.001648
+        inSlope: -0.02712608
+        outSlope: -0.02712608
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.32226843
+      - serializedVersion: 3
+        time: 0.5685795
+        value: 0.8574164
+        inSlope: -0.6988241
+        outSlope: -0.6988241
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.28811482
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.9125486
+        value: 0.32802644
+        inSlope: -2.662624
+        outSlope: -2.662624
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: -0.0030807545
+        inSlope: -5.5898
+        outSlope: -5.5898
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.5942597
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 10
+    timer: 0
+  forwardAcceleration:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.001648
+        inSlope: -0.02712608
+        outSlope: -0.02712608
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.32226843
+      - serializedVersion: 3
+        time: 0.6171776
+        value: 0.6725843
+        inSlope: -0.6988241
+        outSlope: -0.6988241
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.28811482
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.9611467
+        value: 0.14319432
+        inSlope: -2.3874702
+        outSlope: -2.3874702
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.0056152
+        value: -0.00070038345
+        inSlope: -5.5898
+        outSlope: -5.5898
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.5942597
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 15
+    timer: 0
+  whipAcceleration:
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.001648
+        inSlope: -0.02712608
+        outSlope: -0.02712608
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.32226843
+      - serializedVersion: 3
+        time: 0.5685795
+        value: 0.8574164
+        inSlope: -0.6988241
+        outSlope: -0.6988241
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.28811482
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.9125486
+        value: 0.32802644
+        inSlope: -2.662624
+        outSlope: -2.662624
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: -0.0030807545
+        inSlope: -5.5898
+        outSlope: -5.5898
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.5942597
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    duration: 1
+    amplitude: 20
+    timer: 0
+  accelerationRandomRange: 0.1
+  currentAccelerationType: 0
+  accelerationFactor: 1
   acceleration:
     curve:
       serializedVersion: 2
@@ -805,6 +949,7 @@ MonoBehaviour:
     amplitude: 80
     timer: 0
   isTurn: 0
+  rollAngle: 10
   gravityCurve:
     curve:
       serializedVersion: 2
@@ -856,10 +1001,11 @@ MonoBehaviour:
   slopeRotateSpeed: 0.5
   airborn: 1
   jumpForce: 0
-  layerMask:
+  groundLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   stun: 0
+  faceAngle: 50
   slowRecoveryTime: 2
 --- !u!114 &47675566480821665
 MonoBehaviour:
@@ -991,7 +1137,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2351475789719609389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.95, z: -0.05}
+  m_LocalPosition: {x: 0, y: -0.881, z: -0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1452320077669587837}
@@ -1090,7 +1236,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3490258877651621938}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b2a9c4388c993e4887bd3d771ee6141, type: 3}
   m_Name: 

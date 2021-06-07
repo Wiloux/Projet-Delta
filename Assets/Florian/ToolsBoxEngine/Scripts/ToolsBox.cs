@@ -295,6 +295,10 @@ namespace ToolsBoxEngine {
             return Quaternion.AngleAxis(angle, Vector3.up) * vector;
         }
 
+        public static bool Contains(this LayerMask layerMask, int layer) {
+            return layerMask == (layerMask | (1 << layer));
+        }
+
         #endregion
 
         #region Utilities
