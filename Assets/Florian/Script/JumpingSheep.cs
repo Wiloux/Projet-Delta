@@ -22,6 +22,7 @@ namespace Florian
         public float _stompSpeed = 50f;
         public float cooldown = 5f;
         public float stunTime = 1.5f;
+        private Vector3 _stompFxPos = Vector3.zero;
 
         private void Start()
         {
@@ -33,6 +34,7 @@ namespace Florian
         {
             GetComponent<VFXManager>().JumpSkillFX(2f);
             _movementController.physics.AddVelocity(new Vector3(0f, _megaJumpForce, _megaAccelForce));
+            Debug.Log(_movementController.physics.velocity);
             _nbrStomp--;
             RetrieveACharge();
         }
@@ -78,7 +80,8 @@ namespace Florian
             {
                 yield return new WaitForEndOfFrame();
             }
-            GetComponent<VFXManager>().StompSkillFX(2f);
+            _stompFxPos = new Vector3(transform.position.x, transform.position.y - 0.8f, transform.position.z);
+            GetComponent<VFXManager>().StompSkillFX(_stompFxPos, 2f);
             Bump();
         }
 
@@ -91,7 +94,6 @@ namespace Florian
                 if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
                 {
                     MovementController movementController = pushedObject.GetComponent<MovementController>();
-                    //movementController.physics.AddVelocity(Vector3.back * _stompForce);
                     movementController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * _stompForce);
                     movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 5f, 1f);
                     movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, stunTime);

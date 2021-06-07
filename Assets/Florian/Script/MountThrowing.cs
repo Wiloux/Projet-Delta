@@ -78,10 +78,10 @@ namespace Florian
             _playerMovementController.physics.NegateVelocity(Axis.Y);
         }
 
-        private void OnDrawGizmos()
+        /*private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawCube(transform.forward * 2f + transform.localPosition, _throwBoxDimension);
-        }
+        }*/
     }
 }

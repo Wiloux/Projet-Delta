@@ -12,6 +12,7 @@ namespace Florian
         [SerializeField] private GameObject _jumpFX = null;
         [SerializeField] private GameObject _stompFX = null;
         [SerializeField] private GameObject _flanksAttackFX = null;
+        [SerializeField] private GameObject _textFX = null;
 
         private void Start()
         {
@@ -24,14 +25,21 @@ namespace Florian
             StartCoroutine(PlayerVFX(_stunFX, stunTime));
         }
 
+        public void TextToon(Vector3 position, float stunTime)
+        {
+            _textFX.transform.position = new Vector3(position.x, _textFX.transform.position.y, position.z);
+            StartCoroutine(PlayerVFX(_textFX, stunTime));
+        }
+
         public void JumpSkillFX(float time)
         {
             StartCoroutine(PlayerVFX(_jumpFX, time));
         }
 
-        public void StompSkillFX(float time)
+        public void StompSkillFX(Vector3 position, float time)
         {
-            StartCoroutine(PlayerVFX(_stompFX, time));
+            GameObject ob = Instantiate(_stompFX, position, Quaternion.Euler(-90f, 0f, 0f));
+            Destroy(ob, time);
         }
 
         public void AttackSkillFX(Vector3 position, float time)

@@ -221,10 +221,10 @@ namespace Florian
                     }
                 }
 
-                if (mountThrowing._isThrowing)
+                /*f (mountThrowing._isThrowing)
                     mountThrowing.MountThrowUpdate();
                 if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
-                    mountThrowing.MountThrow();
+                    mountThrowing.MountThrow();*/
 
                 if (player.GetButtonDown("Jump"))
                 {
@@ -246,8 +246,12 @@ namespace Florian
             }
 
             physics.SetHorizontalDirection(horizontalDirection);
-            physics.UpdateMovements();
             UpdateAnims();
+        }
+
+        private void FixedUpdate()
+        {
+            physics.UpdateMovements();
         }
 
         private void UpdateAnims()
