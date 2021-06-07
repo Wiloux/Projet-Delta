@@ -91,8 +91,8 @@ public class Fear : MonoBehaviour {
         castable = true;
     }
 
-    //private void OnDrawGizmosSelected() {
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(sphereRend.gameObject.transform.position, sphereGrowthCurve.amplitude * sphereGrowthCurve.GetRatio() * 0.5f);
-    //}
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(sphereRend.gameObject.transform.position, sphereGrowthCurve.amplitude * sphereGrowthCurve.GetRatio() * 0.5f);
+    }
 }
