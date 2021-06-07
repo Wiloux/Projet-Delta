@@ -19,9 +19,28 @@ namespace Florian {
             }
         }
 
+        public enum SpeedStates { STOPPED, CRUSADE, HIGH, OVER }
+        public enum AccelerationType { NONE, BASE, FORWARD, WHIP }
+
         private Rigidbody _rb;
-        /*[HideInInspector]*/ public Vector3 velocity = Vector3.zero;
+        /*[HideInInspector]*/
+        public Vector3 velocity = Vector3.zero;
         private float horizontalDirection = 0f;
+
+        [Header("MaxSpeeds")]
+        public float crusadeSpeed = 20f;
+        public float highSpeed = 40f;
+        public float overSpeed = 50f;
+
+        [Header("Accelerations")]
+        public AmplitudeCurve baseAcceleration;
+        public AmplitudeCurve forwardAcceleration;
+        public AmplitudeCurve whipAcceleration;
+        [Range(0f, 1f)] public float accelerationRandomRange = 0.1f;
+        public AccelerationType currentAccelerationType = AccelerationType.NONE;
+        public float accelerationFactor = 1f;
+
+        private int rebellionStacks = 0;
 
         [Header("Acceleration")]
         public AmplitudeCurve acceleration = null;
@@ -41,7 +60,8 @@ namespace Florian {
 
         [Header("Turn")]
         public AmplitudeCurve turn = null;
-        [HideInInspector] public bool isTurn;
+        [HideInInspector] public bool isTurn = false;
+        [SerializeField] private float rollAngle = 10f;
 
         [Header("Air Detection")]
         public AmplitudeCurve gravityCurve = null;
@@ -52,8 +72,11 @@ namespace Florian {
         private bool jumping = false;
 
         public float jumpForce;
-        public LayerMask layerMask;
+        public LayerMask groundLayers;
         [HideInInspector] public bool stun;
+
+        [Header("Collisions")]
+        [Range(0f, 90f), SerializeField] private float faceAngle = 50f;
 
         [Header("Recovery")]
         [SerializeField] private float slowRecoveryTime = 2f;
@@ -64,7 +87,8 @@ namespace Florian {
         #region Properties
 
         public float Speed {
-            get { return velocity.magnitude * Mathf.Sign(velocity.z); }
+            //get { return velocity.magnitude * Mathf.Sign(velocity.z); }
+            get { return velocity.z; }
         }
 
         public float HorizontalDirection {
@@ -83,6 +107,40 @@ namespace Florian {
             get { return isTurn; }
         }
 
+        public float SpeedRatio {
+            get { return Mathf.Clamp01(velocity.z / maxSpeed); }
+        }
+
+        private AccelerationType CurrentAccelerationType {
+            get { return currentAccelerationType; }
+            set { currentAccelerationType = value;
+                switch (currentAccelerationType) {
+                    case AccelerationType.BASE:
+                        maxSpeed = crusadeSpeed;
+                        break;
+                    case AccelerationType.FORWARD:
+                        maxSpeed = highSpeed;
+                        break;
+                    case AccelerationType.WHIP:
+                        maxSpeed = overSpeed;
+                        break;
+                }
+            }
+        }
+
+        public SpeedStates SpeedState {
+            get {
+                if (velocity.z < 5f)
+                    return SpeedStates.STOPPED;
+                else if (velocity.z < crusadeSpeed)
+                    return SpeedStates.CRUSADE;
+                else if (velocity.z < highSpeed)
+                    return SpeedStates.HIGH;
+                else
+                    return SpeedStates.OVER;
+            }
+        }
+
         #endregion
 
         #region Unity callbacks
@@ -90,6 +148,7 @@ namespace Florian {
         void Start() {
             _rb = GetComponent<Rigidbody>();
             timedChangedRoutines = new Dictionary<string, TimedChangeCoroutineStruct<object>>();
+            maxSpeed = crusadeSpeed;
         }
 
         void Update() {
@@ -97,10 +156,14 @@ namespace Florian {
             isDecelerate = false;
             isTurn = false;
             airborn = !IsGrounded() || jumping;
+            //airborn = false;
 
             if (!airborn) {
                 velocity.y = 0f;
             }
+            //if (IsGrounded()) {
+            //    velocity.y = 0f;
+            //}
         }
 
         #endregion
@@ -114,6 +177,7 @@ namespace Florian {
             } else {
                 isTurn = false;
             }
+            //Roll();
 
             if (isDecelerate && !stun) {
                 float deceleration = ComputeCurve(this.deceleration);
@@ -122,24 +186,22 @@ namespace Florian {
                 if (velocity.z < -backwardSpeed) {
                     velocity = Vector3.forward * -backwardSpeed;
                 }
-            } else if (accelerationIteration > 0 && !stun) {
-                for (int i = 0; i < accelerationIteration; i++) {
-                    float acceleration = ComputeCurve(this.acceleration);
-                    if (velocity.sqrMagnitude < maxSpeed * maxSpeed) {
-                        velocity += Vector3.forward * acceleration * Time.deltaTime;
-                    }
-                }
+            } else if (Speed < maxSpeed && !stun) {
+                AccelerationUpdate();
+                ResetDecelerateTimer();
             } else {
-                if (decelerateTimer > 0) {
-                    decelerateTimer -= Time.deltaTime;
-                } else {
+                if (decelerateTimer <= 0f) {
                     float frictions = ComputeCurve(this.frictions);
                     velocity += -frictions * velocity.normalized * Time.deltaTime;
 
-                    if (Mathf.Clamp01(Mathf.Abs(Speed) / maxSpeed) <= 0.1f) {
-                        //velocity = Vector3.zero;
-                    }
+                    //if (Mathf.Clamp01(Mathf.Abs(Speed) / maxSpeed) <= 0.1f) {
+                    //    //velocity = Vector3.zero;
+                    //}
                 }
+            }
+
+            if (decelerateTimer > 0f) {
+                decelerateTimer -= Time.deltaTime;
             }
 
             velocity += ComputeGravity() * Vector3.down;
@@ -149,9 +211,51 @@ namespace Florian {
             SlopeTilt();
         }
 
+        private void AccelerationUpdate() {
+            if (currentAccelerationType == AccelerationType.NONE) { return; }
+
+            AmplitudeCurve accelerationCurve = baseAcceleration;
+
+            switch (currentAccelerationType) {
+                case AccelerationType.BASE:
+                    accelerationCurve = baseAcceleration;
+                    break;
+                case AccelerationType.FORWARD:
+                    accelerationCurve = forwardAcceleration;
+                    break;
+                case AccelerationType.WHIP:
+                    accelerationCurve = whipAcceleration;
+                    rebellionStacks++;
+                    break;
+            }
+
+            float acceleration = ComputeCurve(accelerationCurve, maxSpeed);
+            acceleration *= accelerationFactor;
+            acceleration *= UnityEngine.Random.Range(1f - accelerationRandomRange, 1f + accelerationRandomRange);
+
+            if (CurrentAccelerationType != AccelerationType.WHIP) {
+                acceleration *= Time.deltaTime;
+            }
+
+            if (Speed + acceleration < maxSpeed) {
+                velocity += Vector3.forward * acceleration;
+            } else if (Speed < maxSpeed) {
+                velocity.z = maxSpeed;
+            }
+
+            if (CurrentAccelerationType == AccelerationType.WHIP) {
+                CurrentAccelerationType = AccelerationType.BASE;
+            }   
+        }
+
         private float ComputeCurve(AmplitudeCurve curve) {
-            float curSpeed = velocity.magnitude;
-            float perSpeed = Mathf.Clamp01(curSpeed / maxSpeed);
+            float perSpeed = SpeedRatio;
+            float perCurve = curve.curve.Evaluate(perSpeed);
+            return perCurve * curve.amplitude;
+        }
+
+        private float ComputeCurve(AmplitudeCurve curve, float maxSpeed) {
+            float perSpeed = Mathf.Clamp01(velocity.z / maxSpeed);
             float perCurve = curve.curve.Evaluate(perSpeed);
             return perCurve * curve.amplitude;
         }
@@ -163,20 +267,44 @@ namespace Florian {
         }
 
         private void Turn() {
-            float turnSpeed = turn.amplitude * turn.curve.Evaluate(Mathf.Clamp01(velocity.magnitude / maxSpeed));
-            transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.deltaTime, Space.Self);
+            float turnSpeed = turn.amplitude * turn.curve.Evaluate(SpeedRatio) * Time.deltaTime;
+            //transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.deltaTime, Space.Self);
+            Vector3 forwardNoY = transform.forward;
+            forwardNoY.y = 0f;
+            forwardNoY.Normalize();
+            Vector3 newForward = Quaternion.Euler(0, turnSpeed * horizontalDirection, 0) * forwardNoY;
+            transform.rotation = Quaternion.LookRotation(newForward, transform.up);
+            //Vector3 euler = transform.rotation.eulerAngles;
+            //euler.y += turnSpeed * horizontalDirection;
+            //transform.rotation = Quaternion.Euler(euler);
+            //transform.rotation *= Quaternion.Euler(0, 1f * turnSpeed * horizontalDirection, 0);
         }
 
-        private void SlopeTilt() {
-            if (IsGrounded()) {
-                RaycastHit hitFloor;
-                if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, layerMask)) {
-                    float angle = Vector3.SignedAngle(Vector3.up, hitFloor.normal, transform.right);
-                    Vector3 from = Tools.AcuteAngle(transform.localEulerAngles);
-                    Vector3 toRotate = from.Override(angle, Axis.X);
-                    transform.localEulerAngles = Vector3.MoveTowards(from, toRotate, slopeRotateSpeed);
-                    //transform.localEulerAngles = toRotate;
-                }
+        private void Roll() {
+            Vector3 euler = transform.rotation.eulerAngles;
+            float targetRoll = 0f;
+            if (horizontalDirection != 0) {
+                float rollSpeed = this.rollAngle * SpeedRatio;
+                targetRoll = rollSpeed * -Mathf.Sign(horizontalDirection);
+            }
+            euler.z = Mathf.Lerp(Tools.AcuteAngle(euler.z), targetRoll, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Euler(euler);
+        }
+
+        public void SlopeTilt() {
+            RaycastHit hitFloor;
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance * 10f, groundLayers)) {
+                Vector3 forwardNoY = transform.forward;
+                forwardNoY.y = 0f;
+                forwardNoY.Normalize();
+                Vector3 projectedForward = Vector3.ProjectOnPlane(forwardNoY, hitFloor.normal);
+                transform.rotation = Quaternion.LookRotation(projectedForward, hitFloor.normal);
+                //rotation = Quaternion.FromToRotation(Vector3.up, hitFloor.normal) * Quaternion.LookRotation(forwardNoZ, hitFloor.normal);
+                //transform.rotation = Quaternion.FromToRotation(Vector3.up, hitFloor.normal) * Quaternion.LookRotation(forwardNoY, Vector3.up);
+                //transform.rotation = Quaternion.LookRotation(forwardNoY, hitFloor.normal);
+
+                Debug.DrawRay(transform.position, transform.up * 10f, Color.green);
+                Debug.DrawRay(transform.position, hitFloor.normal * 10f, Color.red);
             }
         }
 
@@ -205,6 +333,11 @@ namespace Florian {
         public void Accelerate() {
             accelerationIteration++;
             ResetDecelerateTimer();
+        }
+
+        public void Accelerate(AccelerationType accelerationType, float accelerationFactor = 1f) {
+            CurrentAccelerationType = accelerationType;
+            this.accelerationFactor = accelerationFactor;
         }
 
         public void AddVelocity(Vector3 velocity) {
@@ -334,7 +467,8 @@ namespace Florian {
 
         private bool IsGrounded() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
+            //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers)) {
                 return true;
             } else {
                 return false;
@@ -342,5 +476,14 @@ namespace Florian {
         }
 
         #endregion
+
+        private void OnCollisionEnter(Collision collision) {
+            if (!(groundLayers.Contains(collision.gameObject.layer)) &&
+                Mathf.Lerp(90f, 0f, Vector3.Dot(-collision.contacts[0].normal, transform.forward)) < faceAngle
+            ) {
+                Debug.Log($"{gameObject.name} collided with : {collision.gameObject.name}");
+                NegateVelocity(Axis.Z);
+            }
+        }
     }
 }
