@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class FallManager : MonoBehaviour
 {
-    public List<GameObject> checkpoints = new List<GameObject>();
+
+    public static FallManager instance;
+    public List<Transform> checkpoints = new List<Transform>();
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,11 +26,11 @@ public class FallManager : MonoBehaviour
     {
         float bestDistance = 99999999f;
         Transform bestCheckPoint = null;
-        foreach (GameObject checkpoint in checkpoints)
+        foreach (Transform checkpoint in checkpoints)
         {
             if (bestDistance >= Vector3.Distance(checkpoint.transform.position, leftGroundPos))
             {
-                bestCheckPoint.position = checkpoint.transform.position;
+                bestCheckPoint = checkpoint;
                 bestDistance = Vector3.Distance(checkpoint.transform.position, leftGroundPos);
             }
         }

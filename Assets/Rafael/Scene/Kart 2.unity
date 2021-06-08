@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 10736375}
   - component: {fileID: 10736377}
   - component: {fileID: 10736376}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Camera P2
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 52089325}
   - component: {fileID: 52089326}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 89662365}
   - component: {fileID: 89662364}
   - component: {fileID: 89662363}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 95619619}
   - component: {fileID: 95619620}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,7 +409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 105167639}
   - component: {fileID: 105167640}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 106867890}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Connected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -504,7 +504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 111076688}
   - component: {fileID: 111076689}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 157662321}
   - component: {fileID: 157662322}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RaceManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 188997875}
   - component: {fileID: 188997877}
   - component: {fileID: 188997876}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -779,7 +779,7 @@ GameObject:
   - component: {fileID: 199206174}
   - component: {fileID: 199206176}
   - component: {fileID: 199206175}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -911,7 +911,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 228173133}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Disconnected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,7 +949,7 @@ GameObject:
   - component: {fileID: 251850609}
   - component: {fileID: 251850611}
   - component: {fileID: 251850610}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Tittle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1084,7 +1084,7 @@ GameObject:
   - component: {fileID: 254626629}
   - component: {fileID: 254626628}
   - component: {fileID: 254626627}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1161,7 +1161,7 @@ GameObject:
   - component: {fileID: 295105046}
   - component: {fileID: 295105048}
   - component: {fileID: 295105047}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1237,7 +1237,7 @@ GameObject:
   - component: {fileID: 362319953}
   - component: {fileID: 362319952}
   - component: {fileID: 362319951}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1312,7 +1312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 363643188}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Map3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 368407231}
   - component: {fileID: 368407230}
   - component: {fileID: 368407229}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1421,7 +1421,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 404085658}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 2DEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1458,7 +1458,7 @@ GameObject:
   - component: {fileID: 421970923}
   - component: {fileID: 421970925}
   - component: {fileID: 421970924}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1533,7 +1533,7 @@ GameObject:
   - component: {fileID: 426501081}
   - component: {fileID: 426501083}
   - component: {fileID: 426501082}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1600,7 +1600,8 @@ GameObject:
   - component: {fileID: 432653028}
   - component: {fileID: 432653027}
   - component: {fileID: 432653026}
-  m_Layer: 0
+  - component: {fileID: 432653029}
+  m_Layer: 7
   m_Name: Camera P1
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -1688,6 +1689,38 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &432653029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432653024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &443894677 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 7f3a9d730a3af8048b654d732c698def, type: 3}
@@ -1708,7 +1741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 445673947}
   - component: {fileID: 445673948}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1758,7 +1791,7 @@ GameObject:
   - component: {fileID: 454663960}
   - component: {fileID: 454663962}
   - component: {fileID: 454663961}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1853,7 +1886,7 @@ GameObject:
   - component: {fileID: 523381704}
   - component: {fileID: 523381706}
   - component: {fileID: 523381705}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: P2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1929,7 +1962,7 @@ GameObject:
   m_Component:
   - component: {fileID: 624354247}
   - component: {fileID: 624354248}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1979,7 +2012,7 @@ GameObject:
   - component: {fileID: 631692798}
   - component: {fileID: 631692800}
   - component: {fileID: 631692799}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: P4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2056,7 +2089,7 @@ GameObject:
   - component: {fileID: 637253361}
   - component: {fileID: 637253363}
   - component: {fileID: 637253362}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: EndGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2134,7 +2167,7 @@ GameObject:
   - component: {fileID: 645737248}
   - component: {fileID: 645737247}
   - component: {fileID: 645737246}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Multiplayer Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2243,7 +2276,7 @@ GameObject:
   - component: {fileID: 703181878}
   - component: {fileID: 703181880}
   - component: {fileID: 703181879}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2376,7 +2409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 704044922}
   - component: {fileID: 704044923}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2424,7 +2457,7 @@ GameObject:
   - component: {fileID: 709077139}
   - component: {fileID: 709077141}
   - component: {fileID: 709077140}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2509,7 +2542,7 @@ GameObject:
   - component: {fileID: 734871130}
   - component: {fileID: 734871132}
   - component: {fileID: 734871131}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2583,7 +2616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 743844730}
   - component: {fileID: 743844731}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2630,7 +2663,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 750334410}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2667,7 +2700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 754407408}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Disconnected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2735,7 +2768,7 @@ GameObject:
   - component: {fileID: 847359888}
   - component: {fileID: 847359890}
   - component: {fileID: 847359889}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2808,7 +2841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 870604976}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Entities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2842,7 +2875,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 877930635}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2879,7 +2912,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 900845723}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Connected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2928,7 +2961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 915861083}
   - component: {fileID: 915861084}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2985,7 +3018,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 925213232}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Connected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3023,7 +3056,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 973826811}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Map3DEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3055,7 +3088,7 @@ GameObject:
   - component: {fileID: 1026371841}
   - component: {fileID: 1026371843}
   - component: {fileID: 1026371842}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3190,7 +3223,7 @@ GameObject:
   - component: {fileID: 1037445521}
   - component: {fileID: 1037445520}
   - component: {fileID: 1037445519}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3268,7 +3301,7 @@ GameObject:
   - component: {fileID: 1058784627}
   - component: {fileID: 1058784626}
   - component: {fileID: 1058784625}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3344,7 +3377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1059329530}
   - component: {fileID: 1059329531}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3402,7 +3435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1080098080}
   - component: {fileID: 1080098081}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3462,7 +3495,7 @@ GameObject:
   - component: {fileID: 1091135127}
   - component: {fileID: 1091135126}
   - component: {fileID: 1091135130}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: UIs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3582,7 +3615,7 @@ GameObject:
   - component: {fileID: 1099335112}
   - component: {fileID: 1099335114}
   - component: {fileID: 1099335113}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3716,7 +3749,7 @@ GameObject:
   - component: {fileID: 1131536608}
   - component: {fileID: 1131536610}
   - component: {fileID: 1131536609}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3850,7 +3883,7 @@ GameObject:
   - component: {fileID: 1142492085}
   - component: {fileID: 1142492087}
   - component: {fileID: 1142492086}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: P3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3927,7 +3960,8 @@ GameObject:
   - component: {fileID: 1185192093}
   - component: {fileID: 1185192095}
   - component: {fileID: 1185192094}
-  m_Layer: 0
+  - component: {fileID: 1185192096}
+  m_Layer: 7
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3999,6 +4033,38 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1185192096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185192092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1191969136
 GameObject:
   m_ObjectHideFlags: 0
@@ -4009,7 +4075,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1191969137}
   - component: {fileID: 1191969138}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4061,7 +4127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1236907754}
   - component: {fileID: 1236907755}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4110,7 +4176,7 @@ GameObject:
   - component: {fileID: 1237322971}
   - component: {fileID: 1237322973}
   - component: {fileID: 1237322972}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4184,7 +4250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1278890920}
   - component: {fileID: 1278890921}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4234,7 +4300,7 @@ GameObject:
   - component: {fileID: 1311337684}
   - component: {fileID: 1311337686}
   - component: {fileID: 1311337685}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4308,7 +4374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1314072776}
   - component: {fileID: 1314072777}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PlayersPlacement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4371,7 +4437,7 @@ GameObject:
   - component: {fileID: 1318883018}
   - component: {fileID: 1318883020}
   - component: {fileID: 1318883019}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4445,7 +4511,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1344735895}
   - component: {fileID: 1344735896}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rewired Input Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5856,7 +5922,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1360678807}
   - component: {fileID: 1360678808}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5903,7 +5969,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1364238034}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5940,7 +6006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1370095557}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5980,7 +6046,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1419130988}
   - component: {fileID: 1419130989}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6026,7 +6092,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1432474986}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Utilities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6061,7 +6127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1458048097}
   - component: {fileID: 1458048098}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6110,7 +6176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1463992122}
   - component: {fileID: 1463992123}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6160,7 +6226,7 @@ GameObject:
   - component: {fileID: 1493480439}
   - component: {fileID: 1493480441}
   - component: {fileID: 1493480440}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6234,7 +6300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1510709932}
   - component: {fileID: 1510709931}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6328,7 +6394,7 @@ GameObject:
   - component: {fileID: 1517281577}
   - component: {fileID: 1517281579}
   - component: {fileID: 1517281578}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6461,7 +6527,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1530085399}
   - component: {fileID: 1530085400}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6511,7 +6577,7 @@ GameObject:
   - component: {fileID: 1541048049}
   - component: {fileID: 1541048051}
   - component: {fileID: 1541048050}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6586,7 +6652,7 @@ GameObject:
   - component: {fileID: 1546330615}
   - component: {fileID: 1546330617}
   - component: {fileID: 1546330616}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6719,7 +6785,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1571000412}
   - component: {fileID: 1571000413}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6776,7 +6842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1625661201}
   - component: {fileID: 1625661202}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6947,7 +7013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1712760808}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Disconnected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6984,7 +7050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1726403243}
   - component: {fileID: 1726403244}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7033,7 +7099,7 @@ GameObject:
   - component: {fileID: 1768339430}
   - component: {fileID: 1768339429}
   - component: {fileID: 1768339428}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7110,7 +7176,7 @@ GameObject:
   - component: {fileID: 1814256995}
   - component: {fileID: 1814256997}
   - component: {fileID: 1814256996}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: P1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7186,7 +7252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1823754410}
   - component: {fileID: 1823754411}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7234,7 +7300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1824830197}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Disconnected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7278,9 +7344,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 870604976}
     m_Modifications:
+    - target: {fileID: 99344734277949475, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 154560185319815806, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1095958309531535210, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1318642008939402599, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409424681882629605, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410863474544765465, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2410863474544765466, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410863474547624466, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410863474618371854, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2410863474618371855, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7294,21 +7392,41 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2410863475067752963, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2410863475067752964, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410863475443005160, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2410863475443005161, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2410863475699871440, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2410863475699871441, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.58
       objectReference: {fileID: 0}
+    - target: {fileID: 2410863476471019450, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2410863476485177557, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
       propertyPath: m_Name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410863476485177557, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2410863476485177557, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
       propertyPath: m_IsActive
@@ -7358,6 +7476,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5468617099906808038, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693774851898223264, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830909579156015092, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729815481716658885, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025748820080888432, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502314736282164154, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
 --- !u!1 &1871072441
@@ -7369,7 +7511,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1871072442}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7407,7 +7549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900030141}
   - component: {fileID: 1900030142}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7464,7 +7606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1905694482}
   - component: {fileID: 1905694483}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7560,7 +7702,7 @@ GameObject:
   - component: {fileID: 1999836876}
   - component: {fileID: 1999836875}
   - component: {fileID: 1999836874}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7638,7 +7780,7 @@ GameObject:
   - component: {fileID: 2004460148}
   - component: {fileID: 2004460147}
   - component: {fileID: 2004460146}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checkpoints 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7715,7 +7857,7 @@ GameObject:
   - component: {fileID: 2011551236}
   - component: {fileID: 2011551238}
   - component: {fileID: 2011551237}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7789,7 +7931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2015798870}
   - component: {fileID: 2015798871}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7837,7 +7979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2024900769}
   - component: {fileID: 2024900770}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7916,7 +8058,7 @@ GameObject:
   - component: {fileID: 2034187439}
   - component: {fileID: 2034187441}
   - component: {fileID: 2034187440}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8003,7 +8145,7 @@ GameObject:
   - component: {fileID: 2104466023}
   - component: {fileID: 2104466025}
   - component: {fileID: 2104466024}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8076,7 +8218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2136711529}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Connected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8115,7 +8257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2141560861}
   - component: {fileID: 2141560862}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
