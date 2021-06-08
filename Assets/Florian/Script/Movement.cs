@@ -146,11 +146,7 @@ namespace Florian {
 
             accelerationIteration = 0;
             ApplySpeed();
-<<<<<<< HEAD:Assets/Florian/Script/Movement.cs
          // SlopeTilt();
-=======
-            SlopeTilt();
->>>>>>> parent of 680f88d (Nouveau 3C + shaders):Assets/Florian/Script/Movements/Movement.cs
         }
 
         private float ComputeCurve(AmplitudeCurve curve) {

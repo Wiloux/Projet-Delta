@@ -172,7 +172,6 @@ namespace Florian
 
             if (!physics.stun && !lockMovements)
             {
-<<<<<<< HEAD:Assets/Florian/Script/MovementController.cs
                 if (sharkAttack == null)
                 {
                     if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f)
@@ -220,16 +219,6 @@ namespace Florian
                             riderAnim.SetBool("chargingAttackG", false);
                         }
                     }
-=======
-                if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f)
-                {
-                    flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
-                    flanksAttack._timer = flanksAttack._cooldown;
-                    if (player.GetAxisRaw("Attack") > 0f)
-                        riderAnim.SetTrigger("attackD");
-                    else if (player.GetAxisRaw("Attack") < 0f)
-                        riderAnim.SetTrigger("attackG");
->>>>>>> parent of 680f88d (Nouveau 3C + shaders):Assets/Florian/Script/Movements/MovementController.cs
                 }
 
                 /*f (mountThrowing._isThrowing)
@@ -257,16 +246,12 @@ namespace Florian
             }
 
             physics.SetHorizontalDirection(horizontalDirection);
-<<<<<<< HEAD:Assets/Florian/Script/MovementController.cs
             UpdateAnims();
         }
 
         private void FixedUpdate()
         {
-=======
->>>>>>> parent of 680f88d (Nouveau 3C + shaders):Assets/Florian/Script/Movements/MovementController.cs
             physics.UpdateMovements();
-            UpdateAnims();
         }
 
         private void UpdateAnims()
