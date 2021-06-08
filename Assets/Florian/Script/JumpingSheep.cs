@@ -22,7 +22,6 @@ namespace Florian
         public float _stompSpeed = 50f;
         public float cooldown = 5f;
         public float stunTime = 1.5f;
-        private Vector3 _stompFxPos = Vector3.zero;
 
         private void Start()
         {
@@ -32,7 +31,8 @@ namespace Florian
 
         public void MegaJump()
         {
-            GetComponent<VFXManager>().JumpSkillFX(2f);
+            Vector3 jumpFxPos = new Vector3(transform.position.x, transform.position.y - 0.8f, transform.position.z);
+            GetComponent<VFXManager>().JumpSkillFX(jumpFxPos, 4f);
             _movementController.physics.AddVelocity(new Vector3(0f, _megaJumpForce, _megaAccelForce));
             Debug.Log(_movementController.physics.velocity);
             _nbrStomp--;
@@ -80,8 +80,8 @@ namespace Florian
             {
                 yield return new WaitForEndOfFrame();
             }
-            _stompFxPos = new Vector3(transform.position.x, transform.position.y - 0.8f, transform.position.z);
-            GetComponent<VFXManager>().StompSkillFX(_stompFxPos, 2f);
+            Vector3 stompFxPos = new Vector3(transform.position.x, transform.position.y - 0.8f, transform.position.z);
+            GetComponent<VFXManager>().StompSkillFX(stompFxPos, 5f);
             Bump();
         }
 

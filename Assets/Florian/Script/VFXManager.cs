@@ -31,9 +31,10 @@ namespace Florian
             StartCoroutine(PlayerVFX(_textFX, stunTime));
         }
 
-        public void JumpSkillFX(float time)
+        public void JumpSkillFX(Vector3 position, float time)
         {
-            StartCoroutine(PlayerVFX(_jumpFX, time));
+            GameObject ob = Instantiate(_jumpFX, position, Quaternion.Euler(-90f, 0f, 0f));
+            Destroy(ob, time);
         }
 
         public void StompSkillFX(Vector3 position, float time)
