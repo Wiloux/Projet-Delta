@@ -23,8 +23,8 @@ public class Fear : MonoBehaviour {
 
     void Start() {
         mvtController = GetComponent<MovementController>();
-        sphereRend = GameObject.Find(mvtController.playerName + "/Vfx/RageBall").GetComponent<MeshRenderer>();
-        ps = GameObject.Find(mvtController.playerName + "/Vfx/Rage").GetComponent<ParticleSystem>();
+        sphereRend = GameObject.Find(mvtController.playerName + "/PlayerRoot/Vfx/RageBall").GetComponent<MeshRenderer>();
+        ps = GameObject.Find(mvtController.playerName + "/PlayerRoot/Vfx/Rage").GetComponent<ParticleSystem>();
         sphereRend.gameObject.SetActive(false);
         sphereMat = sphereRend.material;
     }
