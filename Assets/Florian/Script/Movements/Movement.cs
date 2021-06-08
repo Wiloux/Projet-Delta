@@ -172,9 +172,9 @@ namespace Florian
 
         void Update()
         {
-            isAccelerate = decelerateTimer > 0f;
+            //isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
-            isTurn = false;
+            //isTurn = false;
             airborn = !IsGrounded() || jumping;
 
             if (!IsGrounded() && needLastGroundPosUpdate)
@@ -204,6 +204,10 @@ namespace Florian
 
         public void UpdateMovements()
         {
+            if (velocity.z > crusadeSpeed)
+                isAccelerate = true;
+            else
+                isAccelerate = false;
             if (horizontalDirection != 0f && !stun)
             {
                 isTurn = true;
