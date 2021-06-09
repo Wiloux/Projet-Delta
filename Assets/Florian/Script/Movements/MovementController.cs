@@ -129,6 +129,7 @@ namespace Florian {
                     resetDecelerateTimer = true;
                 } else if (player.GetAxis("Vertical") == 1f) {
                     physics.Accelerate(Movement.AccelerationType.FORWARD, player.GetAxis("Vertical"));
+                    riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
                     resetDecelerateTimer = true;
                 } else {
                     physics.Accelerate(Movement.AccelerationType.BASE);
@@ -139,6 +140,7 @@ namespace Florian {
                 //}
                 if(player.GetAxis("Vertical") == -1f) {
                     physics.Decelerate();
+                    riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
                 }
 
                 if (Mathf.Abs(player.GetAxis("Horizontal")) == 1f) {
@@ -206,16 +208,22 @@ namespace Florian {
                     }
                 }
 
-                /*f (mountThrowing._isThrowing)
-                    mountThrowing.MountThrowUpdate();
-                if (player.GetButtonDown("Throw") && mountThrowing._timer == 0f)
-                    mountThrowing.MountThrow();*/
+                if (mountThrowing != null) {
+                    if (mountThrowing._isThrowing)
+                        mountThrowing.MountThrowUpdate();
+                    if (player.GetButtonDown("Action") && mountThrowing._timer == 0f)
+                        mountThrowing.MountThrow();
+                }
 
                 if (player.GetButtonDown("Jump")) {
-                    if (!Airborn && jumpingSheep._nbrStomp != 0)
-                        jumpingSheep.MegaJump();
-                    else if (Airborn && jumpingSheep._nbrStomp >= 2)
-                        jumpingSheep.Stomp();
+                    if (jumpingSheep != null && jumpingSheep._nbrStomp > 0) {
+                        if (!Airborn && jumpingSheep._nbrStomp != 0)
+                            jumpingSheep.MegaJump();
+                        else if (Airborn && jumpingSheep._nbrStomp >= 2)
+                            jumpingSheep.Stomp();
+                    } else {
+                        physics.Jump();
+                    }
                 }
 
                 if (fear != null) {
@@ -230,7 +238,7 @@ namespace Florian {
             }
 
             physics.SetHorizontalDirection(horizontalDirection);
-            //model.transform.rotation = physics.SlopeTilt();
+            riderAnim.SetFloat("Horizontal", horizontalDirection);
             UpdateAnims();
         }
 

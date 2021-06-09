@@ -1206,33 +1206,24 @@ MonoBehaviour:
       - serializedVersion: 3
         time: -0.010557158
         value: -0.0030807545
-        inSlope: 0.09066187
-        outSlope: 0.09066187
+        inSlope: 0.20064044
+        outSlope: 0.20064044
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 1
+        outWeight: 0.29011247
       - serializedVersion: 3
-        time: 0.14279
-        value: 0.14629243
-        inSlope: 1.0317113
-        outSlope: 1.0317113
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.45530754
-        value: 0.4867295
-        inSlope: 1.2514566
-        outSlope: 1.2514566
+        time: 0.45151722
+        value: 0.2395707
+        inSlope: 1.0412557
+        outSlope: 1.0412557
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.28446227
+        inWeight: 0.11819408
         outWeight: 0.28811482
       - serializedVersion: 3
-        time: 1.003355
-        value: 0.7002438
+        time: 0.9995647
+        value: 0.45308498
         inSlope: 0.02712608
         outSlope: 0.02712608
         tangentMode: 0
@@ -1250,12 +1241,13 @@ MonoBehaviour:
   slopeRotateSpeed: 0.5
   airborn: 1
   lastGroundPos: {x: 0, y: 0, z: 0}
-  jumpForce: 0
+  jumpForce: 80
   groundLayers:
     serializedVersion: 2
     m_Bits: 128
   stun: 0
   faceAngle: 50
+  offTrackMultiplier: 1
   slowRecoveryTime: 2
 --- !u!114 &6569751637473742778
 MonoBehaviour:

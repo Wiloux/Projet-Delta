@@ -41,7 +41,10 @@ namespace Florian
 
         public void Stomp()
         {
-            _movementController.physics.AddVelocity(transform.worldToLocalMatrix.MultiplyVector(-transform.up) * _stompSpeed);
+            //_movementController.physics.AddVelocity(transform.worldToLocalMatrix.MultiplyVector(-transform.up) * _stompSpeed);
+            _movementController.physics.AddVelocity(Vector3.down * _stompSpeed);
+            //Movement physics = _movementController.physics;
+            //physics.TimedChange(ref physics.gravityCurve.curve, "gravityCurve.curve", AnimationCurve.Constant(0f, 1f, 1f), 1f);
             StartCoroutine(CheckGrounded());
             _nbrStomp = 0;
             if(charging != null)
