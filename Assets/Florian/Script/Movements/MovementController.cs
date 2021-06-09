@@ -129,7 +129,6 @@ namespace Florian {
                     resetDecelerateTimer = true;
                 } else if (player.GetAxis("Vertical") == 1f) {
                     physics.Accelerate(Movement.AccelerationType.FORWARD, player.GetAxis("Vertical"));
-                    riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
                     resetDecelerateTimer = true;
                 } else {
                     physics.Accelerate(Movement.AccelerationType.BASE);
@@ -238,7 +237,8 @@ namespace Florian {
             }
 
             physics.SetHorizontalDirection(horizontalDirection);
-            riderAnim.SetFloat("Horizontal", horizontalDirection);
+            riderAnim.SetFloat("Horizontal", player.GetAxis("Horizontal"));
+            riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
             UpdateAnims();
         }
 
