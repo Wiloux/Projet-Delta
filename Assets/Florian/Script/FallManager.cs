@@ -36,6 +36,7 @@ public class FallManager : MonoBehaviour
         }
 
         fallenPlayer.transform.position = bestCheckPoint.position;
+        fallenPlayer.transform.rotation.eulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
     }
 
 
