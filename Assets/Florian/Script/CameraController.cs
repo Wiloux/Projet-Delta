@@ -45,8 +45,6 @@ namespace Florian {
         public string playerName;
         private Player player;
 
-        private Coroutine cameraMoving;
-
         private void Start() {
             player = ReInput.players.GetPlayer(movement.playerName);
             Cursor.lockState = CursorLockMode.Locked;
@@ -90,7 +88,7 @@ namespace Florian {
                     }
                     cam.CameraJoystickRotation(player.GetAxis("CamHorizontal"), player.GetAxis("CamVertical"), _rotationSpeed, _target);
                 }
-
+                
                 // Tourner
                 if (movement.Turning && movement.Speed > 1f) {
                     cam.ResetTarget(accelDuration, _target);
@@ -106,7 +104,7 @@ namespace Florian {
                     cam.ResetTarget(accelDuration, _target);
                     cam.CameraMoveRotation(new Vector3(0, 0, 0), accelDuration);
                     if (!movement.Accelerating && !movement.Decelerating && movement.Speed > 0.5f)
-                        cam.CameraMovePosition(cam._initPos.Override(zPos, Axis.Z), 1f);
+                        cam.CameraMovePosition(cam._initPos, 1f);
                 }
 
                 // Airborn

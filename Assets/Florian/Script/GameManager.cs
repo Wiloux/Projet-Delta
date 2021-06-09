@@ -165,6 +165,7 @@ namespace Florian
                 if (playersController[i] != null)
                 {
                     GameObject lastSpawned = SpawnKart(Vector3.zero, "P" + (i + 1));
+                    GameObject lastSpawnedChild = lastSpawned.transform.GetChild(0).gameObject;
                     players.Add(lastSpawned.GetComponentInChildren<MovementController>());
                     players[players.Count - 1].SetCamera(cameraNumber, NumberOfPlayerControllers);
                     players[players.Count - 1].ChangeTexture(playersColor[multiplayerPanel.playerScreens[i].indexPortrait]);
@@ -173,44 +174,44 @@ namespace Florian
                     switch (multiplayerPanel.playerScreens[i].indexPortrait)
                     {
                         case 0:
-                            Fear lastFear = lastSpawned.AddComponent<Fear>();
+                            Fear lastFear = lastSpawnedChild.AddComponent<Fear>();
                             Fear refFear = valueRefs.GetComponent<Fear>();
                             lastFear.sphereGrowthCurve = refFear.sphereGrowthCurve.Clone();
                             lastFear.slowAmount = refFear.slowAmount;
                             lastFear.coolDownDuration = refFear.coolDownDuration;
                             lastFear.castingTime = refFear.castingTime;
-                            JumpingSheep lastJumping = lastSpawned.AddComponent<JumpingSheep>();
+                            JumpingSheep lastJumping = lastSpawnedChild.AddComponent<JumpingSheep>();
                             JumpingSheep refJumping = valueRefs.GetComponent<JumpingSheep>();
                             lastJumping._megaJumpForce = refJumping._megaJumpForce;
                             lastJumping.cooldown = refJumping.cooldown;
                             lastJumping._stompRadius = refJumping._stompRadius;
                             break;
                         case 1:
-                            Fear lastFear1 = lastSpawned.AddComponent<Fear>();
+                            Fear lastFear1 = lastSpawnedChild.AddComponent<Fear>();
                             Fear refFear1 = valueRefs.GetComponent<Fear>();
                             lastFear1.sphereGrowthCurve = refFear1.sphereGrowthCurve.Clone();
                             lastFear1.slowAmount = refFear1.slowAmount;
                             lastFear1.castingTime = refFear1.castingTime;
                             lastFear1.coolDownDuration = refFear1.coolDownDuration;
-                            JumpingSheep lastJumping1 = lastSpawned.AddComponent<JumpingSheep>();
-                            JumpingSheep refJumping1 = lastSpawned.GetComponent<JumpingSheep>();
+                            JumpingSheep lastJumping1 = lastSpawnedChild.AddComponent<JumpingSheep>();
+                            JumpingSheep refJumping1 = lastSpawnedChild.GetComponent<JumpingSheep>();
                             lastJumping1._megaJumpForce = refJumping1._megaJumpForce;
                             lastJumping1.cooldown = refJumping1.cooldown;
                             lastJumping1._stompRadius = refJumping1._stompRadius;
                             break;
                         case 2:
                             Shark refShark = valueRefs.GetComponent<Shark>();                            
-                            Shark lastShark = lastSpawned.AddComponent<Shark>();
+                            Shark lastShark = lastSpawnedChild.AddComponent<Shark>();
                             lastShark._cooldown = refShark._cooldown;
                             lastShark.poweredPushForce = refShark.poweredPushForce;
                             lastShark.poweredPushRadius = refShark.poweredPushRadius;
                             lastShark.pushForce = refShark.pushForce;
                             lastShark.pushRadius = refShark.pushRadius;
-                            lastSpawned.AddComponent<MountThrowing>();
+                            lastSpawnedChild.AddComponent<MountThrowing>();
                             break;
                         case 3:
-                            lastSpawned.AddComponent<Shark>();
-                            lastSpawned.AddComponent<MountThrowing>();
+                            lastSpawnedChild.AddComponent<Shark>();
+                            lastSpawnedChild.AddComponent<MountThrowing>();
                             break;
                     }
                 }

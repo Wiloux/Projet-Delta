@@ -69,6 +69,8 @@ namespace Florian {
         [SerializeField] private float groundRayDistance = 0.2f;
         [SerializeField] private float slopeRotateSpeed = 0.5f;
         [HideInInspector] public bool airborn;
+        private bool needLastGroundPosUpdate;
+        public Vector3 lastGroundPos;
         private bool jumping = false;
 
         public float jumpForce;
@@ -113,7 +115,8 @@ namespace Florian {
 
         private AccelerationType CurrentAccelerationType {
             get { return currentAccelerationType; }
-            set { currentAccelerationType = value;
+            set {
+                currentAccelerationType = value;
                 switch (currentAccelerationType) {
                     case AccelerationType.BASE:
                         maxSpeed = crusadeSpeed;
@@ -152,10 +155,19 @@ namespace Florian {
         }
 
         void Update() {
-            isAccelerate = decelerateTimer > 0f;
+            //isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
-            isTurn = false;
+            //isTurn = false;
             airborn = !IsGrounded() || jumping;
+
+            if (!IsGrounded() && needLastGroundPosUpdate) {
+                needLastGroundPosUpdate = false;
+                lastGroundPos = transform.position;
+            }
+
+            if (IsGrounded()) {
+                needLastGroundPosUpdate = true;
+            }
             //airborn = false;
 
             if (!airborn) {
@@ -171,6 +183,10 @@ namespace Florian {
         #region Update Movements
 
         public void UpdateMovements() {
+            if (velocity.z > crusadeSpeed)
+                isAccelerate = true;
+            else
+                isAccelerate = false;
             if (horizontalDirection != 0f && !stun) {
                 isTurn = true;
                 Turn();
@@ -208,7 +224,7 @@ namespace Florian {
 
             accelerationIteration = 0;
             ApplySpeed();
-         // SlopeTilt();
+            // SlopeTilt();
         }
 
         private void AccelerationUpdate() {
@@ -245,7 +261,7 @@ namespace Florian {
 
             if (CurrentAccelerationType == AccelerationType.WHIP) {
                 CurrentAccelerationType = AccelerationType.BASE;
-            }   
+            }
         }
 
         private float ComputeCurve(AmplitudeCurve curve) {
@@ -483,6 +499,13 @@ namespace Florian {
             ) {
                 Debug.Log($"{gameObject.name} collided with : {collision.gameObject.name}");
                 NegateVelocity(Axis.Z);
+            }
+        }
+
+        private void OnTriggerEnter(Collider other) {
+            if (other.tag == "DeathBox") {
+                NegateVelocity(Axis.Z, Axis.Y, Axis.X);
+                FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos);
             }
         }
     }

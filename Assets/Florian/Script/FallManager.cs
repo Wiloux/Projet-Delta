@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class FallManager : MonoBehaviour
 {
-    public List<GameObject> checkpoints = new List<GameObject>();
+
+    public static FallManager instance;
+    public List<Transform> checkpoints = new List<Transform>();
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,18 +24,20 @@ public class FallManager : MonoBehaviour
 
     public void CheckPlayerBestCheckPoint(GameObject fallenPlayer, Vector3 leftGroundPos)
     {
-        float bestDistance = 99999999f;
+        float bestDistance = Mathf.Infinity;
         Transform bestCheckPoint = null;
-        foreach (GameObject checkpoint in checkpoints)
+        foreach (Transform checkpoint in checkpoints)
         {
             if (bestDistance >= Vector3.Distance(checkpoint.transform.position, leftGroundPos))
             {
-                bestCheckPoint.position = checkpoint.transform.position;
+                bestCheckPoint = checkpoint;
                 bestDistance = Vector3.Distance(checkpoint.transform.position, leftGroundPos);
             }
         }
 
         fallenPlayer.transform.position = bestCheckPoint.position;
+        fallenPlayer.transform.localEulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
+        //fallenPlayer.transform.rotation.eulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
     }
 
 
