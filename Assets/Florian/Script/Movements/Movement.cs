@@ -338,7 +338,7 @@ namespace Florian {
             if (velocity.y <= 0f)
                 jumping = false;
 
-            float offTrackFactor = offTracking ? offTrackMultiplier : 1f;
+            float offTrackFactor = offTracking == true ? offTrackMultiplier : 1f;
 
             if (_rb != null) {
                 _rb.velocity = RelativeDirection(velocity) * offTrackFactor;
