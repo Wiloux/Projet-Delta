@@ -127,18 +127,21 @@ namespace Florian {
                 if (player.GetButtonDown("Accelerate")) {
                     physics.Accelerate(Movement.AccelerationType.WHIP);
                     resetDecelerateTimer = true;
-                } else if (player.GetAxis("Vertical") > 0) {
+                } else if (player.GetAxis("Vertical") == 1f) {
                     physics.Accelerate(Movement.AccelerationType.FORWARD, player.GetAxis("Vertical"));
                     resetDecelerateTimer = true;
                 } else {
                     physics.Accelerate(Movement.AccelerationType.BASE);
                 }
 
-                if (player.GetButton("Decelerate")) {
+                //if (player.GetButton("Decelerate")) {
+                //    physics.Decelerate();
+                //}
+                if(player.GetAxis("Vertical") == -1f) {
                     physics.Decelerate();
                 }
 
-                if (player.GetAxis("Horizontal") != 0) {
+                if (Mathf.Abs(player.GetAxis("Horizontal")) == 1f) {
                     horizontalDirection += player.GetAxis("Horizontal");
                     resetDecelerateTimer = false;
                 }

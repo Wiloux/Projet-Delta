@@ -11,6 +11,10 @@ public class FallManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        checkpoints.Clear();
+        for (int i = 0; i < transform.childCount; i++) {
+            checkpoints.Add(transform.GetChild(i));
+        }
     }
 
     private void OnTriggerEnter(Collider other)

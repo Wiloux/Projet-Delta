@@ -8,6 +8,7 @@ using DG.Tweening;
 using ToolsBoxEngine;
 
 namespace Florian {
+    [SelectionBase]
     public class Movement : MonoBehaviour {
         private struct TimedChangeCoroutineStruct<T> {
             public Coroutine routine;
@@ -37,13 +38,13 @@ namespace Florian {
         public AmplitudeCurve forwardAcceleration;
         public AmplitudeCurve whipAcceleration;
         [Range(0f, 1f)] public float accelerationRandomRange = 0.1f;
-        public AccelerationType currentAccelerationType = AccelerationType.NONE;
-        public float accelerationFactor = 1f;
+        private AccelerationType currentAccelerationType = AccelerationType.NONE;
+        private float accelerationFactor = 1f;
 
         private int rebellionStacks = 0;
 
         [Header("Acceleration")]
-        public AmplitudeCurve acceleration = null;
+        //public AmplitudeCurve acceleration = null;
         public float maxSpeed;
         public float backwardSpeed = 10f;
         [HideInInspector] public bool isAccelerate;
@@ -110,7 +111,7 @@ namespace Florian {
         }
 
         public float SpeedRatio {
-            get { return Mathf.Clamp01(velocity.z / maxSpeed); }
+            get { return Mathf.Clamp01(velocity.z / overSpeed); }
         }
 
         private AccelerationType CurrentAccelerationType {
@@ -265,19 +266,26 @@ namespace Florian {
         }
 
         private float ComputeCurve(AmplitudeCurve curve) {
-            float perSpeed = SpeedRatio;
-            float perCurve = curve.curve.Evaluate(perSpeed);
-            return perCurve * curve.amplitude;
+            return ComputeCurve(curve, maxSpeed);
         }
 
         private float ComputeCurve(AmplitudeCurve curve, float maxSpeed) {
             float perSpeed = Mathf.Clamp01(velocity.z / maxSpeed);
+            perSpeed += Time.deltaTime;
             float perCurve = curve.curve.Evaluate(perSpeed);
             return perCurve * curve.amplitude;
         }
 
         private float ComputeGravity() {
-            float percentage = Mathf.Clamp01(velocity.y / gravityCurve.amplitude);
+            if (jumping) {
+                if (velocity.y - gravityCurve.amplitude < 0) {
+                    return velocity.y;
+                }
+                return gravityCurve.amplitude;
+            }
+
+            float percentage = Mathf.Clamp01(Mathf.Abs(velocity.y) / gravityCurve.amplitude);
+            percentage += Time.deltaTime;
             float perCurve = gravityCurve.curve.Evaluate(percentage);
             return perCurve * gravityCurve.amplitude;
         }

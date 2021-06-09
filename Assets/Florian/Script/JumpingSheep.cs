@@ -34,7 +34,7 @@ namespace Florian
             Vector3 jumpFxPos = new Vector3(transform.position.x, transform.position.y - 0.8f, transform.position.z);
             GetComponent<VFXManager>().JumpSkillFX(jumpFxPos, 4f);
             _movementController.physics.AddVelocity(new Vector3(0f, _megaJumpForce, _megaAccelForce));
-            Debug.Log(_movementController.physics.velocity);
+            //Debug.Log(_movementController.physics.velocity);
             _nbrStomp--;
             RetrieveACharge();
         }

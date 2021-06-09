@@ -174,9 +174,7 @@ namespace Florian {
 
             for (int i = 0; i < AllPanels.Count; i++) {
                 AllPanels[i].transform.SetSiblingIndex(placements[i]);
-                Debug.Log(characters[i].name + ".." + characters[i].transform.GetSiblingIndex() + ".." + placements[i] + ".." + AllPanels[i].transform.name);
-
-
+                //Debug.Log(characters[i].name + ".." + characters[i].transform.GetSiblingIndex() + ".." + placements[i] + ".." + AllPanels[i].transform.name);
             }
 
 

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627ddb7c71ab0e84da137bd6254db1f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _megaJumpForce: 200
-  _megaAccelForce: 10
+  _megaJumpForce: 80
+  _megaAccelForce: 20
   _nbrStomp: 3
   _stompRadius: 10
   _stompForce: 10
