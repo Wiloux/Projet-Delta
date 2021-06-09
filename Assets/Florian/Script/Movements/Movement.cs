@@ -80,6 +80,8 @@ namespace Florian {
 
         [Header("Collisions")]
         [Range(0f, 90f), SerializeField] private float faceAngle = 50f;
+        [Range(0f, 1f), SerializeField] private float offTrackMultiplier = 0.3f;
+        private bool offTracking = false;
 
         [Header("Recovery")]
         [SerializeField] private float slowRecoveryTime = 2f;
@@ -335,10 +337,13 @@ namespace Florian {
         private void ApplySpeed() {
             if (velocity.y <= 0f)
                 jumping = false;
+
+            float offTrackFactor = offTracking ? offTrackMultiplier : 1f;
+
             if (_rb != null) {
-                _rb.velocity = RelativeDirection(velocity);
+                _rb.velocity = RelativeDirection(velocity) * offTrackFactor;
             } else {
-                transform.position += velocity;
+                transform.position += velocity * offTrackFactor;
             }
         }
 
@@ -406,6 +411,11 @@ namespace Florian {
             }
         }
 
+        public void Jump(float force = 0f) {
+            if (force == 0f) { force = jumpForce; }
+            AddVelocity(Vector3.zero.Override(force, Axis.Y));
+        }
+
         #region TimedChanged
 
         public void TimedChange<T>(ref T variable, string variableName, T value, float time) {
@@ -435,6 +445,9 @@ namespace Florian {
                     break;
                 case "gravityCurve.amplitude":
                     gravityCurve.amplitude = To(value, 0f);
+                    break;
+                case "gravityCurve.curve":
+                    gravityCurve.curve = To(value, new AnimationCurve());
                     break;
                 case "deceleration.amplitude":
                     deceleration.amplitude = To(value, 0f);
@@ -493,6 +506,9 @@ namespace Florian {
             RaycastHit hitFloor;
             //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
             if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers)) {
+                if (hitFloor.collider.gameObject.tag == "OffTrack") {
+                    offTracking = true;
+                }
                 return true;
             } else {
                 return false;

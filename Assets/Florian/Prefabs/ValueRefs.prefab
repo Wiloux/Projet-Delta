@@ -17,7 +17,7 @@ MonoBehaviour:
   _nbrStomp: 3
   _stompRadius: 10
   _stompForce: 10
-  _stompSpeed: 50
+  _stompSpeed: 100
   cooldown: 3
   stunTime: 1.5
 --- !u!114 &5254293877782598869
