@@ -7,17 +7,13 @@ using TMPro;
 using DG.Tweening;
 using ToolsBoxEngine;
 
-namespace Florian
-{
-    public class Movement : MonoBehaviour
-    {
-        private struct TimedChangeCoroutineStruct<T>
-        {
+namespace Florian {
+    public class Movement : MonoBehaviour {
+        private struct TimedChangeCoroutineStruct<T> {
             public Coroutine routine;
             public T value;
 
-            public TimedChangeCoroutineStruct(Coroutine routine, T value)
-            {
+            public TimedChangeCoroutineStruct(Coroutine routine, T value) {
                 this.routine = routine;
                 this.value = value;
             }
@@ -92,45 +88,36 @@ namespace Florian
 
         #region Properties
 
-        public float Speed
-        {
+        public float Speed {
             //get { return velocity.magnitude * Mathf.Sign(velocity.z); }
             get { return velocity.z; }
         }
 
-        public float HorizontalDirection
-        {
+        public float HorizontalDirection {
             get { return horizontalDirection; }
         }
 
-        public bool Decelerating
-        {
+        public bool Decelerating {
             get { return isDecelerate; }
         }
 
-        public bool Accelerating
-        {
+        public bool Accelerating {
             get { return isAccelerate; }
         }
 
-        public bool Turning
-        {
+        public bool Turning {
             get { return isTurn; }
         }
 
-        public float SpeedRatio
-        {
+        public float SpeedRatio {
             get { return Mathf.Clamp01(velocity.z / maxSpeed); }
         }
 
-        private AccelerationType CurrentAccelerationType
-        {
+        private AccelerationType CurrentAccelerationType {
             get { return currentAccelerationType; }
-            set
-            {
+            set {
                 currentAccelerationType = value;
-                switch (currentAccelerationType)
-                {
+                switch (currentAccelerationType) {
                     case AccelerationType.BASE:
                         maxSpeed = crusadeSpeed;
                         break;
@@ -144,10 +131,8 @@ namespace Florian
             }
         }
 
-        public SpeedStates SpeedState
-        {
-            get
-            {
+        public SpeedStates SpeedState {
+            get {
                 if (velocity.z < 5f)
                     return SpeedStates.STOPPED;
                 else if (velocity.z < crusadeSpeed)
@@ -163,34 +148,29 @@ namespace Florian
 
         #region Unity callbacks
 
-        void Start()
-        {
+        void Start() {
             _rb = GetComponent<Rigidbody>();
             timedChangedRoutines = new Dictionary<string, TimedChangeCoroutineStruct<object>>();
             maxSpeed = crusadeSpeed;
         }
 
-        void Update()
-        {
+        void Update() {
             //isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
             //isTurn = false;
             airborn = !IsGrounded() || jumping;
 
-            if (!IsGrounded() && needLastGroundPosUpdate)
-            {
+            if (!IsGrounded() && needLastGroundPosUpdate) {
                 needLastGroundPosUpdate = false;
                 lastGroundPos = transform.position;
             }
 
-            if (IsGrounded())
-            {
+            if (IsGrounded()) {
                 needLastGroundPosUpdate = true;
             }
             //airborn = false;
 
-            if (!airborn)
-            {
+            if (!airborn) {
                 velocity.y = 0f;
             }
             //if (IsGrounded()) {
@@ -202,42 +182,31 @@ namespace Florian
 
         #region Update Movements
 
-        public void UpdateMovements()
-        {
+        public void UpdateMovements() {
             if (velocity.z > crusadeSpeed)
                 isAccelerate = true;
             else
                 isAccelerate = false;
-            if (horizontalDirection != 0f && !stun)
-            {
+            if (horizontalDirection != 0f && !stun) {
                 isTurn = true;
                 Turn();
-            }
-            else
-            {
+            } else {
                 isTurn = false;
             }
             //Roll();
 
-            if (isDecelerate && !stun)
-            {
+            if (isDecelerate && !stun) {
                 float deceleration = ComputeCurve(this.deceleration);
                 velocity += Vector3.forward * -deceleration * Time.deltaTime;
 
-                if (velocity.z < -backwardSpeed)
-                {
+                if (velocity.z < -backwardSpeed) {
                     velocity = Vector3.forward * -backwardSpeed;
                 }
-            }
-            else if (Speed < maxSpeed && !stun)
-            {
+            } else if (Speed < maxSpeed && !stun) {
                 AccelerationUpdate();
                 ResetDecelerateTimer();
-            }
-            else
-            {
-                if (decelerateTimer <= 0f)
-                {
+            } else {
+                if (decelerateTimer <= 0f) {
                     float frictions = ComputeCurve(this.frictions);
                     velocity += -frictions * velocity.normalized * Time.deltaTime;
 
@@ -247,8 +216,7 @@ namespace Florian
                 }
             }
 
-            if (decelerateTimer > 0f)
-            {
+            if (decelerateTimer > 0f) {
                 decelerateTimer -= Time.deltaTime;
             }
 
@@ -259,14 +227,12 @@ namespace Florian
             // SlopeTilt();
         }
 
-        private void AccelerationUpdate()
-        {
+        private void AccelerationUpdate() {
             if (currentAccelerationType == AccelerationType.NONE) { return; }
 
             AmplitudeCurve accelerationCurve = baseAcceleration;
 
-            switch (currentAccelerationType)
-            {
+            switch (currentAccelerationType) {
                 case AccelerationType.BASE:
                     accelerationCurve = baseAcceleration;
                     break;
@@ -283,49 +249,40 @@ namespace Florian
             acceleration *= accelerationFactor;
             acceleration *= UnityEngine.Random.Range(1f - accelerationRandomRange, 1f + accelerationRandomRange);
 
-            if (CurrentAccelerationType != AccelerationType.WHIP)
-            {
+            if (CurrentAccelerationType != AccelerationType.WHIP) {
                 acceleration *= Time.deltaTime;
             }
 
-            if (Speed + acceleration < maxSpeed)
-            {
+            if (Speed + acceleration < maxSpeed) {
                 velocity += Vector3.forward * acceleration;
-            }
-            else if (Speed < maxSpeed)
-            {
+            } else if (Speed < maxSpeed) {
                 velocity.z = maxSpeed;
             }
 
-            if (CurrentAccelerationType == AccelerationType.WHIP)
-            {
+            if (CurrentAccelerationType == AccelerationType.WHIP) {
                 CurrentAccelerationType = AccelerationType.BASE;
             }
         }
 
-        private float ComputeCurve(AmplitudeCurve curve)
-        {
+        private float ComputeCurve(AmplitudeCurve curve) {
             float perSpeed = SpeedRatio;
             float perCurve = curve.curve.Evaluate(perSpeed);
             return perCurve * curve.amplitude;
         }
 
-        private float ComputeCurve(AmplitudeCurve curve, float maxSpeed)
-        {
+        private float ComputeCurve(AmplitudeCurve curve, float maxSpeed) {
             float perSpeed = Mathf.Clamp01(velocity.z / maxSpeed);
             float perCurve = curve.curve.Evaluate(perSpeed);
             return perCurve * curve.amplitude;
         }
 
-        private float ComputeGravity()
-        {
+        private float ComputeGravity() {
             float percentage = Mathf.Clamp01(velocity.y / gravityCurve.amplitude);
             float perCurve = gravityCurve.curve.Evaluate(percentage);
             return perCurve * gravityCurve.amplitude;
         }
 
-        private void Turn()
-        {
+        private void Turn() {
             float turnSpeed = turn.amplitude * turn.curve.Evaluate(SpeedRatio) * Time.deltaTime;
             //transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.deltaTime, Space.Self);
             Vector3 forwardNoY = transform.forward;
@@ -339,12 +296,10 @@ namespace Florian
             //transform.rotation *= Quaternion.Euler(0, 1f * turnSpeed * horizontalDirection, 0);
         }
 
-        private void Roll()
-        {
+        private void Roll() {
             Vector3 euler = transform.rotation.eulerAngles;
             float targetRoll = 0f;
-            if (horizontalDirection != 0)
-            {
+            if (horizontalDirection != 0) {
                 float rollSpeed = this.rollAngle * SpeedRatio;
                 targetRoll = rollSpeed * -Mathf.Sign(horizontalDirection);
             }
@@ -352,11 +307,9 @@ namespace Florian
             transform.rotation = Quaternion.Euler(euler);
         }
 
-        public void SlopeTilt()
-        {
+        public void SlopeTilt() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance * 10f, groundLayers))
-            {
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance * 10f, groundLayers)) {
                 Vector3 forwardNoY = transform.forward;
                 forwardNoY.y = 0f;
                 forwardNoY.Normalize();
@@ -371,16 +324,12 @@ namespace Florian
             }
         }
 
-        private void ApplySpeed()
-        {
+        private void ApplySpeed() {
             if (velocity.y <= 0f)
                 jumping = false;
-            if (_rb != null)
-            {
+            if (_rb != null) {
                 _rb.velocity = RelativeDirection(velocity);
-            }
-            else
-            {
+            } else {
                 transform.position += velocity;
             }
         }
@@ -389,53 +338,42 @@ namespace Florian
 
         #region Movements setters
 
-        public void SetHorizontalDirection(float direction)
-        {
+        public void SetHorizontalDirection(float direction) {
             horizontalDirection = direction;
         }
 
-        public void Decelerate()
-        {
+        public void Decelerate() {
             isDecelerate = true;
         }
 
-        public void Accelerate()
-        {
+        public void Accelerate() {
             accelerationIteration++;
             ResetDecelerateTimer();
         }
 
-        public void Accelerate(AccelerationType accelerationType, float accelerationFactor = 1f)
-        {
+        public void Accelerate(AccelerationType accelerationType, float accelerationFactor = 1f) {
             CurrentAccelerationType = accelerationType;
             this.accelerationFactor = accelerationFactor;
         }
 
-        public void AddVelocity(Vector3 velocity)
-        {
+        public void AddVelocity(Vector3 velocity) {
             if (velocity.y > 0f)
                 jumping = true;
 
             this.velocity += velocity;
         }
 
-        public void Slow(float slow)
-        {
+        public void Slow(float slow) {
             if (!slowable) { return; }
 
-            if (velocity.z > 0f)
-            {
+            if (velocity.z > 0f) {
                 AddVelocity(Vector3.back * Mathf.Abs(slow));
-                if (velocity.z < 0f)
-                {
+                if (velocity.z < 0f) {
                     velocity.z = 0f;
                 }
-            }
-            else if (velocity.z < 0f)
-            {
+            } else if (velocity.z < 0f) {
                 AddVelocity(Vector3.forward * Mathf.Abs(slow));
-                if (velocity.z > 0f)
-                {
+                if (velocity.z > 0f) {
                     velocity.z = 0f;
                 }
             }
@@ -444,12 +382,9 @@ namespace Florian
             StartCoroutine(Delay((string s, bool b) => ModifyValue(s, b), "slowable", true, slowRecoveryTime));
         }
 
-        public void NegateVelocity(params Axis[] axis)
-        {
-            for (int i = 0; i < axis.Length; i++)
-            {
-                switch (axis[i])
-                {
+        public void NegateVelocity(params Axis[] axis) {
+            for (int i = 0; i < axis.Length; i++) {
+                switch (axis[i]) {
                     case Axis.X:
                         velocity.x = 0;
                         break;
@@ -465,13 +400,11 @@ namespace Florian
 
         #region TimedChanged
 
-        public void TimedChange<T>(ref T variable, string variableName, T value, float time)
-        {
+        public void TimedChange<T>(ref T variable, string variableName, T value, float time) {
             T baseValue = variable;
             variable = value;
 
-            if (timedChangedRoutines.ContainsKey(variableName))
-            {
+            if (timedChangedRoutines.ContainsKey(variableName)) {
                 baseValue = (T)timedChangedRoutines[variableName].value;
                 StopCoroutine(timedChangedRoutines[variableName].routine);
                 timedChangedRoutines.Remove(variableName);
@@ -481,17 +414,14 @@ namespace Florian
             timedChangedRoutines.Add(variableName, new TimedChangeCoroutineStruct<object>(routine, baseValue));
         }
 
-        private IEnumerator Delay<T1, T2>(Tools.BasicDelegate<T1, T2> function, T1 arg1, T2 arg2, float time)
-        {
+        private IEnumerator Delay<T1, T2>(Tools.BasicDelegate<T1, T2> function, T1 arg1, T2 arg2, float time) {
             yield return new WaitForSeconds(time);
             function(arg1, arg2);
         }
 
-        private void ModifyValue<T>(string variableName, T value)
-        {
+        private void ModifyValue<T>(string variableName, T value) {
             //(float)Convert.ChangeType(value, typeof(float));
-            switch (variableName)
-            {
+            switch (variableName) {
                 case "maxSpeed":
                     maxSpeed = To(value, 0f);
                     break;
@@ -519,17 +449,13 @@ namespace Florian
             }
         }
 
-        private static T To<T>(object input, T value)
-        {
+        private static T To<T>(object input, T value) {
             T result = value;
-            try
-            {
+            try {
                 if (input == null || input == DBNull.Value) { return result; }
 
                 result = (T)Convert.ChangeType(input, typeof(T));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Debug.LogError(e);
             }
 
@@ -542,8 +468,7 @@ namespace Florian
 
         #region Setters
 
-        public void ResetDecelerateTimer()
-        {
+        public void ResetDecelerateTimer() {
             decelerateTimer = decelerateTime;
         }
 
@@ -551,43 +476,34 @@ namespace Florian
 
         #region Getters
 
-        private Vector3 RelativeDirection(Vector3 vector)
-        {
+        private Vector3 RelativeDirection(Vector3 vector) {
             float angle = Vector3.SignedAngle(Vector3.forward, transform.forward, Vector3.up);
             return Quaternion.AngleAxis(angle, Vector3.up) * vector;
         }
 
-        private bool IsGrounded()
-        {
+        private bool IsGrounded() {
             RaycastHit hitFloor;
             //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers))
-            {
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers)) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
         #endregion
 
-        private void OnCollisionEnter(Collision collision)
-        {
+        private void OnCollisionEnter(Collision collision) {
             if (!(groundLayers.Contains(collision.gameObject.layer)) &&
                 Mathf.Lerp(90f, 0f, Vector3.Dot(-collision.contacts[0].normal, transform.forward)) < faceAngle
-            )
-            {
+            ) {
                 Debug.Log($"{gameObject.name} collided with : {collision.gameObject.name}");
                 NegateVelocity(Axis.Z);
             }
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.tag == "DeathBox")
-            {
+        private void OnTriggerEnter(Collider other) {
+            if (other.tag == "DeathBox") {
                 NegateVelocity(Axis.Z, Axis.Y, Axis.X);
                 FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos);
             }

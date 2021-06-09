@@ -24,7 +24,7 @@ public class FallManager : MonoBehaviour
 
     public void CheckPlayerBestCheckPoint(GameObject fallenPlayer, Vector3 leftGroundPos)
     {
-        float bestDistance = 99999999f;
+        float bestDistance = Mathf.Infinity;
         Transform bestCheckPoint = null;
         foreach (Transform checkpoint in checkpoints)
         {
@@ -36,7 +36,8 @@ public class FallManager : MonoBehaviour
         }
 
         fallenPlayer.transform.position = bestCheckPoint.position;
-        fallenPlayer.transform.rotation.eulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
+        fallenPlayer.transform.localEulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
+        //fallenPlayer.transform.rotation.eulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
     }
 
 

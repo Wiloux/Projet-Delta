@@ -64,7 +64,6 @@ namespace Florian {
                 float zPos = Mathf.Lerp(_minZ, _maxZ, percentageSpeed);
                 if (movement.Speed == 0) { zPos = cam._initPos.z; }
 
-                Debug.Log(movement.Accelerating);
                 // Acceleration
                 if (movement.Accelerating && movement.Speed < movement.MaxSpeed && !movement.Turning) {
                     //Vector3 accelpos = Vector3.Lerp(accelPosition, accelPosition + accelDelta, Mathf.Clamp01(movement.Speed / movement.maxSpeed));
