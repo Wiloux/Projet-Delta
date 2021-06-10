@@ -77,11 +77,11 @@ public class Fear : MonoBehaviour {
 
     private IEnumerator Cast() {
         ps.Play();
+        mvtController.riderAnim.SetTrigger("fear");
         sphereMat.SetFloat("OverallAlpha", 0.08f);
         alphaTimer = 0.08f;
         castable = false;
         yield return new WaitForSeconds(castingTime);
-        mvtController.riderAnim.SetTrigger("fear");
         sphereGrowthCurve.timer = 0;
         sphereRend.gameObject.SetActive(true);
     }
