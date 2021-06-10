@@ -72,7 +72,7 @@ namespace Florian {
         [HideInInspector] public bool airborn;
         private bool needLastGroundPosUpdate;
         public Vector3 lastGroundPos;
-        private bool jumping = false;
+        [HideInInspector] public bool jumping = false;
 
         public float jumpForce;
         public LayerMask groundLayers;
@@ -508,6 +508,8 @@ namespace Florian {
             if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers)) {
                 if (hitFloor.collider.gameObject.tag == "OffTrack") {
                     offTracking = true;
+                } else {
+                    offTracking = false;
                 }
                 return true;
             } else {

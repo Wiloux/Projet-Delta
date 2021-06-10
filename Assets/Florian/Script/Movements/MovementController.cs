@@ -38,6 +38,9 @@ namespace Florian {
 
         [Header("Controls")]
         public bool lockMovements = false;
+        public float weightDistributionSpeed = 0.1f;
+        private Vector2 weightAxis = Vector2.zero;
+        private Vector2 targetWeightAxis = Vector2.zero;
 
         #region Properties
 
@@ -214,7 +217,7 @@ namespace Florian {
                         mountThrowing.MountThrow();
                 }
 
-                if (player.GetButtonDown("Jump")) {
+                if (player.GetButtonDown("Jump") && !Airborn && !physics.jumping) {
                     if (jumpingSheep != null && jumpingSheep._nbrStomp > 0) {
                         if (!Airborn && jumpingSheep._nbrStomp != 0)
                             jumpingSheep.MegaJump();
@@ -236,9 +239,20 @@ namespace Florian {
                 }
             }
 
-            physics.SetHorizontalDirection(horizontalDirection);
-            riderAnim.SetFloat("Horizontal", player.GetAxis("Horizontal"));
-            riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
+            targetWeightAxis.Set(player.GetAxis("Horizontal"), player.GetAxis("Vertical"));
+            float weightX = Mathf.MoveTowards(weightAxis.x, targetWeightAxis.x, weightDistributionSpeed);
+            float weightY = Mathf.MoveTowards(weightAxis.y, targetWeightAxis.y, weightDistributionSpeed);
+            weightAxis.Set(weightX, weightY);
+
+            riderAnim.SetFloat("Horizontal", weightAxis.x);
+            riderAnim.SetFloat("Vertical", weightAxis.y);
+
+            //physics.SetHorizontalDirection(horizontalDirection);
+            if (weightAxis.x == -1 || weightAxis.x == 1)
+                physics.SetHorizontalDirection(weightAxis.x);
+            else
+                physics.SetHorizontalDirection(0f);
+
             UpdateAnims();
         }
 
