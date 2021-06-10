@@ -40,7 +40,8 @@ public class FallManager : MonoBehaviour
         }
 
         fallenPlayer.transform.position = bestCheckPoint.position;
-        fallenPlayer.transform.localEulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
+        //fallenPlayer.transform.LookAt(bestCheckPoint.transform.TransformDirection(transform.forward));
+        fallenPlayer.transform.forward = new Vector3(bestCheckPoint.transform.TransformDirection(transform.forward).x, bestCheckPoint.transform.TransformDirection(transform.forward).y, bestCheckPoint.transform.TransformDirection(transform.forward).z);
         //fallenPlayer.transform.rotation.eulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
     }
 
