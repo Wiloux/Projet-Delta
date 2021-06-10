@@ -94,12 +94,13 @@ namespace Florian
 
             foreach (Collider pushedObject in colliders)
             {
-                if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
+                MovementController hittedMvtController = pushedObject.GetComponent<MovementController>();
+                if (hittedMvtController != null && hittedMvtController.playerName != _movementController.playerName)
                 {
-                    MovementController movementController = pushedObject.GetComponent<MovementController>();
-                    movementController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * _stompForce);
-                    movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 5f, 1f);
-                    movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, stunTime);
+                    Vector3 directionBtwnPlayers = (transform.position - pushedObject.transform.position).normalized;
+                    hittedMvtController.physics.AddVelocity(directionBtwnPlayers.Redirect(Vector3.forward, pushedObject.transform.forward) * _stompForce);
+                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.frictions.amplitude, "frictions.amplitude", hittedMvtController.physics.frictions.amplitude * 5f, 1f);
+                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.stun, "stun", true, stunTime);
                     pushedObject.GetComponent<VFXManager>().Stunned(stunTime);
                 }
             }

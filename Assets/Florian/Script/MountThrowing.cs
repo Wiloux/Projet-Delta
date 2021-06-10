@@ -41,13 +41,12 @@ namespace Florian
 
             foreach (Collider pushedObject in colliders)
             {
-                if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
-                {
+                MovementController hittedMvtController = pushedObject.GetComponent<MovementController>();
+                if (hittedMvtController != null && hittedMvtController.playerName != _playerMovementController.playerName) {
                     _isThrowing = false;
-                    MovementController pushedMovementController = pushedObject.GetComponent<MovementController>();
-                    pushedMovementController.physics.AddVelocity(Vector3.right * _throwForce);
-                    pushedMovementController.physics.TimedChange(ref pushedMovementController.physics.frictions.amplitude, "frictions.amplitude", pushedMovementController.physics.frictions.amplitude * 5f, 1f);
-                    pushedMovementController.physics.TimedChange(ref pushedMovementController.physics.stun, "stun", true, 2.5f);
+                    hittedMvtController.physics.AddVelocity(Vector3.right * _throwForce);
+                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.frictions.amplitude, "frictions.amplitude", hittedMvtController.physics.frictions.amplitude * 5f, 1f);
+                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.stun, "stun", true, 2.5f);
 
                     _playerMovementController.physics.TimedChange(ref _playerMovementController.physics.gravityCurve.amplitude, "gravityCurve.amplitude", 4f, 1f);
                     _playerMovementController.physics.NegateVelocity(Axis.Z);

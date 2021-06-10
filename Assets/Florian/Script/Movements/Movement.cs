@@ -26,7 +26,6 @@ namespace Florian {
         private Rigidbody _rb;
         /*[HideInInspector]*/
         public Vector3 velocity = Vector3.zero;
-        private float horizontalDirection = 0f;
 
         [Header("MaxSpeeds")]
         public float crusadeSpeed = 20f;
@@ -45,10 +44,9 @@ namespace Florian {
 
         [Header("Acceleration")]
         //public AmplitudeCurve acceleration = null;
-        public float maxSpeed;
+        [HideInInspector] public float maxSpeed;
         public float backwardSpeed = 10f;
         [HideInInspector] public bool isAccelerate;
-        private int accelerationIteration = 0;
 
         [Header("Deceleration")]
         public AmplitudeCurve deceleration = null;
@@ -60,6 +58,9 @@ namespace Florian {
         private float decelerateTimer = 0.2f;
 
         [Header("Turn")]
+        [SerializeField] private float horizontalDirectionSpeed = 10f;
+        private float targetHorizontalDirection = 0f;
+        private float horizontalDirection = 0f;
         public AmplitudeCurve turn = null;
         [HideInInspector] public bool isTurn = false;
         [SerializeField] private float rollAngle = 10f;
@@ -190,6 +191,11 @@ namespace Florian {
                 isAccelerate = true;
             else
                 isAccelerate = false;
+
+            if (horizontalDirection != targetHorizontalDirection) {
+                horizontalDirection = Mathf.MoveTowards(horizontalDirection, targetHorizontalDirection, horizontalDirectionSpeed * Time.deltaTime);
+            }
+
             if (horizontalDirection != 0f && !stun) {
                 isTurn = true;
                 Turn();
@@ -211,7 +217,11 @@ namespace Florian {
             } else {
                 if (decelerateTimer <= 0f) {
                     float frictions = ComputeCurve(this.frictions);
-                    velocity += -frictions * velocity.normalized * Time.deltaTime;
+                    if (frictions * velocity.normalized.sqrMagnitude * Time.deltaTime > velocity.sqrMagnitude) {
+                        velocity = Vector3.zero;
+                    } else {
+                        velocity += -frictions * velocity.normalized * Time.deltaTime;
+                    }
 
                     //if (Mathf.Clamp01(Mathf.Abs(Speed) / maxSpeed) <= 0.1f) {
                     //    //velocity = Vector3.zero;
@@ -225,7 +235,6 @@ namespace Florian {
 
             velocity += ComputeGravity() * Vector3.down;
 
-            accelerationIteration = 0;
             ApplySpeed();
             // SlopeTilt();
         }
@@ -352,16 +361,11 @@ namespace Florian {
         #region Movements setters
 
         public void SetHorizontalDirection(float direction) {
-            horizontalDirection = direction;
+            targetHorizontalDirection = direction;
         }
 
         public void Decelerate() {
             isDecelerate = true;
-        }
-
-        public void Accelerate() {
-            accelerationIteration++;
-            ResetDecelerateTimer();
         }
 
         public void Accelerate(AccelerationType accelerationType, float accelerationFactor = 1f) {

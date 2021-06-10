@@ -69,8 +69,9 @@ public class Fear : MonoBehaviour {
     private void Collide(float size) {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, size);
         foreach (Collider hitCollider in hitColliders) {
-            if (hitCollider.GetComponent<MovementController>() && hitCollider.transform.name != transform.name) {
-                hitCollider.GetComponent<MovementController>().physics.Slow(slowAmount);
+            MovementController hittedMvtController = hitCollider.GetComponent<MovementController>();
+            if (hittedMvtController != null && hittedMvtController.playerName != mvtController.playerName) {
+                hittedMvtController.physics.Slow(slowAmount);
             }
         }
     }

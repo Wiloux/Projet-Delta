@@ -5,11 +5,16 @@ using ToolsBoxEngine;
 
 namespace Florian {
     public class FlanksAttack : MonoBehaviour {
+        private MovementController _movementController;
+
         [SerializeField] private float _pushForce;
         [SerializeField] private Vector3 _throwBoxDimension;
-        [SerializeField] private float stunTime = 2.5f;
         public float _cooldown;
         public float _timer;
+
+        private void Start() {
+            _movementController = GetComponent<MovementController>();
+        }
 
         private void Update() {
             if (_timer > 0)
@@ -24,12 +29,12 @@ namespace Florian {
             Collider[] colliders = Physics.OverlapBox(transform.right * horizontal * 2f + transform.localPosition, _throwBoxDimension);
 
             foreach (Collider pushedObject in colliders) {
-                if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name) {
-                    MovementController movementController = pushedObject.GetComponent<MovementController>();
+                MovementController hittedMvtController = pushedObject.GetComponent<MovementController>();
+                if (hittedMvtController != null && hittedMvtController.playerName != _movementController.playerName) {
                     pushedObject.GetComponent<VFXManager>().AttackSkillFX(transform.right * horizontal * 2f + transform.localPosition, 2f);
                     pushedObject.GetComponent<VFXManager>().TextToon(transform.right * horizontal * 2f + transform.localPosition, 2f);
-                    movementController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * -1f * _pushForce);
-                    movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 15f, 1f);
+                    hittedMvtController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * -1f * _pushForce);
+                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.frictions.amplitude, "frictions.amplitude", hittedMvtController.physics.frictions.amplitude * 15f, 1f);
                 }
             }
 

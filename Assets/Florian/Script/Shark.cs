@@ -5,6 +5,8 @@ namespace Florian
 {
     public class Shark : MonoBehaviour
     {
+        private MovementController _movementController;
+
         public float pushForce;
         public float pushRadius;
         public float poweredPushForce;
@@ -14,6 +16,9 @@ namespace Florian
         public float _cooldown;
         public float _timer;
 
+        private void Start() {
+            _movementController = GetComponent<MovementController>();
+        }
 
         private void Update()
         {
@@ -32,12 +37,12 @@ namespace Florian
 
             foreach (Collider pushedObject in colliders)
             {
-                if (pushedObject.CompareTag("Player") && pushedObject.name != gameObject.name)
+                MovementController hittedMvtController = pushedObject.GetComponent<MovementController>();
+                if (hittedMvtController != null && hittedMvtController.playerName != _movementController.playerName)
                 {
-                    MovementController movementController = pushedObject.GetComponent<MovementController>();
-                    movementController.physics.AddVelocity(Vector3.right * horizontal * _pushForce);
-                    movementController.physics.TimedChange(ref movementController.physics.frictions.amplitude, "frictions.amplitude", movementController.physics.frictions.amplitude * 15f, 1f);
-                    movementController.physics.TimedChange(ref movementController.physics.stun, "stun", true, 2.5f);
+                    hittedMvtController.physics.AddVelocity(Vector3.right * horizontal * _pushForce);
+                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.frictions.amplitude, "frictions.amplitude", hittedMvtController.physics.frictions.amplitude * 15f, 1f);
+                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.stun, "stun", true, 2.5f);
                 }
             }
 
