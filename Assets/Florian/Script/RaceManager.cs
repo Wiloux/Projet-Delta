@@ -156,6 +156,7 @@ namespace Florian {
 
         public void EndRace() {
             placementPanel.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
 
             List<Transform> AllPanels = new List<Transform>();
 

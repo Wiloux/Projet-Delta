@@ -26,8 +26,8 @@ namespace Florian
         public GameObject kart = null;
         [HideInInspector] public List<MovementController> players = null;
         public Material[] playersColor = null;
-        public UnityEditor.Animations.AnimatorController lifeGuardAnim;
-        public UnityEditor.Animations.AnimatorController DomiAnim;
+        //public UnityEditor.Animations.AnimatorController lifeGuardAnim;
+        //public UnityEditor.Animations.AnimatorController DomiAnim;
         public Mesh lifeGuardMesh;
 
         [Header("Other")]
@@ -351,6 +351,10 @@ namespace Florian
         {
             yield return new WaitForSeconds(time);
             function();
+        }
+
+        public void RestartTheGame() {
+            SceneManager.LoadScene(0);
         }
     }
 }

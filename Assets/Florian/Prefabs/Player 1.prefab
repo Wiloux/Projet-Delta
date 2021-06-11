@@ -1696,6 +1696,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 44.99999
       objectReference: {fileID: 0}
+    - target: {fileID: 3104781357824505230, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
+      propertyPath: m_Name
+      value: Mouton_Mesh
+      objectReference: {fileID: 0}
     - target: {fileID: 3842944908964345308, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -0.24182487

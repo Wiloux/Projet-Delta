@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Florian/Scenes/Menu.unity
-    guid: da1678818ff4b3d40acb50e8200e9d5f
-  - enabled: 1
-    path: Assets/Florian/Scenes/Kart_Flo.unity
-    guid: 54fbf4ae4401641439add555d6cf28d9
+    path: Assets/Rafael/Scene/LD 2 - Canyon Track.unity
+    guid: 5a568248b04ab73488ebc7e84681ce17
   m_configObjects: {}
