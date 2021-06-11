@@ -542,6 +542,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 33ebd97ab2907074db68d0df2280cb95, type: 2}
   - {fileID: 2100000, guid: 76abdb0abca3a5047bde8a6501fef9d2, type: 2}
   lifeGuardAnim: {fileID: 9100000, guid: 6966529cdeb33c04aaf28073f42ab29d, type: 2}
+  DomiAnim: {fileID: 9100000, guid: 268c7fd48af8ad343a774d8abc2ac646, type: 2}
   lifeGuardMesh: {fileID: 2197249021993006616, guid: 81277258dd29e284bb1e7996e431a0e3, type: 3}
   mainCamera: {fileID: 1185192095}
   switchCameraInterval: 10

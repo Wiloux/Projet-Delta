@@ -27,6 +27,7 @@ namespace Florian
         [HideInInspector] public List<MovementController> players = null;
         public Material[] playersColor = null;
         public UnityEditor.Animations.AnimatorController lifeGuardAnim;
+        public UnityEditor.Animations.AnimatorController DomiAnim;
         public Mesh lifeGuardMesh;
 
         [Header("Other")]
@@ -176,6 +177,7 @@ namespace Florian
                     switch (multiplayerPanel.playerScreens[i].indexPortrait)
                     {
                         case 0:
+                            lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").GetComponent<Animator>();
                             Fear lastFear = lastSpawnedChild.AddComponent<Fear>();
                             Fear refFear = valueRefs.GetComponent<Fear>();
                             lastFear.sphereGrowthCurve = refFear.sphereGrowthCurve.Clone();
@@ -187,8 +189,11 @@ namespace Florian
                             lastJumping._megaJumpForce = refJumping._megaJumpForce;
                             lastJumping.cooldown = refJumping.cooldown;
                             lastJumping._stompRadius = refJumping._stompRadius;
+                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(false);
+                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(true);
                             break;
                         case 1:
+                            lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").GetComponent<Animator>();
                             Shark refShark = valueRefs.GetComponent<Shark>();
                             Shark lastShark = lastSpawnedChild.AddComponent<Shark>();
                             lastShark._cooldown = refShark._cooldown;
@@ -198,8 +203,9 @@ namespace Florian
                             lastShark.pushRadius = refShark.pushRadius;
                             lastSpawnedChild.AddComponent<MountThrowing>();
                             //Debug.Log(lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider"));
-                            lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider").GetComponent<Animator>().runtimeAnimatorController = lifeGuardAnim;
-                            lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider/Mesh_Rider").GetComponent<SkinnedMeshRenderer>().sharedMesh = lifeGuardMesh;
+                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(false);
+                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(true);
+
                             break;
                     }
                 }
