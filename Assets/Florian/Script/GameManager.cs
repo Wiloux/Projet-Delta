@@ -26,6 +26,8 @@ namespace Florian
         public GameObject kart = null;
         [HideInInspector] public List<MovementController> players = null;
         public Material[] playersColor = null;
+        public UnityEditor.Animations.AnimatorController lifeGuardAnim;
+        public Mesh lifeGuardMesh;
 
         [Header("Other")]
         public Camera mainCamera = null;
@@ -187,20 +189,7 @@ namespace Florian
                             lastJumping._stompRadius = refJumping._stompRadius;
                             break;
                         case 1:
-                            Fear lastFear1 = lastSpawnedChild.AddComponent<Fear>();
-                            Fear refFear1 = valueRefs.GetComponent<Fear>();
-                            lastFear1.sphereGrowthCurve = refFear1.sphereGrowthCurve.Clone();
-                            lastFear1.slowAmount = refFear1.slowAmount;
-                            lastFear1.castingTime = refFear1.castingTime;
-                            lastFear1.coolDownDuration = refFear1.coolDownDuration;
-                            JumpingSheep lastJumping1 = lastSpawnedChild.AddComponent<JumpingSheep>();
-                            JumpingSheep refJumping1 = lastSpawnedChild.GetComponent<JumpingSheep>();
-                            lastJumping1._megaJumpForce = refJumping1._megaJumpForce;
-                            lastJumping1.cooldown = refJumping1.cooldown;
-                            lastJumping1._stompRadius = refJumping1._stompRadius;
-                            break;
-                        case 2:
-                            Shark refShark = valueRefs.GetComponent<Shark>();                            
+                            Shark refShark = valueRefs.GetComponent<Shark>();
                             Shark lastShark = lastSpawnedChild.AddComponent<Shark>();
                             lastShark._cooldown = refShark._cooldown;
                             lastShark.poweredPushForce = refShark.poweredPushForce;
@@ -208,10 +197,9 @@ namespace Florian
                             lastShark.pushForce = refShark.pushForce;
                             lastShark.pushRadius = refShark.pushRadius;
                             lastSpawnedChild.AddComponent<MountThrowing>();
-                            break;
-                        case 3:
-                            lastSpawnedChild.AddComponent<Shark>();
-                            lastSpawnedChild.AddComponent<MountThrowing>();
+                            //Debug.Log(lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider"));
+                            lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider").GetComponent<Animator>().runtimeAnimatorController = lifeGuardAnim;
+                            lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider/Mesh_Rider").GetComponent<SkinnedMeshRenderer>().sharedMesh = lifeGuardMesh;
                             break;
                     }
                 }

@@ -167,10 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b4a46c415b3de4db445ed4d206e47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: {x: 0, y: 3.4, z: -12.67}
-  _target: {fileID: 0}
-  _translateSpeed: 30
-  _rotationSpeed: 30
+  player: {fileID: 0}
 --- !u!20 &10736377
 Camera:
   m_ObjectHideFlags: 0
@@ -544,8 +541,8 @@ MonoBehaviour:
   playersColor:
   - {fileID: 2100000, guid: 33ebd97ab2907074db68d0df2280cb95, type: 2}
   - {fileID: 2100000, guid: 76abdb0abca3a5047bde8a6501fef9d2, type: 2}
-  - {fileID: 2100000, guid: 51abeb46d7c204f48afa1bed771060b1, type: 2}
-  - {fileID: 2100000, guid: c5dc020e7e996fa42b265a3547e5d4e1, type: 2}
+  lifeGuardAnim: {fileID: 9100000, guid: 6966529cdeb33c04aaf28073f42ab29d, type: 2}
+  lifeGuardMesh: {fileID: 2197249021993006616, guid: 81277258dd29e284bb1e7996e431a0e3, type: 3}
   mainCamera: {fileID: 1185192095}
   switchCameraInterval: 10
   miniMap: {fileID: 1091135130}
@@ -1634,10 +1631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b4a46c415b3de4db445ed4d206e47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: {x: 0, y: 3.4, z: -12.67}
-  _target: {fileID: 1921149581}
-  _translateSpeed: 30
-  _rotationSpeed: 30
+  player: {fileID: 0}
 --- !u!81 &432653027
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2212,8 +2206,6 @@ MonoBehaviour:
   portraitSprites:
   - {fileID: 21300000, guid: f5a7fb3ef91d7f44898bbf6438efc868, type: 3}
   - {fileID: 21300000, guid: 0d6aae3deae88234e8dccc8d6de5a2ca, type: 3}
-  - {fileID: 21300000, guid: 8caf3064f2aa79844b2761188f1578b4, type: 3}
-  - {fileID: 21300000, guid: 6f9ac95382f459b49aa3f631a8419ac5, type: 3}
   playerScreens:
   - portrait: {fileID: 454663961}
     indexPortrait: 0
@@ -7654,11 +7646,6 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 58540b59b491dda438c73d5077bdc85d, type: 3}
   m_PrefabInstance: {fileID: 6722473455796045748}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1921149581 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2410863475443005161, guid: 0ac497189c8e85c4ab86ba04c14cd167, type: 3}
-  m_PrefabInstance: {fileID: 1859216752}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1966608491 stripped
 GameObject:
