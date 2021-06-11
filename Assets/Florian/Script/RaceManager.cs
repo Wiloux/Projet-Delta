@@ -150,7 +150,7 @@ namespace Florian {
 
         public void TeleportCharacters(Vector3 position, Vector3 orientation) {
             for (int i = 0; i < characters.Count; i++) {
-                TeleportCharacters(position + new Vector3(0, 0, 2f) * i, orientation, characters[i]);
+                TeleportCharacters(position + new Vector3(2f, 0) * i, orientation, characters[i]);
             }
         }
 
