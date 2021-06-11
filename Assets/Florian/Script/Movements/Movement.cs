@@ -441,6 +441,8 @@ namespace Florian {
         public void Bump(Vector3 worldDirection, float force, bool dependingSpeedState = true) {
             if (dependingSpeedState) {
                 if (offTracking) {
+                    force *= 2f;
+                    Debug.Log("Offtracking");
                     // Offtrack !
                 } else {
                     Debug.Log(SpeedState);
@@ -559,7 +561,6 @@ namespace Florian {
             RaycastHit hitFloor;
             //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
             if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore)) {
-                Debug.Log(hitFloor.collider.tag);
                 if (hitFloor.collider.gameObject.tag == "OffTrack") {
                     offTracking = true;
                 } else {
