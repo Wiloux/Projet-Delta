@@ -1272,7 +1272,7 @@ MonoBehaviour:
   lapsText: {fileID: 1452320075828873028}
   maxLaps: 2
   lockMovements: 0
-  weightDistributionSpeed: 5
+  weightDistributionSpeed: 8
 --- !u!114 &3962731580872504403
 MonoBehaviour:
   m_ObjectHideFlags: 0
