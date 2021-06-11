@@ -9,6 +9,7 @@ using ToolsBoxEngine;
 namespace Florian {
     public class MovementController : Character {
         public Movement physics;
+        private VFXManager vfx;
         private FlanksAttack flanksAttack;
         private JumpingSheep jumpingSheep;
         private MountThrowing mountThrowing;
@@ -51,7 +52,7 @@ namespace Florian {
         }
 
         public float MaxSpeed {
-            get { return physics.maxSpeed; }
+            get { return physics.MaxSpeed; }
         }
 
         public bool IsMoving {
@@ -96,6 +97,10 @@ namespace Florian {
             if (physics == null) {
                 physics = GetComponent<Movement>();
             }
+
+            physics.OnStun += OnStun;
+
+            vfx = GetComponent<VFXManager>();
 
             flanksAttack = GetComponent<FlanksAttack>();
             if (flanksAttack == null) { Debug.LogError("Flank attack not found on controller object"); }
@@ -142,10 +147,6 @@ namespace Florian {
                 if (weightAxis.y == -1f) {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
-                }
-
-                if (Mathf.Abs(player.GetAxis("Horizontal")) == 1f) {
-                    horizontalDirection += player.GetAxis("Horizontal");
                 }
             }
 
@@ -260,6 +261,28 @@ namespace Florian {
 
         #region Setters
 
+        //public void Stun(float time) {
+        //    physics.Stun(time);
+        //    vfx.Stunned(time);
+        //    riderAnim.SetTrigger("stunned");
+        //}
+
+        //public void OnStun(object obj, Movement.StunArgs eventArgs) {
+        //    vfx.Stunned(eventArgs.time);
+        //    riderAnim.SetTrigger("stunned");
+        //}
+
+        public void OnStun(float time) {
+            vfx.Stunned(time);
+            riderAnim.SetTrigger("stunned");
+            Unstunned(false);
+            StartCoroutine(Tools.Delay(Unstunned, true, time));
+        }
+
+        private void Unstunned(bool value) {
+            riderAnim.SetBool("unstunned", value);
+        }
+            
         public void SetController(string name) {
             player = ReInput.players.GetPlayer(name);
             if (player != null) { Debug.Log("Controller found : " + player.name); } else { Debug.LogWarning("Controller not found"); return; }

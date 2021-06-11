@@ -81,11 +81,15 @@ namespace Florian {
 
         [Header("Collisions")]
         [Range(0f, 90f), SerializeField] private float faceAngle = 50f;
+        public float bounceForce = 20f;
+        public float bounceStunTime = 2f;
         [Range(0f, 1f), SerializeField] private float offTrackMultiplier = 0.3f;
         private bool offTracking = false;
 
         [Header("Recovery")]
         [SerializeField] private float slowRecoveryTime = 2f;
+
+        [HideInInspector] public Tools.BasicDelegate<float> OnStun;
         private bool slowable = true;
 
         private Dictionary<string, TimedChangeCoroutineStruct<object>> timedChangedRoutines = null;
@@ -115,6 +119,10 @@ namespace Florian {
 
         public float SpeedRatio {
             get { return Mathf.Clamp01(velocity.z / overSpeed); }
+        }
+
+        public float MaxSpeed {
+            get { return overSpeed; }
         }
 
         private AccelerationType CurrentAccelerationType {
@@ -360,6 +368,16 @@ namespace Florian {
 
         #region Movements setters
 
+        public void Stun(float time) {
+            TimedChange(ref frictions.curve, "frictions.curve", AnimationCurve.Constant(0f, 1f, 1f), time);
+            TimedChange(ref frictions.amplitude, "frictions.amplitude", frictions.amplitude * 5f, time);
+            TimedChange(ref stun, "stun", true, time);
+
+            if (OnStun != null) {
+                OnStun(time);
+            }
+        }
+
         public void SetHorizontalDirection(float direction) {
             targetHorizontalDirection = direction;
         }
@@ -420,6 +438,34 @@ namespace Florian {
             AddVelocity(Vector3.zero.Override(force, Axis.Y));
         }
 
+        public void Bump(Vector3 worldDirection, float force, bool dependingSpeedState = true) {
+            if (dependingSpeedState) {
+                if (offTracking) {
+                    // Offtrack !
+                } else {
+                    Debug.Log(SpeedState);
+                    switch (SpeedState) {
+                        case SpeedStates.STOPPED:
+                            force = 0f;
+                            break;
+                        case SpeedStates.CRUSADE:
+                            force *= 0.8f;
+                            break;
+                        case SpeedStates.HIGH:
+                            Stun(bounceStunTime / 2f);
+                            break;
+                        case SpeedStates.OVER:
+                            Stun(bounceStunTime);
+                            break;
+                    }
+                }
+            }
+
+            NegateVelocity(Axis.Z);
+            Vector3 direction = worldDirection.Redirect(transform.forward, Vector3.forward);
+            AddVelocity(direction * force);
+        }
+
         #region TimedChanged
 
         public void TimedChange<T>(ref T variable, string variableName, T value, float time) {
@@ -458,6 +504,9 @@ namespace Florian {
                     break;
                 case "frictions.amplitude":
                     frictions.amplitude = To(value, 0f);
+                    break;
+                case "frictions.curve":
+                    frictions.curve = To(value, new AnimationCurve());
                     break;
                 case "stun":
                     stun = To(value, false);
@@ -509,26 +558,52 @@ namespace Florian {
         private bool IsGrounded() {
             RaycastHit hitFloor;
             //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers)) {
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore)) {
+                Debug.Log(hitFloor.collider.tag);
                 if (hitFloor.collider.gameObject.tag == "OffTrack") {
                     offTracking = true;
                 } else {
                     offTracking = false;
                 }
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
+
+        //private bool IsGrounded() {
+        //    RaycastHit[] hitFloor = Physics.RaycastAll(groundCheck.position, Vector3.down, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore);
+        //    bool grounded = false;
+        //    //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
+        //    //if (Physics.RaycastAll(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore)) {
+        //    if (hitFloor.Length > 0) {
+        //        grounded = true;
+        //        for (int i = 0; i < hitFloor.Length; i++) {
+        //            Debug.Log(hitFloor[i].collider.tag);
+        //            if (hitFloor[i].collider.gameObject.tag == "OffTrack") {
+        //                offTracking = true;
+        //            } else {
+        //                offTracking = false;
+        //            }
+
+        //        }
+        //    }
+        //    return grounded;
+        //}
 
         #endregion
 
         private void OnCollisionEnter(Collision collision) {
-            if (!(groundLayers.Contains(collision.gameObject.layer)) &&
-                Mathf.Lerp(90f, 0f, Vector3.Dot(-collision.contacts[0].normal, transform.forward)) < faceAngle
+            float dot = Vector3.Dot(collision.contacts[0].normal, -transform.forward);
+            if (dot != 0f) {
+                Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal * 20f, Color.green, 20f);
+                Debug.DrawRay(collision.contacts[0].point, -transform.forward * 20f, Color.red, 20f);
+            }
+            if (/*!(groundLayers.Contains(collision.gameObject.layer)) &&*/
+                Mathf.Abs(collision.contacts[0].point.y - transform.position.y) < 0.5f &&
+                Mathf.Lerp(90f, 0f, Vector3.Dot(collision.contacts[0].normal, -transform.forward)) < faceAngle
             ) {
                 Debug.Log($"{gameObject.name} collided with : {collision.gameObject.name}");
-                NegateVelocity(Axis.Z);
+                Bump(-transform.forward, bounceForce);
             }
         }
 

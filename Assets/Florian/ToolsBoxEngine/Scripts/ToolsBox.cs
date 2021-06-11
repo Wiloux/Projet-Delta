@@ -386,5 +386,10 @@ namespace ToolsBoxEngine {
         }
 
         #endregion
+
+        public static IEnumerator Delay<T>(BasicDelegate<T> function, T arg, float time) {
+            yield return new WaitForSeconds(time);
+            function(arg);
+        }
     }
 }
