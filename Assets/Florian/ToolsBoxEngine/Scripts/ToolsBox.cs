@@ -391,5 +391,10 @@ namespace ToolsBoxEngine {
             yield return new WaitForSeconds(time);
             function(arg);
         }
+
+        public static IEnumerator Delay(BasicDelegate function, float time) {
+            yield return new WaitForSeconds(time);
+            function();
+        }
     }
 }

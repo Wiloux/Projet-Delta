@@ -40,12 +40,24 @@ namespace Florian {
         public string playerName;
         private Player player;
 
+        [Header("Other")]
+        public Transform playerToFollow;
+        public bool followPlayer = true;
+
         private void Start() {
             player = ReInput.players.GetPlayer(movement.playerName);
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void Update() {
+            if (followPlayer) {
+                transform.parent.position = playerToFollow.position;
+                transform.parent.rotation = playerToFollow.rotation;
+            } else {
+                transform.LookAt(playerToFollow);
+                return;
+            }
+
             if (player.GetButton("Look back")) {
                 cam.CameraMove(lookBackPosition, lookBackRotation, 0f);
                 lookingBack = true;
@@ -91,6 +103,10 @@ namespace Florian {
                 if (movement.Airborn)
                     cam.CameraMove(airPosition, airRotation, airDuration);
             }
+        }
+
+        public void ResetCamera() {
+            cam.ResetCamera();
         }
     }
 }

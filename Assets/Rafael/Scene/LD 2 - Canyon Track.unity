@@ -2084,6 +2084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portraitSprites:
   - {fileID: 21300000, guid: f5a7fb3ef91d7f44898bbf6438efc868, type: 3}
+  - {fileID: 21300000, guid: 0d6aae3deae88234e8dccc8d6de5a2ca, type: 3}
   playerScreens:
   - portrait: {fileID: 2069340495}
     indexPortrait: 0

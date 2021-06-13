@@ -9,6 +9,7 @@ using ToolsBoxEngine;
 namespace Florian {
     public class MovementController : Character {
         public Movement physics;
+        public CameraController camera;
         private VFXManager vfx;
         private FlanksAttack flanksAttack;
         private JumpingSheep jumpingSheep;
@@ -43,6 +44,12 @@ namespace Florian {
         private Vector2 weightAxis = Vector2.zero;
         private Vector2 targetWeightAxis = Vector2.zero;
 
+        [Header("Rebellion")]
+        [SerializeField] private float forwardRebellionTime = 10f;
+        private float rebellionHorizontalDirection = 0f;
+        private int rebellionStacks = 0;
+        private float forwardTimer = 0f;
+
         #region Properties
 
         #region Getters
@@ -75,6 +82,10 @@ namespace Florian {
             get { return physics.airborn; }
         }
 
+        public bool Rebelling {
+            get { return rebellionHorizontalDirection != 0f; }
+        }
+
         #endregion
 
         public int Placement {
@@ -99,6 +110,8 @@ namespace Florian {
             }
 
             physics.OnStun += OnStun;
+            physics.OnFallingDeath += OnFallingDeath;
+            physics.OnRespawn += OnRespawn;
 
             vfx = GetComponent<VFXManager>();
 
@@ -121,36 +134,50 @@ namespace Florian {
         void Update() {
             float horizontalDirection = 0f;
 
-            if (mountThrowing != null && mountThrowing._isThrowing) {
-                if (player.GetAxis("Horizontal") != 0)
-                    horizontalDirection += player.GetAxis("Horizontal");
+            if (lockMovements) {
+                if (physics.Speed > 0f)
+                    physics.Decelerate();
+                else
+                    physics.Accelerate(Movement.AccelerationType.NONE);
             }
 
             if (CanMove && !Airborn) {
-                if (player.GetButtonDown("Cheat")) {
-                    //physics.Accelerate();
-                    //jumpingSheep.Stomp();
-                }
-
-                // Acceleration
-                if (!Decelerating && player.GetButtonDown("Accelerate")) {
-                    physics.Accelerate(Movement.AccelerationType.WHIP);
-                } else if (weightAxis.y == 1f) {
-                    physics.Accelerate(Movement.AccelerationType.FORWARD, player.GetAxis("Vertical"));
+            // Acceleration
+                if (Rebelling) {
+                    physics.Accelerate(Movement.AccelerationType.FORWARD, 1f);
                 } else {
-                    physics.Accelerate(Movement.AccelerationType.BASE);
+                    if (!Decelerating && player.GetButtonDown("Accelerate")) {
+                        physics.Accelerate(Movement.AccelerationType.WHIP);
+                        AddRebellion();
+                    } else if (weightAxis.y == 1f) {
+                        physics.Accelerate(Movement.AccelerationType.FORWARD, 1f);
+                        forwardTimer += Time.deltaTime;
+                        if (forwardTimer >= forwardRebellionTime) {
+                            forwardTimer = 0f;
+                            AddRebellion();
+                        }
+                    } else {
+                        physics.Accelerate(Movement.AccelerationType.BASE);
+                        if (forwardTimer > 0f)
+                            forwardTimer -= Time.deltaTime;
+                    }
                 }
 
-                //if (player.GetButton("Decelerate")) {
-                //    physics.Decelerate();
-                //}
+            // Deceleration
                 if (weightAxis.y == -1f) {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
                 }
             }
 
+            // Mount throw controls
+            if (mountThrowing != null && mountThrowing._isThrowing) {
+                if (player.GetAxis("Horizontal") != 0)
+                    horizontalDirection += player.GetAxis("Horizontal");
+            }
+
             if (CanMove) {
+            // Flank Attack
                 if (sharkAttack == null) {
                     if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f) {
                         flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
@@ -160,6 +187,7 @@ namespace Florian {
                         else if (player.GetAxisRaw("Attack") < 0f)
                             riderAnim.SetTrigger("attackG");
                     }
+            // Shark Attack
                 } else {
                     if (player.GetAxisRaw("Attack") != 0f && sharkAttack._timer <= 0f) {
                         sharkAttack.pressTimer += Time.deltaTime;
@@ -188,6 +216,7 @@ namespace Florian {
                     }
                 }
 
+            // Mount throw
                 if (mountThrowing != null) {
                     if (mountThrowing._isThrowing)
                         mountThrowing.MountThrowUpdate();
@@ -196,16 +225,19 @@ namespace Florian {
                 }
 
                 if (player.GetButtonDown("Jump")) {
+            // Jump sheep
                     if (jumpingSheep != null && jumpingSheep._nbrStomp > 0) {
                         if (!Airborn && jumpingSheep._nbrStomp != 0)
                             jumpingSheep.MegaJump();
                         else if (Airborn && jumpingSheep._nbrStomp >= 2)
                             jumpingSheep.Stomp();
+            // Jump
                     } else if (!Airborn) {
                         physics.Jump();
                     }
                 }
 
+            // Fear
                 if (fear != null) {
                     fear.AbilityUpdate();
                 }
@@ -217,19 +249,24 @@ namespace Florian {
                 }
             }
 
+            // Tourner
             targetWeightAxis.Set(player.GetAxis("Horizontal"), player.GetAxis("Vertical"));
             float weightX = Mathf.MoveTowards(weightAxis.x, targetWeightAxis.x, weightDistributionSpeed * Time.deltaTime);
             float weightY = Mathf.MoveTowards(weightAxis.y, targetWeightAxis.y, weightDistributionSpeed * Time.deltaTime);
             weightAxis.Set(weightX, weightY);
 
+            if (CanMove && (weightAxis.x == -1 || weightAxis.x == 1)) {
+                if (Rebelling) {
+                    physics.SetHorizontalDirection(weightAxis.x * 0.8f + rebellionHorizontalDirection);
+                } else {
+                    physics.SetHorizontalDirection(weightAxis.x);
+                }
+            } else {
+                physics.SetHorizontalDirection(0f + rebellionHorizontalDirection);
+            }
+
             riderAnim.SetFloat("Horizontal", weightAxis.x);
             riderAnim.SetFloat("Vertical", weightAxis.y);
-
-            //physics.SetHorizontalDirection(horizontalDirection);
-            if (CanMove && (weightAxis.x == -1 || weightAxis.x == 1))
-                physics.SetHorizontalDirection(weightAxis.x);
-            else
-                physics.SetHorizontalDirection(0f);
 
             UpdateAnims();
         }
@@ -260,17 +297,6 @@ namespace Florian {
         #endregion
 
         #region Setters
-
-        //public void Stun(float time) {
-        //    physics.Stun(time);
-        //    vfx.Stunned(time);
-        //    riderAnim.SetTrigger("stunned");
-        //}
-
-        //public void OnStun(object obj, Movement.StunArgs eventArgs) {
-        //    vfx.Stunned(eventArgs.time);
-        //    riderAnim.SetTrigger("stunned");
-        //}
 
         public void OnStun(float time) {
             vfx.Stunned(time);
@@ -309,5 +335,57 @@ namespace Florian {
         }
 
         #endregion
+
+        #region Rebellion
+
+        private void AddRebellion() {
+            rebellionStacks++;
+
+            int probability = 0;
+            switch (rebellionStacks) {
+                case 1:
+                    probability = 15;
+                    break;
+                case 2:
+                    probability = 30;
+                    break;
+                case 3:
+                    probability = 50;
+                    break;
+                case 4:
+                    probability = 100;
+                    break;
+            }
+            int random = UnityEngine.Random.Range(0, 100);
+
+            if (random < probability) {
+                Rebellion();
+            }
+        }
+
+        private void Rebellion() {
+            Debug.Log("REBELLION");
+            rebellionHorizontalDirection = UnityEngine.Random.Range(-0.6f, 0.6f);
+            rebellionStacks = 0;
+            StartCoroutine(Tools.Delay(Unrebellion, 2f));
+        }
+
+        private void Unrebellion() {
+            rebellionHorizontalDirection = 0f;
+        }
+
+        #endregion
+
+        private void OnFallingDeath(float time) {
+            animalAnim.SetTrigger("Falling_death");
+            camera.followPlayer = false;
+        }
+
+        private void OnRespawn() {
+            camera.followPlayer = true;
+            camera.ResetCamera();
+            physics.stun = false;
+            Unstunned(true);
+        }
     }
 }

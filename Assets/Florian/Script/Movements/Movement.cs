@@ -40,8 +40,6 @@ namespace Florian {
         private AccelerationType currentAccelerationType = AccelerationType.NONE;
         private float accelerationFactor = 1f;
 
-        private int rebellionStacks = 0;
-
         [Header("Acceleration")]
         //public AmplitudeCurve acceleration = null;
         [HideInInspector] public float maxSpeed;
@@ -90,6 +88,8 @@ namespace Florian {
         [SerializeField] private float slowRecoveryTime = 2f;
 
         [HideInInspector] public Tools.BasicDelegate<float> OnStun;
+        [HideInInspector] public Tools.BasicDelegate<float> OnFallingDeath;
+        [HideInInspector] public Tools.BasicDelegate OnRespawn;
         private bool slowable = true;
 
         private Dictionary<string, TimedChangeCoroutineStruct<object>> timedChangedRoutines = null;
@@ -261,7 +261,6 @@ namespace Florian {
                     break;
                 case AccelerationType.WHIP:
                     accelerationCurve = whipAcceleration;
-                    rebellionStacks++;
                     break;
             }
 
@@ -610,9 +609,18 @@ namespace Florian {
 
         private void OnTriggerEnter(Collider other) {
             if (other.tag == "DeathBox") {
-                NegateVelocity(Axis.Z, Axis.Y, Axis.X);
-                FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos);
+                NegateVelocity(Axis.Z, Axis.X);
+                float timeToRespawn = 1f;
+                OnFallingDeath(timeToRespawn);
+                StartCoroutine(Tools.Delay(Respawn, timeToRespawn));
+                //NegateVelocity(Axis.Z, Axis.Y, Axis.X);
+                //FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos);
             }
+        }
+
+        private void Respawn() {
+            FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos);
+            OnRespawn();
         }
     }
 }
