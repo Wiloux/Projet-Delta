@@ -29,6 +29,8 @@ namespace Florian {
         [Header("Checkpoints")]
         public Vector3 checkpointsSize = Vector3.zero;
 
+        public GameObject startCountdownUI;
+
 
 
         public GameManager gameManager;
@@ -133,6 +135,7 @@ namespace Florian {
 
         IEnumerator BlockPlayerAtTheStartOfTheRace(Character[] characters)
         {
+            startCountdownUI.SetActive(true);
             for (int i = 0; i < characters.Length; i++)
             {
                 characters[i].GetComponent<MovementController>().lockMovements = true;
@@ -141,6 +144,7 @@ namespace Florian {
 
             yield return new WaitForSeconds(3);
 
+            startCountdownUI.SetActive(false);
             for (int i = 0; i < characters.Length; i++)
             {
                 characters[i].GetComponent<MovementController>().riderAnim.enabled = true;
