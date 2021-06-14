@@ -127,10 +127,26 @@ namespace Florian {
             }
 
             TeleportCharacters(checkpoints[0], new Vector3(0,180f,0));
-
+            StartCoroutine(BlockPlayerAtTheStartOfTheRace(characters));
             raceStarted = true;
         }
 
+        IEnumerator BlockPlayerAtTheStartOfTheRace(Character[] characters)
+        {
+            for (int i = 0; i < characters.Length; i++)
+            {
+                characters[i].GetComponent<MovementController>().lockMovements = true;
+                characters[i].GetComponent<MovementController>().riderAnim.enabled = false;
+            }
+
+            yield return new WaitForSeconds(3);
+
+            for (int i = 0; i < characters.Length; i++)
+            {
+                characters[i].GetComponent<MovementController>().riderAnim.enabled = true;
+                characters[i].GetComponent<MovementController>().lockMovements = false;
+            }
+        }
         public void TeleportCharacters(Vector3 position, Character character) {
             character.transform.position = position.Override(position.y + 5f, Axis.Y);
             Debug.Log(character.transform.position + " .. " + position);
