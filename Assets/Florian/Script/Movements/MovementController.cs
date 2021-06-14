@@ -9,7 +9,7 @@ using ToolsBoxEngine;
 namespace Florian {
     public class MovementController : Character {
         public Movement physics;
-        public CameraController camera;
+        public CameraController cameraController;
         private VFXManager vfx;
         private FlanksAttack flanksAttack;
         private JumpingSheep jumpingSheep;
@@ -46,6 +46,7 @@ namespace Florian {
 
         [Header("Rebellion")]
         [SerializeField] private float forwardRebellionTime = 10f;
+        [SerializeField] private float rebellionTime = 2f;
         private float rebellionHorizontalDirection = 0f;
         private int rebellionStacks = 0;
         private float forwardTimer = 0f;
@@ -257,7 +258,7 @@ namespace Florian {
 
             if (CanMove && (weightAxis.x == -1 || weightAxis.x == 1)) {
                 if (Rebelling) {
-                    physics.SetHorizontalDirection(weightAxis.x * 0.8f + rebellionHorizontalDirection);
+                    physics.SetHorizontalDirection(Mathf.Clamp(weightAxis.x * 0.8f + rebellionHorizontalDirection, -1f, 1f));
                 } else {
                     physics.SetHorizontalDirection(weightAxis.x);
                 }
@@ -365,9 +366,9 @@ namespace Florian {
 
         private void Rebellion() {
             Debug.Log("REBELLION");
-            rebellionHorizontalDirection = UnityEngine.Random.Range(-0.6f, 0.6f);
+            rebellionHorizontalDirection = UnityEngine.Random.Range(-1f, 1f);
             rebellionStacks = 0;
-            StartCoroutine(Tools.Delay(Unrebellion, 2f));
+            StartCoroutine(Tools.Delay(Unrebellion, rebellionTime));
         }
 
         private void Unrebellion() {
@@ -378,12 +379,12 @@ namespace Florian {
 
         private void OnFallingDeath(float time) {
             animalAnim.SetTrigger("Falling_death");
-            camera.followPlayer = false;
+            cameraController.followPlayer = false;
         }
 
         private void OnRespawn() {
-            camera.followPlayer = true;
-            camera.ResetCamera();
+            cameraController.followPlayer = true;
+            cameraController.ResetCamera();
             physics.stun = false;
             Unstunned(true);
         }

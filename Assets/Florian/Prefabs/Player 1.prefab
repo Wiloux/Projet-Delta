@@ -1259,6 +1259,7 @@ MonoBehaviour:
   lockMovements: 0
   weightDistributionSpeed: 8
   forwardRebellionTime: 2
+  rebellionTime: 2
 --- !u!114 &3962731580872504403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1285,10 +1286,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.6790054
+  m_Height: 2.9341412
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.4934206, z: -0.06740594}
 --- !u!54 &5762993312473019490
 Rigidbody:
   m_ObjectHideFlags: 0

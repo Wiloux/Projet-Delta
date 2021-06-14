@@ -21,5 +21,12 @@ namespace Florian.ActionSequencer.Editor {
 
             EditorGUILayout.EndVertical();
         }
+
+        protected override string ChangeName() {
+            string name = base.ChangeName();
+            int index = serializedObject.FindProperty("checkpointIndex").intValue;
+            name += " checkpoint " + index.ToString();
+            return name;
+        }
     }
 }
