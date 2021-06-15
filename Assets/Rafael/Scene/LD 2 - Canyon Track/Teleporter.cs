@@ -25,7 +25,7 @@ public class Teleporter : MonoBehaviour
     {
         if (other.CompareTag("Player") && exits.Count > 0 && original)
         {
-
+            
             int index = Random.Range(0, exits.Count);
             foreach (Transform exit in exits)
             {
