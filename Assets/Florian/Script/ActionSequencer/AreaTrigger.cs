@@ -7,6 +7,9 @@ namespace Florian.ActionSequencer {
     [ExecuteInEditMode]
     public class AreaTrigger : MonoBehaviour {
         public enum TriggerType { ON_ENTER, ON_EXIT }
+        public enum TriggerEntity { EVERYTHING, PLAYERS }
+
+        public TriggerEntity triggerEntity;
 
         private ActionSequencer enterActions;
         private ActionSequencer exitActions;
@@ -60,12 +63,14 @@ namespace Florian.ActionSequencer {
 
         private void OnTriggerEnter(Collider other) {
             if (other.gameObject == null) return;
+            if (triggerEntity == TriggerEntity.PLAYERS && other.GetComponent<Movement>() != null) return;
 
             OnAreaEnter(other.gameObject);
         }
 
         private void OnTriggerExit(Collider other) {
             if (other.gameObject == null) return;
+            if (triggerEntity == TriggerEntity.PLAYERS && other.GetComponent<Movement>() != null) return;
 
             OnAreaExit(other.gameObject);
         }
