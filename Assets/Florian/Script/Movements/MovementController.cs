@@ -19,8 +19,9 @@ namespace Florian {
         private Fear fear;
 
         [Header("Bodys")]
-        public GameObject model;
+        public Transform model;
         public Transform body;
+        private Vector3 baseScale = Vector3.zero;
 
         [Header("Rewired")]
         public Rewired.Player player;
@@ -130,6 +131,8 @@ namespace Florian {
 
             fear = GetComponent<Fear>();
             if (fear == null) { Debug.LogError("fear not found on controller object"); }
+
+            baseScale = model.localScale;
         }
 
         void Update() {
@@ -380,13 +383,31 @@ namespace Florian {
         private void OnFallingDeath(float time) {
             animalAnim.SetTrigger("Falling_death");
             cameraController.followPlayer = false;
+            //StartCoroutine(WaitFor(ScaleTo(Vector3.one * 5f, time * 0.4f), ScaleTo(Vector3.zero, time * 0.6f)));
         }
 
         private void OnRespawn() {
             cameraController.followPlayer = true;
             cameraController.ResetCamera();
+            model.localScale = baseScale;
             physics.stun = false;
             Unstunned(true);
+        }
+
+        private IEnumerator ScaleTo(Vector3 scale, float time) {
+            Vector3 baseScale = model.localScale;
+            int framesNumber = Mathf.FloorToInt(60f * time);
+            for (int i = 0; i < framesNumber; i++) {
+                model.localScale = Vector3.Lerp(baseScale, scale, i / (float)framesNumber);
+                yield return new WaitForSeconds(1f / 60f);
+                Debug.Log($"// {i} + {time} + {framesNumber} + {1f/60f}");
+            }
+        }
+
+        private IEnumerator WaitFor(IEnumerator coroutine1, IEnumerator coroutine2) {
+            yield return StartCoroutine(coroutine1);
+            Debug.Log($"Started {coroutine1}");
+            StartCoroutine(coroutine2);
         }
     }
 }

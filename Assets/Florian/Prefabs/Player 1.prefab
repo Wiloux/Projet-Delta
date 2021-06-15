@@ -1246,8 +1246,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   physics: {fileID: 557029806171773903}
-  camera: {fileID: 3490258877651621950}
-  model: {fileID: 958435150950494839}
+  cameraController: {fileID: 3490258877651621950}
+  model: {fileID: 434275333870889165}
   body: {fileID: 5891103246836439423}
   playerName: P1
   riderAnim: {fileID: 3655113610718269388}

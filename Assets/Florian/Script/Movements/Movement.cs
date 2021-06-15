@@ -201,7 +201,7 @@ namespace Florian {
                 isAccelerate = false;
 
             if (horizontalDirection != targetHorizontalDirection) {
-                horizontalDirection = Mathf.MoveTowards(horizontalDirection, targetHorizontalDirection, horizontalDirectionSpeed * Time.deltaTime);
+                horizontalDirection = Mathf.MoveTowards(horizontalDirection, targetHorizontalDirection, horizontalDirectionSpeed * Time.fixedDeltaTime);
             }
 
             if (horizontalDirection != 0f && !stun) {
@@ -214,7 +214,7 @@ namespace Florian {
 
             if (isDecelerate && !stun) {
                 float deceleration = ComputeCurve(this.deceleration);
-                velocity += Vector3.forward * -deceleration * Time.deltaTime;
+                velocity += Vector3.forward * -deceleration * Time.fixedDeltaTime;
 
                 if (velocity.z < -backwardSpeed) {
                     velocity = Vector3.forward * -backwardSpeed;
@@ -225,10 +225,10 @@ namespace Florian {
             } else {
                 if (decelerateTimer <= 0f) {
                     float frictions = ComputeCurve(this.frictions);
-                    if (frictions * velocity.normalized.sqrMagnitude * Time.deltaTime > velocity.sqrMagnitude) {
+                    if (frictions * velocity.normalized.sqrMagnitude * Time.fixedDeltaTime > velocity.sqrMagnitude) {
                         velocity = Vector3.zero;
                     } else {
-                        velocity += -frictions * velocity.normalized * Time.deltaTime;
+                        velocity += -frictions * velocity.normalized * Time.fixedDeltaTime;
                     }
 
                     //if (Mathf.Clamp01(Mathf.Abs(Speed) / maxSpeed) <= 0.1f) {
@@ -238,7 +238,7 @@ namespace Florian {
             }
 
             if (decelerateTimer > 0f) {
-                decelerateTimer -= Time.deltaTime;
+                decelerateTimer -= Time.fixedDeltaTime;
             }
 
             velocity += ComputeGravity() * Vector3.down;
@@ -269,7 +269,7 @@ namespace Florian {
             acceleration *= UnityEngine.Random.Range(1f - accelerationRandomRange, 1f + accelerationRandomRange);
 
             if (CurrentAccelerationType != AccelerationType.WHIP) {
-                acceleration *= Time.deltaTime;
+                acceleration *= Time.fixedDeltaTime;
             }
 
             if (Speed + acceleration < maxSpeed) {
@@ -289,7 +289,7 @@ namespace Florian {
 
         private float ComputeCurve(AmplitudeCurve curve, float maxSpeed) {
             float perSpeed = Mathf.Clamp01(velocity.z / maxSpeed);
-            perSpeed += Time.deltaTime;
+            perSpeed += Time.fixedDeltaTime;
             float perCurve = curve.curve.Evaluate(perSpeed);
             return perCurve * curve.amplitude;
         }
@@ -303,14 +303,14 @@ namespace Florian {
             }
 
             float percentage = Mathf.Clamp01(Mathf.Abs(velocity.y) / gravityCurve.amplitude);
-            percentage += Time.deltaTime;
+            percentage += Time.fixedDeltaTime;
             float perCurve = gravityCurve.curve.Evaluate(percentage);
             return perCurve * gravityCurve.amplitude;
         }
 
         private void Turn() {
-            float turnSpeed = turn.amplitude * turn.curve.Evaluate(SpeedRatio) * Time.deltaTime;
-            //transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.deltaTime, Space.Self);
+            float turnSpeed = turn.amplitude * turn.curve.Evaluate(SpeedRatio) * Time.fixedDeltaTime;
+            //transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.fixedDeltaTime, Space.Self);
             Vector3 forwardNoY = transform.forward;
             forwardNoY.y = 0f;
             forwardNoY.Normalize();
@@ -329,7 +329,7 @@ namespace Florian {
                 float rollSpeed = this.rollAngle * SpeedRatio;
                 targetRoll = rollSpeed * -Mathf.Sign(horizontalDirection);
             }
-            euler.z = Mathf.Lerp(Tools.AcuteAngle(euler.z), targetRoll, Time.deltaTime * 10f);
+            euler.z = Mathf.Lerp(Tools.AcuteAngle(euler.z), targetRoll, Time.fixedDeltaTime * 10f);
             transform.rotation = Quaternion.Euler(euler);
         }
 

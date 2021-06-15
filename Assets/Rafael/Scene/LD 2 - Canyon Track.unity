@@ -34524,6 +34524,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 563510281}
+    - target: {fileID: 2050750658913884511, guid: 04794b19c8af5e24aa2ba82c8dd199ca, type: 3}
+      propertyPath: portraitSprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04794b19c8af5e24aa2ba82c8dd199ca, type: 3}
 --- !u!4 &2832406151296351743
