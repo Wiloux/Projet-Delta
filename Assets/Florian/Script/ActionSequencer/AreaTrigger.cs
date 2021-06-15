@@ -63,14 +63,14 @@ namespace Florian.ActionSequencer {
 
         private void OnTriggerEnter(Collider other) {
             if (other.gameObject == null) return;
-            if (triggerEntity == TriggerEntity.PLAYERS && other.GetComponent<Movement>() != null) return;
+            if (triggerEntity == TriggerEntity.PLAYERS && other.GetComponent<Movement>() == null) return;
 
             OnAreaEnter(other.gameObject);
         }
 
         private void OnTriggerExit(Collider other) {
             if (other.gameObject == null) return;
-            if (triggerEntity == TriggerEntity.PLAYERS && other.GetComponent<Movement>() != null) return;
+            if (triggerEntity == TriggerEntity.PLAYERS && other.GetComponent<Movement>() == null) return;
 
             OnAreaExit(other.gameObject);
         }

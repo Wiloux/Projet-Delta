@@ -882,6 +882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &213452542
@@ -1231,6 +1232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &232081811
@@ -1808,6 +1810,7 @@ MonoBehaviour:
   - {fileID: 1018745264}
   - {fileID: 2092614815}
   playerNames: []
+  inverseRespawn: 0
   original: 0
 --- !u!4 &297373045
 Transform:
@@ -2561,6 +2564,7 @@ MonoBehaviour:
   - {fileID: 2102521590}
   - {fileID: 515998944}
   playerNames: []
+  inverseRespawn: 0
   original: 0
 --- !u!4 &398453052
 Transform:
@@ -2681,6 +2685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &403622748
@@ -3604,6 +3609,7 @@ MonoBehaviour:
   - {fileID: 1185765230}
   - {fileID: 1624893575}
   playerNames: []
+  inverseRespawn: 0
   original: 1
 --- !u!4 &641665631
 Transform:
@@ -4156,6 +4162,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b67cf834e2c744eb7806afc9a78c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &739307256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 739307257}
+  - component: {fileID: 739307258}
+  m_Layer: 0
+  m_Name: OnEnter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &739307257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739307256}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1666335009}
+  m_Father: {fileID: 1016774749}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &739307258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739307256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0321b1b6326ce4bb16c146cf81acbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions: []
+  launch: 0
+  oneTimeUse: 0
+  triggeringEntity: {fileID: 0}
 --- !u!1 &764751445
 GameObject:
   m_ObjectHideFlags: 0
@@ -11918,6 +11972,85 @@ MonoBehaviour:
   targetEntity: {fileID: 0}
   raceManager: {fileID: 2142281170}
   checkpointIndex: 7
+--- !u!1 &1016774748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1016774749}
+  - component: {fileID: 1016774752}
+  - component: {fileID: 1016774751}
+  - component: {fileID: 1016774750}
+  m_Layer: 0
+  m_Name: AreaTrigger (RespOri = 1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1016774749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016774748}
+  m_LocalRotation: {x: -0, y: 0.04769643, z: -0, w: 0.9988619}
+  m_LocalPosition: {x: -149.6, y: 46.08, z: -101.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 739307257}
+  - {fileID: 1690850453}
+  m_Father: {fileID: 1324030210}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 5.468, z: 0}
+--- !u!114 &1016774750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016774748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerEntity: 1
+  alwaysExitActions: 0
+  gizmosColor: {r: 0.94741654, g: 1, b: 0, a: 0.09803922}
+--- !u!65 &1016774751
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016774748}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 5, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1016774752
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016774748}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1018745263
 GameObject:
   m_ObjectHideFlags: 0
@@ -17506,6 +17639,7 @@ Transform:
   m_Children:
   - {fileID: 673994302}
   - {fileID: 429338185}
+  - {fileID: 1324030210}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22537,7 +22671,7 @@ Transform:
   m_GameObject: {fileID: 1216552697}
   m_LocalRotation: {x: -0, y: 0.9951084, z: -0, w: 0.09878925}
   m_LocalPosition: {x: 102.79999, y: 35.722603, z: 435.59995}
-  m_LocalScale: {x: 1.6666666, y: 1.6666666, z: 1.6666666}
+  m_LocalScale: {x: 1.666667, y: 1.6666664, z: 1.666667}
   m_Children: []
   m_Father: {fileID: 429338185}
   m_RootOrder: 0
@@ -22968,6 +23102,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4921798496361452742, guid: 700b9b45e4503894db0302e4a85e4452, type: 3}
+--- !u!1 &1324030209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1324030210}
+  m_Layer: 0
+  m_Name: AreaTriggers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1324030210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324030209}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1016774749}
+  m_Father: {fileID: 1172879773}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1342160477
 GameObject:
   m_ObjectHideFlags: 0
@@ -23381,6 +23546,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exits: []
   playerNames: []
+  inverseRespawn: 0
   original: 0
 --- !u!4 &1413781502
 Transform:
@@ -23530,6 +23696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &1465764107
@@ -24139,6 +24306,7 @@ MonoBehaviour:
   - {fileID: 2102521590}
   - {fileID: 515998944}
   playerNames: []
+  inverseRespawn: 1
   original: 0
 --- !u!4 &1579190525
 Transform:
@@ -30696,6 +30864,54 @@ MonoBehaviour:
   targetEntity: {fileID: 0}
   raceManager: {fileID: 2142281170}
   checkpointIndex: 0
+--- !u!1 &1666335008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1666335009}
+  - component: {fileID: 1666335010}
+  m_Layer: 0
+  m_Name: TRIGGERING OBJECT orientation factor 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1666335009
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666335008}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 739307257}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1666335010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666335008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf27b5ee066a1648babeb6149d4ff20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitType: 0
+  timeToWait: 0
+  targetType: 1
+  targetEntity: {fileID: 0}
+  factor: 1
 --- !u!1 &1670466339
 GameObject:
   m_ObjectHideFlags: 0
@@ -30734,6 +30950,53 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670466339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0321b1b6326ce4bb16c146cf81acbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions: []
+  launch: 0
+  oneTimeUse: 0
+  triggeringEntity: {fileID: 0}
+--- !u!1 &1690850452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1690850453}
+  - component: {fileID: 1690850454}
+  m_Layer: 0
+  m_Name: OnExit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1690850453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690850452}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1016774749}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1690850454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690850452}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f0321b1b6326ce4bb16c146cf81acbb, type: 3}
@@ -31272,6 +31535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &1765382755
@@ -33099,6 +33363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exits: []
   playerNames: []
+  inverseRespawn: 0
   original: 0
 --- !u!4 &1929358768
 Transform:
@@ -33486,6 +33751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &1986412403
@@ -33655,6 +33921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &2031491638
@@ -33957,6 +34224,7 @@ MonoBehaviour:
   - {fileID: 1018745264}
   - {fileID: 2092614815}
   playerNames: []
+  inverseRespawn: 1
   original: 0
 --- !u!4 &2065469408
 Transform:
@@ -34067,6 +34335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &2092070794
@@ -34229,6 +34498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cff0b60cfa8dd4ca3fa728e0c4b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerEntity: 0
   alwaysExitActions: 0
   gizmosColor: {r: 1, g: 0, b: 0, a: 0.2901961}
 --- !u!65 &2119198445

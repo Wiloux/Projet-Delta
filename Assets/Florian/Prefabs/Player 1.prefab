@@ -3553,6 +3553,8 @@ MonoBehaviour:
   slopeRotateSpeed: 0.5
   airborn: 1
   lastGroundPos: {x: 0, y: 0, z: 0}
+  respawnOrientationFactor: 1
+  respawnPoint: {fileID: 0}
   jumping: 0
   jumpForce: 50
   groundLayers:
@@ -3578,12 +3580,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   physics: {fileID: 557029806171773903}
   cameraController: {fileID: 3490258877651621950}
-  model: {fileID: 958435150950494839}
+  model: {fileID: 434275333870889165}
   body: {fileID: 5891103246836439423}
   playerName: P1
   riderAnim: {fileID: 3655113610718269388}
   animalAnim: {fileID: 4282974931131541835}
-  Weapon: {fileID: 7510358331405719711}
   playerCamera: {fileID: 3490258877651621939}
   placementText: {fileID: 1452320076616648693}
   lapsText: {fileID: 1452320075828873028}
@@ -5229,14 +5230,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
---- !u!4 &6345206680137720373 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -2773423817125483245, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
-  m_PrefabInstance: {fileID: 111572259472920358}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &434275333870889165 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
+  m_PrefabInstance: {fileID: 111572259472920358}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6345206680137720373 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2773423817125483245, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
   m_PrefabInstance: {fileID: 111572259472920358}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &958435150950494839 stripped
@@ -5693,11 +5694,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b22880dda2d6d40b85d4c7d643d0f8, type: 3}
---- !u!1 &7510358331405719711 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c4b22880dda2d6d40b85d4c7d643d0f8, type: 3}
-  m_PrefabInstance: {fileID: 7276496268465563086}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7165780820729594405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c4b22880dda2d6d40b85d4c7d643d0f8, type: 3}

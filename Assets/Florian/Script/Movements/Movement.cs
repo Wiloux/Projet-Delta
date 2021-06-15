@@ -69,8 +69,11 @@ namespace Florian {
         [SerializeField] private float groundRayDistance = 0.2f;
         [SerializeField] private float slopeRotateSpeed = 0.5f;
         [HideInInspector] public bool airborn;
-        private bool needLastGroundPosUpdate;
-        public Vector3 lastGroundPos;
+
+        [HideInInspector] private bool needLastGroundPosUpdate;
+        [HideInInspector] public Vector3 lastGroundPos;
+        [HideInInspector] public float respawnOrientationFactor = 1f;
+
         [HideInInspector] public bool jumping = false;
 
         public float jumpForce;
@@ -619,7 +622,8 @@ namespace Florian {
         }
 
         private void Respawn() {
-            FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos);
+            FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos, (respawnOrientationFactor == -1f));
+            
             OnRespawn();
         }
     }

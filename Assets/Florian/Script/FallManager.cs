@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ToolsBoxEngine;
 
 public class FallManager : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class FallManager : MonoBehaviour
         }
     }
 
-    public void CheckPlayerBestCheckPoint(GameObject fallenPlayer, Vector3 leftGroundPos)
+    public void CheckPlayerBestCheckPoint(GameObject fallenPlayer, Vector3 leftGroundPos, bool respawnOrientationBackward = false)
     {
         float bestDistance = Mathf.Infinity;
         Transform bestCheckPoint = null;
@@ -41,7 +42,15 @@ public class FallManager : MonoBehaviour
 
         fallenPlayer.transform.position = bestCheckPoint.position;
         //fallenPlayer.transform.LookAt(bestCheckPoint.transform.TransformDirection(transform.forward));
-        fallenPlayer.transform.forward = new Vector3(bestCheckPoint.transform.TransformDirection(transform.forward).x, bestCheckPoint.transform.TransformDirection(transform.forward).y, bestCheckPoint.transform.TransformDirection(transform.forward).z);
+        //fallenPlayer.transform.forward = new Vector3(bestCheckPoint.transform.TransformDirection(transform.forward).x, bestCheckPoint.transform.TransformDirection(transform.forward).y, bestCheckPoint.transform.TransformDirection(transform.forward).z);
+
+        Vector3 forward = bestCheckPoint.forward;
+        if (respawnOrientationBackward)
+            forward = -bestCheckPoint.forward;
+
+        fallenPlayer.transform.forward = forward;
+        //Vector3 rotation = fallenPlayer.transform.localEulerAngles;
+        //fallenPlayer.transform.localEulerAngles = rotation.Override(rotation.y * respawnOrientaitonBackward, Axis.Y);
         //fallenPlayer.transform.rotation.eulerAngles = new Vector3(fallenPlayer.transform.rotation.x, bestCheckPoint.transform.rotation.y, fallenPlayer.transform.rotation.z);
     }
 
