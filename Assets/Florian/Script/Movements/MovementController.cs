@@ -176,7 +176,7 @@ namespace Florian
                         physics.Accelerate(Movement.AccelerationType.WHIP);
                         AddRebellion();
                     }
-                    else if (weightAxis.y == 1f)
+                    else if (weightAxis.y > 0.7f)
                     {
                         physics.Accelerate(Movement.AccelerationType.FORWARD, 1f);
                         forwardTimer += Time.deltaTime;
@@ -195,7 +195,7 @@ namespace Florian
                 }
 
                 // Deceleration
-                if (weightAxis.y == -1f)
+                if (weightAxis.y < -0.7f)
                 {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
@@ -310,7 +310,8 @@ namespace Florian
             float weightY = Mathf.MoveTowards(weightAxis.y, targetWeightAxis.y, weightDistributionSpeed * Time.deltaTime);
             weightAxis.Set(weightX, weightY);
 
-            if (CanMove && (weightAxis.x == -1 || weightAxis.x == 1))
+            //if (CanMove && (weightAxis.x == -1 || weightAxis.x == 1))
+            if (CanMove && !weightAxis.x.IsInside(-0.7f, 0.7f))
             {
                 if (Rebelling)
                 {
@@ -489,6 +490,11 @@ namespace Florian
             yield return StartCoroutine(coroutine1);
             Debug.Log($"Started {coroutine1}");
             StartCoroutine(coroutine2);
+        }
+
+        private void OnGUI() {
+            GUILayout.Label(player.GetAxis("Horizontal").ToString());
+            GUILayout.Label(player.GetAxis("Vertical").ToString());
         }
     }
 }

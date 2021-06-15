@@ -299,6 +299,13 @@ namespace ToolsBoxEngine {
             return layerMask == (layerMask | (1 << layer));
         }
 
+        public static bool IsInside(this float number, float min, float max) {
+            if (number > min && number < max) {
+                return true;
+            }
+            return false;
+        }
+
         #endregion
 
         #region Utilities
