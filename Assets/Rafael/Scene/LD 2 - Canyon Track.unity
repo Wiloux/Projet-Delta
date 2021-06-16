@@ -1390,7 +1390,7 @@ GameObject:
   - component: {fileID: 472822568}
   - component: {fileID: 472822567}
   m_Layer: 0
-  m_Name: AreaTrigger
+  m_Name: Shortcut 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8714,8 +8714,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1906259870}
+  m_Children: []
   m_Father: {fileID: 2033749309}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25326,7 +25325,7 @@ GameObject:
   - component: {fileID: 1802139337}
   - component: {fileID: 1802139336}
   m_Layer: 0
-  m_Name: AreaTrigger (1)
+  m_Name: Finish line trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26451,8 +26450,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1031878321}
-  m_RootOrder: 0
+  m_Father: {fileID: 2033749309}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1906259871
 MonoBehaviour:
@@ -26900,6 +26899,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1031878321}
+  - {fileID: 1906259870}
   m_Father: {fileID: 1802139335}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
