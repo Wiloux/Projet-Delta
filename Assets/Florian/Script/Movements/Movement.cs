@@ -40,11 +40,12 @@ namespace Florian {
         private AccelerationType currentAccelerationType = AccelerationType.NONE;
         private float accelerationFactor = 1f;
 
-        [Header("Acceleration")]
         //public AmplitudeCurve acceleration = null;
         [HideInInspector] public float maxSpeed;
         public float backwardSpeed = 10f;
         [HideInInspector] public bool isAccelerate;
+
+        private Vector3 offTrackVelocity = Vector3.zero;
 
         [Header("Deceleration")]
         public AmplitudeCurve deceleration = null;
@@ -215,9 +216,14 @@ namespace Florian {
             }
             //Roll();
 
+            float frictions = ComputeCurve(this.frictions);
+
             if (isDecelerate && !stun) {
                 float deceleration = ComputeCurve(this.deceleration);
                 velocity += Vector3.forward * -deceleration * Time.fixedDeltaTime;
+                if (offTrackVelocity.z > 0f) {
+                    offTrackVelocity += -deceleration * Vector3.forward * Time.fixedDeltaTime * 2f;
+                }
 
                 if (velocity.z < -backwardSpeed) {
                     velocity = Vector3.forward * -backwardSpeed;
@@ -226,22 +232,23 @@ namespace Florian {
                 AccelerationUpdate();
                 ResetDecelerateTimer();
             } else {
-                if (decelerateTimer <= 0f) {
-                    float frictions = ComputeCurve(this.frictions);
-                    if (frictions * velocity.normalized.sqrMagnitude * Time.fixedDeltaTime > velocity.sqrMagnitude) {
-                        velocity = Vector3.zero;
-                    } else {
-                        velocity += -frictions * velocity.normalized * Time.fixedDeltaTime;
-                    }
-
-                    //if (Mathf.Clamp01(Mathf.Abs(Speed) / maxSpeed) <= 0.1f) {
-                    //    //velocity = Vector3.zero;
-                    //}
+                if (decelerateTimer <= 0f && frictions * velocity.normalized.sqrMagnitude * Time.fixedDeltaTime > velocity.sqrMagnitude) {
+                    velocity = Vector3.zero;
+                } else  if (decelerateTimer <= 0f ){
+                    velocity += -frictions * velocity.normalized * Time.fixedDeltaTime;
                 }
+            }
+
+            if (offTrackVelocity != Vector3.zero) {
+                offTrackVelocity += -frictions * offTrackVelocity.normalized * Time.fixedDeltaTime * 2f;
             }
 
             if (decelerateTimer > 0f) {
                 decelerateTimer -= Time.fixedDeltaTime;
+            }
+
+            if (offTrackVelocity.z < 0f) {
+                offTrackVelocity.z = 0f;
             }
 
             velocity += ComputeGravity() * Vector3.down;
@@ -255,6 +262,7 @@ namespace Florian {
 
             AmplitudeCurve accelerationCurve = baseAcceleration;
 
+            bool accelerationToOfftrack = false;
             switch (currentAccelerationType) {
                 case AccelerationType.BASE:
                     accelerationCurve = baseAcceleration;
@@ -264,6 +272,7 @@ namespace Florian {
                     break;
                 case AccelerationType.WHIP:
                     accelerationCurve = whipAcceleration;
+                    accelerationToOfftrack = true;
                     break;
             }
 
@@ -277,13 +286,19 @@ namespace Florian {
 
             if (Speed + acceleration < maxSpeed) {
                 velocity += Vector3.forward * acceleration;
+                if (accelerationToOfftrack) {
+                    offTrackVelocity += acceleration * Vector3.forward;
+                }
             } else if (Speed < maxSpeed) {
                 velocity.z = maxSpeed;
+                if (accelerationToOfftrack) {
+                    offTrackVelocity.z = maxSpeed;
+                }
             }
 
-            if (CurrentAccelerationType == AccelerationType.WHIP) {
-                CurrentAccelerationType = AccelerationType.BASE;
-            }
+            //if (CurrentAccelerationType == AccelerationType.WHIP) {
+            //    CurrentAccelerationType = AccelerationType.BASE;
+            //}
         }
 
         private float ComputeCurve(AmplitudeCurve curve) {
@@ -336,31 +351,35 @@ namespace Florian {
             transform.rotation = Quaternion.Euler(euler);
         }
 
-        public void SlopeTilt() {
+        public Quaternion SlopeTilt() {
             RaycastHit hitFloor;
             if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance * 10f, groundLayers)) {
                 Vector3 forwardNoY = transform.forward;
                 forwardNoY.y = 0f;
                 forwardNoY.Normalize();
                 Vector3 projectedForward = Vector3.ProjectOnPlane(forwardNoY, hitFloor.normal);
-                transform.rotation = Quaternion.LookRotation(projectedForward, hitFloor.normal);
+                //Debug.DrawRay(transform.position, transform.up * 10f, Color.green);
+                Quaternion retour = Quaternion.LookRotation(projectedForward, hitFloor.normal);
+                Debug.DrawRay(transform.position, retour * Vector3.up * 10f, Color.green);
+                Debug.DrawRay(transform.position, hitFloor.normal * 10f, Color.red);
+                return retour;
+                //transform.rotation = Quaternion.LookRotation(projectedForward, hitFloor.normal);
                 //rotation = Quaternion.FromToRotation(Vector3.up, hitFloor.normal) * Quaternion.LookRotation(forwardNoZ, hitFloor.normal);
                 //transform.rotation = Quaternion.FromToRotation(Vector3.up, hitFloor.normal) * Quaternion.LookRotation(forwardNoY, Vector3.up);
                 //transform.rotation = Quaternion.LookRotation(forwardNoY, hitFloor.normal);
 
-                Debug.DrawRay(transform.position, transform.up * 10f, Color.green);
-                Debug.DrawRay(transform.position, hitFloor.normal * 10f, Color.red);
             }
+            return Quaternion.identity;
         }
 
         private void ApplySpeed() {
             if (velocity.y <= 0f)
                 jumping = false;
 
-            float offTrackFactor = offTracking == true ? offTrackMultiplier : 1f;
+            float offTrackFactor = offTracking ? offTrackMultiplier : 1f;
 
             if (_rb != null) {
-                _rb.velocity = RelativeDirection(velocity) * offTrackFactor;
+                _rb.velocity = RelativeDirection(velocity) * offTrackFactor + (offTracking ? RelativeDirection(offTrackVelocity) : Vector3.zero);
             } else {
                 transform.position += velocity * offTrackFactor;
             }
@@ -391,6 +410,10 @@ namespace Florian {
         public void Accelerate(AccelerationType accelerationType, float accelerationFactor = 1f) {
             CurrentAccelerationType = accelerationType;
             this.accelerationFactor = accelerationFactor;
+            if (accelerationType == AccelerationType.WHIP) {
+                AccelerationUpdate();
+                CurrentAccelerationType = AccelerationType.BASE;
+            }
         }
 
         public void AddVelocity(Vector3 velocity) {
