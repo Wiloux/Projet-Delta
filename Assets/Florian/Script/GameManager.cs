@@ -194,14 +194,10 @@ namespace Florian
                             break;
                         case 1:
                             lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").GetComponent<Animator>();
-                            Shark refShark = valueRefs.GetComponent<Shark>();
-                            Shark lastShark = lastSpawnedChild.AddComponent<Shark>();
-                            lastShark._cooldown = refShark._cooldown;
-                            lastShark.poweredPushForce = refShark.poweredPushForce;
-                            lastShark.poweredPushRadius = refShark.poweredPushRadius;
-                            lastShark.pushForce = refShark.pushForce;
-                            lastShark.pushRadius = refShark.pushRadius;
-                            lastSpawnedChild.AddComponent<MountThrowing>();
+                            Gliding refGliding = valueRefs.GetComponent<Gliding>();
+                            Gliding lastGliding = lastSpawnedChild.AddComponent<Gliding>();
+                            lastGliding.timerDur = refGliding.timerDur;
+                            lastGliding.divideAmount = refGliding.divideAmount;
                             //Debug.Log(lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider"));
                             lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(false);
                             lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(true);
