@@ -297,6 +297,14 @@ namespace Florian
             SceneManager.LoadScene(sceneId);
         }
 
+        public void ShowNewPanel(GameObject panel)
+        {
+            if (panel)
+            {
+                panel.SetActive(!panel.activeSelf);
+            }
+        }
+
         public void Quit()
         {
             Application.Quit();
@@ -349,7 +357,8 @@ namespace Florian
             function();
         }
 
-        public void RestartTheGame() {
+        public void RestartTheGame()
+        {
             SceneManager.LoadScene(0);
         }
     }
