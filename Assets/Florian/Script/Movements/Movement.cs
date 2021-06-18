@@ -353,7 +353,7 @@ namespace Florian {
 
         public Quaternion SlopeTilt() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance * 10f, groundLayers)) {
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers)) {
                 Vector3 forwardNoY = transform.forward;
                 forwardNoY.y = 0f;
                 forwardNoY.Normalize();
@@ -373,15 +373,19 @@ namespace Florian {
         }
 
         private void ApplySpeed() {
-            if (velocity.y <= 0f)
+            if (this.velocity.y <= 0f)
                 jumping = false;
 
-            float offTrackFactor = offTracking ? offTrackMultiplier : 1f;
+            //float offTrackFactor = offTracking ? offTrackMultiplier : 1f;
+            Vector3 velocity = this.velocity;
+            if (offTracking) {
+                velocity = (velocity - offTrackVelocity) * offTrackMultiplier + offTrackVelocity;
+            }
 
             if (_rb != null) {
-                _rb.velocity = RelativeDirection(velocity) * offTrackFactor + (offTracking ? RelativeDirection(offTrackVelocity) : Vector3.zero);
+                _rb.velocity = RelativeDirection(velocity);
             } else {
-                transform.position += velocity * offTrackFactor;
+                transform.position += RelativeDirection(velocity);
             }
         }
 
@@ -443,6 +447,7 @@ namespace Florian {
         }
 
         public void NegateVelocity(params Axis[] axis) {
+            Debug.LogWarning("Velocity negated");
             for (int i = 0; i < axis.Length; i++) {
                 switch (axis[i]) {
                     case Axis.X:
@@ -583,9 +588,11 @@ namespace Florian {
         }
 
         private bool IsGrounded() {
+            Vector3 direction = -groundCheck.transform.up;
+            Debug.DrawRay(groundCheck.position, direction * groundRayDistance, Color.green);
             RaycastHit hitFloor;
             //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore)) {
+            if (Physics.Raycast(groundCheck.position, direction, out hitFloor, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore)) {
                 if (hitFloor.collider.gameObject.tag == "OffTrack") {
                     offTracking = true;
                 } else {
@@ -620,10 +627,10 @@ namespace Florian {
 
         private void OnCollisionEnter(Collision collision) {
             float dot = Vector3.Dot(collision.contacts[0].normal, -transform.forward);
-            if (dot != 0f) {
-                Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal * 20f, Color.green, 20f);
-                Debug.DrawRay(collision.contacts[0].point, -transform.forward * 20f, Color.red, 20f);
-            }
+            //if (dot != 0f) {
+            //    Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal * 20f, Color.green, 20f);
+            //    Debug.DrawRay(collision.contacts[0].point, -transform.forward * 20f, Color.red, 20f);
+            //}
             if (/*!(groundLayers.Contains(collision.gameObject.layer)) &&*/
                 Mathf.Abs(collision.contacts[0].point.y - transform.position.y) < 0.5f &&
                 Mathf.Lerp(90f, 0f, Vector3.Dot(collision.contacts[0].normal, -transform.forward)) < faceAngle

@@ -244,7 +244,33 @@ namespace ToolsBoxEngine {
             return new Vector2(Mathf.Abs(vector.x), Mathf.Abs(vector.y));
         }
 
+        public static Vector3 Positive(this Vector3 vector) {
+            return new Vector3(vector.x.Positive(), vector.y.Positive(), vector.z.Positive());
+        }
+
+        public static Vector3 Positive(this Vector3 vector, Axis axis) {
+            switch (axis) {
+                case Axis.X:
+                    vector.x = vector.x.Positive();
+                    break;
+                case Axis.Y:
+                    vector.y = vector.y.Positive();
+                    break;
+                case Axis.Z:
+                    vector.z = vector.z.Positive();
+                    break;
+            }
+            return vector;
+        }
+
         #endregion
+
+        public static float Positive(this float number) {
+            if (number < 0) {
+                number = 0;
+            }
+            return number;
+        }
 
         public static void Print<T>(this Nullable<T>[] array) where T : struct {
             Debug.Log("----------------");
@@ -390,6 +416,11 @@ namespace ToolsBoxEngine {
             }
 
             return weight.Length - 1;
+        }
+
+        public static float RandomFloat(params float[] numbers) {
+            int rand = UnityEngine.Random.Range(0, numbers.Length - 1);
+            return numbers[rand];
         }
 
         #endregion

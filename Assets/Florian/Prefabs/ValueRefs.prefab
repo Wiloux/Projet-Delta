@@ -105,11 +105,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3eb14e803ea49143a6603a6d7613333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerMovementController: {fileID: 0}
   isGliding: 0
   timerDur: 2
-  coolDown: 0
-  divideAmount: 0.2
+  divideAmount: 0.7
 --- !u!1001 &6844712602205460719
 PrefabInstance:
   m_ObjectHideFlags: 0
