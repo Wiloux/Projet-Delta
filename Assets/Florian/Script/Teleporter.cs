@@ -13,16 +13,7 @@ namespace Florian {
 
         public bool original;
 
-        //Gizmos
-        private BoxCollider col;
-        private Transform child;
-
-        private void Start() {
-            col = GetComponent<BoxCollider>();
-            child = GetComponentInChildren<Transform>();
-        }
-
-        private void OnTriggerEnter(Collider other) {
+        private void OnTriggerStay(Collider other) {
             if (other.CompareTag("Player") && exits.Count > 0 && original) {
 
                 int index = Random.Range(0, exits.Count);
@@ -32,9 +23,12 @@ namespace Florian {
                         break;
                     }
                 }
-
                 other.transform.position = exits[index].position;
                 other.transform.rotation = exits[index].rotation;
+                /*if (other.GetComponent<VFXManager>()._fadeImg.material.GetFloat("_Radius") <= 1f)
+                {
+                    Debug.Log("TP");
+                }*/
 
                 if (exits[index].parent.GetComponent<Teleporter>().inverseRespawn) {
                     other.GetComponent<Movement>().respawnOrientationFactor = -1;
@@ -59,6 +53,10 @@ namespace Florian {
                         playerNames.Remove(n);
                         other.transform.position = exits[index].position;
                         other.transform.rotation = exits[index].rotation;
+                        /*if (other.GetComponent<VFXManager>()._fadeImg.material.GetFloat("_Radius") <= 1f)
+                        {
+                            Debug.Log("TP");
+                        }*/
 
                         if (exits[index].parent.GetComponent<Teleporter>().inverseRespawn) {
                             other.GetComponent<Movement>().respawnOrientationFactor = -1;
