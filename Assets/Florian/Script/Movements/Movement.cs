@@ -87,7 +87,7 @@ namespace Florian {
         public float bounceForce = 20f;
         public float bounceStunTime = 2f;
         [Range(0f, 1f), SerializeField] private float offTrackMultiplier = 0.3f;
-        private bool offTracking = false;
+        [HideInInspector] public bool offTracking = false;
 
         [Header("Recovery")]
         [SerializeField] private float slowRecoveryTime = 2f;

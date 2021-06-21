@@ -17,6 +17,7 @@ namespace Florian {
         private Shark sharkAttack;
         private float sharkSide;
         private Fear fear;
+        private PlayerTrigger playerTrigger = null;
 
         [Header("Bodys")]
         public Transform model;
@@ -132,6 +133,9 @@ namespace Florian {
 
             fear = GetComponent<Fear>();
             if (fear == null) { Debug.LogError("fear not found on controller object"); }
+
+            playerTrigger = GetComponent<PlayerTrigger>();
+            if (playerTrigger == null) { Debug.LogError("player Trigger not found on controller object"); }
 
             baseScale = model.localScale;
         }
@@ -294,6 +298,7 @@ namespace Florian {
                 model.transform.localEulerAngles = Vector3.zero;
             }
 
+            vfx.TrailsFX();
             UpdateAnims();
         }
 
@@ -431,6 +436,11 @@ namespace Florian {
             yield return StartCoroutine(coroutine1);
             Debug.Log($"Started {coroutine1}");
             StartCoroutine(coroutine2);
+        }
+
+        public void ResetPlayerTriggerList()
+        {
+            playerTrigger.ResetList();
         }
 
         //private void OnGUI() {
