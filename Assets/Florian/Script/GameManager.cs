@@ -118,8 +118,8 @@ namespace Florian
                     if (player.GetButtonDown("Leave game"))
                     {
                         RemoveController(i);
-                        multiplayerPanel.transform.GetChild(i).GetChild(0).gameObject.SetActive(true);
-                        multiplayerPanel.transform.GetChild(i).GetChild(1).gameObject.SetActive(false);
+                        multiplayerPanel.transform.GetChild(1).GetChild(i).GetChild(0).gameObject.SetActive(true);
+                        multiplayerPanel.transform.GetChild(1).GetChild(i).GetChild(1).gameObject.SetActive(false);
                     }
                     else if (player.GetButtonDown("Left"))
                     {
@@ -148,8 +148,8 @@ namespace Florian
                 {
                     if (playersController[i] != null)
                     {
-                        multiplayerPanel.transform.GetChild(i).GetChild(0).gameObject.SetActive(false);
-                        multiplayerPanel.transform.GetChild(i).GetChild(1).gameObject.SetActive(true);
+                        multiplayerPanel.transform.GetChild(1).GetChild(i).GetChild(0).gameObject.SetActive(false);
+                        multiplayerPanel.transform.GetChild(1).GetChild(i).GetChild(1).gameObject.SetActive(true);
                         multiplayerPanel.ChangePortraitSprite(i, 0);
                     }
                 }
