@@ -981,6 +981,16 @@ MonoBehaviour:
   checkpointsSize: {x: 15, y: 10, z: 15}
   startCountdownUI: {fileID: 1670928511}
   gameManager: {fileID: 111076689}
+  playerColorImages:
+  - {fileID: 21300000, guid: 930f482aa4d3d9645888889eaa1a6067, type: 3}
+  - {fileID: 21300000, guid: 0df055e3f3026f445a208c03266f9450, type: 3}
+  - {fileID: 21300000, guid: 24c49815e86015c48b4bf389c94193b9, type: 3}
+  - {fileID: 21300000, guid: 52e79672f59fa154783df039ae35f9d2, type: 3}
+  playerNumberImages:
+  - {fileID: 21300000, guid: 82dcbecc46976d34696d7e316d5057c1, type: 3}
+  - {fileID: 21300000, guid: 9bf55b39930a70b418f4cf3075278e11, type: 3}
+  - {fileID: 21300000, guid: b04cc883437aa004d84ed00fa2b62ae6, type: 3}
+  - {fileID: 21300000, guid: e4d186cda598b4043ae7a1ad118ba02f, type: 3}
 --- !u!1001 &180794966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1083,6 +1093,14 @@ PrefabInstance:
     - target: {fileID: 2050750657566980397, guid: 04794b19c8af5e24aa2ba82c8dd199ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050750658730520714, guid: 04794b19c8af5e24aa2ba82c8dd199ca, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 111076689}
+    - target: {fileID: 2050750658730520714, guid: 04794b19c8af5e24aa2ba82c8dd199ca, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartTheGame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04794b19c8af5e24aa2ba82c8dd199ca, type: 3}
