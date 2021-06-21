@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.60815096, g: 0.9181696, b: 0.97511786, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8549,7 +8549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7253656533568565127, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 36.4
+      value: 36.35
       objectReference: {fileID: 0}
     - target: {fileID: -6951127377713400215, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
@@ -8591,6 +8591,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5365797991078026773, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
+      objectReference: {fileID: 0}
     - target: {fileID: -4266542254685198304, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -8627,6 +8631,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: -2735810810203140518, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
+      objectReference: {fileID: 0}
     - target: {fileID: -2484989277148000958, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -8640,8 +8648,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2110366882546631040, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_Name
+      value: COL_Lower_Track_Off-track_1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2110366882546631040, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2110366882546631040, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
       objectReference: {fileID: 0}
     - target: {fileID: -1364606730723424812, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
@@ -8662,6 +8678,10 @@ PrefabInstance:
     - target: {fileID: -1046556853675185594, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1046556853675185594, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
       objectReference: {fileID: 0}
     - target: {fileID: -976648767204405357, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
@@ -8712,8 +8732,16 @@ PrefabInstance:
       value: LD 2 - Train track Collision
       objectReference: {fileID: 0}
     - target: {fileID: 1304130119281874634, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_Name
+      value: COL_Waterfall_Off-track
+      objectReference: {fileID: 0}
+    - target: {fileID: 1304130119281874634, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1304130119281874634, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
       objectReference: {fileID: 0}
     - target: {fileID: 1362466205665332778, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8747,6 +8775,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 9042909758799619196, guid: c1903ba642423d548a22a2b53a43446a, type: 3}
+    - target: {fileID: 2771995098295987477, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 73.35
+      objectReference: {fileID: 0}
     - target: {fileID: 2854245652283794562, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -8789,7 +8821,7 @@ PrefabInstance:
       objectReference: {fileID: 9042909758799619196, guid: c1903ba642423d548a22a2b53a43446a, type: 3}
     - target: {fileID: 5578889064889630019, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 63.16
+      value: 63.05
       objectReference: {fileID: 0}
     - target: {fileID: 5589400068079378860, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
@@ -8798,6 +8830,10 @@ PrefabInstance:
     - target: {fileID: 5642663788649814718, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642663788649814718, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
       objectReference: {fileID: 0}
     - target: {fileID: 5850091349805916527, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8811,9 +8847,13 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5992034132347389813, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
+      objectReference: {fileID: 0}
     - target: {fileID: 6848913087950338159, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -114.48
+      value: -114.47
       objectReference: {fileID: 0}
     - target: {fileID: 7012405060457547380, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalScale.y
@@ -8834,6 +8874,10 @@ PrefabInstance:
     - target: {fileID: 7093066743481064488, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7093066743481064488, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
       objectReference: {fileID: 0}
     - target: {fileID: 7253797509887759036, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalScale.x
@@ -8881,7 +8925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7564259568997328139, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 41.8
+      value: 41.75
       objectReference: {fileID: 0}
     - target: {fileID: 7698998025812953845, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8890,6 +8934,10 @@ PrefabInstance:
     - target: {fileID: 7878874638209500699, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878874638209500699, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
+      propertyPath: m_TagString
+      value: OffTrack
       objectReference: {fileID: 0}
     - target: {fileID: 7923085946914291266, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_Enabled
@@ -8905,7 +8953,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8747453762560912285, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 44.28
+      value: 44.25
       objectReference: {fileID: 0}
     - target: {fileID: 8790798535375054533, guid: 63386e701b6511a44bf1472f85f7fca4, type: 3}
       propertyPath: m_LocalPosition.y
