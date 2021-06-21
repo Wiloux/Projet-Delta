@@ -7,8 +7,8 @@ namespace Florian {
     public class FlanksAttack : MonoBehaviour {
         private MovementController _movementController;
 
-        [SerializeField] private float _pushForce;
-        [SerializeField] private Vector3 _throwBoxDimension;
+        public float _pushForce;
+        public Vector3 _throwBoxDimension;
         public float _cooldown;
         public float _timer;
 
@@ -26,25 +26,28 @@ namespace Florian {
         }
 
         private void Colliders(float horizontal) {
-            Collider[] colliders = Physics.OverlapBox(transform.right * horizontal * 2f + transform.localPosition, _throwBoxDimension);
+            Vector3 center = transform.right * horizontal * (_throwBoxDimension.x / 2f) + transform.position;
+            Collider[] colliders = Physics.OverlapBox(center, _throwBoxDimension);
 
             foreach (Collider pushedObject in colliders) {
                 MovementController hittedMvtController = pushedObject.GetComponent<MovementController>();
                 if (hittedMvtController != null && hittedMvtController.playerName != _movementController.playerName) {
-                    pushedObject.GetComponent<VFXManager>().AttackSkillFX(transform.right * horizontal * 2f + transform.localPosition, 2f);
-                    pushedObject.GetComponent<VFXManager>().TextToon(transform.right * horizontal * 2f + transform.localPosition, 2f);
-                    hittedMvtController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * -1f * _pushForce);
-                    hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.frictions.amplitude, "frictions.amplitude", hittedMvtController.physics.frictions.amplitude * 15f, 1f);
+                    pushedObject.GetComponent<VFXManager>().AttackSkillFX(center, 2f);
+                    pushedObject.GetComponent<VFXManager>().TextToon(center, 2f);
+                    //hittedMvtController.physics.AddVelocity((transform.position - pushedObject.transform.position).normalized.Redirect(Vector3.forward, pushedObject.transform.forward) * -1f * _pushForce);
+                    //hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.frictions.amplitude, "frictions.amplitude", hittedMvtController.physics.frictions.amplitude * 15f, 1f);
+                    //hittedMvtController.physics.Bump((pushedObject.transform.position - transform.position).normalized, _pushForce, 0f);
+                    hittedMvtController.physics.Bump(transform.right * horizontal, _pushForce, 0f);
                 }
             }
-
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawCube(transform.right * 2f + transform.localPosition, _throwBoxDimension);
-            Gizmos.DrawCube(-transform.right * 2f + transform.localPosition, _throwBoxDimension);
+        private void OnDrawGizmos() {
+            Color color = Color.blue;
+            color.a = 0.2f;
+            Gizmos.color = color;
+            Gizmos.DrawCube(transform.right * (_throwBoxDimension.x / 2f) + transform.position, _throwBoxDimension);
+            Gizmos.DrawCube(-transform.right * (_throwBoxDimension.x / 2f) + transform.position, _throwBoxDimension);
         }
     }
 }

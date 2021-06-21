@@ -15,7 +15,7 @@ namespace Florian {
         private JumpingSheep jumpingSheep;
         private Gliding gliding;
         private Shark sharkAttack;
-        private bool sharkSide;
+        private float sharkSide;
         private Fear fear;
 
         [Header("Bodys")]
@@ -198,27 +198,24 @@ namespace Florian {
                     // Shark Attack
                 } else {
                     if (player.GetAxisRaw("Attack") != 0f && sharkAttack._timer <= 0f) {
+                        Debug.Log("BEGIN SHARK ATTACK");
                         sharkAttack.pressTimer += Time.deltaTime;
                         if (player.GetAxisRaw("Attack") > 0f) {
-                            sharkSide = true;
                             riderAnim.SetBool("chargingAttackD", true);
                         } else {
-                            sharkSide = false;
                             riderAnim.SetBool("chargingAttackG", true);
                         }
-                    } else if (player.GetAxisRaw("Attack") == 0f && sharkAttack.pressTimer != 0.0f) {
-                        if (sharkSide)
-                            sharkAttack.ComputeAttack(1);
-                        else
-                            sharkAttack.ComputeAttack(-1);
+                        sharkSide = player.GetAxisRaw("Attack");
+                    } else if (player.GetAxisRaw("Attack") == 0f && sharkAttack.pressTimer != 0f) {
+                        Debug.Log("MUUUUUURA !");
+                        sharkAttack.ComputeAttack(sharkSide);
 
-                        sharkAttack.pressTimer = 0.0f;
+                        sharkAttack.pressTimer = 0f;
                         sharkAttack._timer = sharkAttack._cooldown;
 
-
-                        if (sharkSide) {
+                        if (sharkSide > 0f) {
                             riderAnim.SetBool("chargingAttackD", false);
-                        } else if (!sharkSide) {
+                        } else if (sharkSide < 0f) {
                             riderAnim.SetBool("chargingAttackG", false);
                         }
                     }

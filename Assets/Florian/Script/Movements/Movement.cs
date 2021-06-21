@@ -82,6 +82,7 @@ namespace Florian {
         [HideInInspector] public bool stun;
 
         [Header("Collisions")]
+        [SerializeField] private float stepHeight = 0.5f;
         [Range(0f, 90f), SerializeField] private float faceAngle = 50f;
         public float bounceForce = 20f;
         public float bounceStunTime = 2f;
@@ -217,6 +218,7 @@ namespace Florian {
             //Roll();
 
             float frictions = ComputeCurve(this.frictions);
+            Vector3 frictionsMask = Vector3.one;
 
             if (isDecelerate && !stun) {
                 float deceleration = ComputeCurve(this.deceleration);
@@ -231,25 +233,30 @@ namespace Florian {
             } else if (Speed < maxSpeed && !stun) {
                 AccelerationUpdate();
                 ResetDecelerateTimer();
+                frictionsMask.z = 0f;
+            }
+
+            if (decelerateTimer > 0f) {
+                frictionsMask.z = 0f;
+            }
+
+            if (frictions * Time.fixedDeltaTime > velocity.sqrMagnitude) {
+                velocity = Vector3.zero.Override(velocity.y, Axis.Y);
             } else {
-                if (decelerateTimer <= 0f && frictions * velocity.normalized.sqrMagnitude * Time.fixedDeltaTime > velocity.sqrMagnitude) {
-                    velocity = Vector3.zero;
-                } else  if (decelerateTimer <= 0f ){
-                    velocity += -frictions * velocity.normalized * Time.fixedDeltaTime;
-                }
+                velocity += -frictions * velocity.normalized.MultiplyIndividually(frictionsMask) * Time.fixedDeltaTime;
             }
 
             if (offTrackVelocity != Vector3.zero) {
                 offTrackVelocity += -frictions * offTrackVelocity.normalized * Time.fixedDeltaTime * 2f;
+                if (offTrackVelocity.z < 0f) {
+                    offTrackVelocity.z = 0f;
+                }
             }
 
             if (decelerateTimer > 0f) {
                 decelerateTimer -= Time.fixedDeltaTime;
             }
 
-            if (offTrackVelocity.z < 0f) {
-                offTrackVelocity.z = 0f;
-            }
 
             velocity += ComputeGravity() * Vector3.down;
 
@@ -447,7 +454,6 @@ namespace Florian {
         }
 
         public void NegateVelocity(params Axis[] axis) {
-            Debug.LogWarning("Velocity negated");
             for (int i = 0; i < axis.Length; i++) {
                 switch (axis[i]) {
                     case Axis.X:
@@ -468,34 +474,34 @@ namespace Florian {
             AddVelocity(Vector3.zero.Override(force, Axis.Y));
         }
 
-        public void Bump(Vector3 worldDirection, float force, bool dependingSpeedState = true) {
-            if (dependingSpeedState) {
-                if (offTracking) {
-                    force *= 2f;
-                    Debug.Log("Offtracking");
-                    // Offtrack !
-                } else {
-                    Debug.Log(SpeedState);
-                    switch (SpeedState) {
-                        case SpeedStates.STOPPED:
-                            force = 0f;
-                            break;
-                        case SpeedStates.CRUSADE:
-                            force *= 0.8f;
-                            break;
-                        case SpeedStates.HIGH:
-                            Stun(bounceStunTime / 2f);
-                            break;
-                        case SpeedStates.OVER:
-                            Stun(bounceStunTime);
-                            break;
-                    }
+        public void Bump(Vector3 worldDirection, float force, SpeedStates state) {
+            if (offTracking) {
+                force *= 2f;
+                Bump(worldDirection, force, 0f);
+            } else {
+                //Debug.Log(SpeedState);
+                switch (state) {
+                    case SpeedStates.STOPPED:
+                        return;
+                    case SpeedStates.CRUSADE:
+                        force *= 0.8f;
+                        Bump(worldDirection, force, 0f);
+                        return;
+                    case SpeedStates.HIGH:
+                        Bump(worldDirection, force, bounceStunTime / 2f);
+                        return;
+                    case SpeedStates.OVER:
+                        Bump(worldDirection, force, bounceStunTime);
+                        return;
                 }
             }
+        }
 
+        public void Bump(Vector3 worldDirection, float force, float stunTime) {
             NegateVelocity(Axis.Z);
             Vector3 direction = worldDirection.Redirect(transform.forward, Vector3.forward);
             AddVelocity(direction * force);
+            Stun(stunTime);
         }
 
         #region TimedChanged
@@ -627,16 +633,16 @@ namespace Florian {
 
         private void OnCollisionEnter(Collision collision) {
             float dot = Vector3.Dot(collision.contacts[0].normal, -transform.forward);
-            //if (dot != 0f) {
-            //    Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal * 20f, Color.green, 20f);
-            //    Debug.DrawRay(collision.contacts[0].point, -transform.forward * 20f, Color.red, 20f);
-            //}
+
             if (/*!(groundLayers.Contains(collision.gameObject.layer)) &&*/
-                Mathf.Abs(collision.contacts[0].point.y - transform.position.y) < 0.5f &&
+                Mathf.Abs(collision.contacts[0].point.y - groundCheck.position.y) > stepHeight &&
                 Mathf.Lerp(90f, 0f, Vector3.Dot(collision.contacts[0].normal, -transform.forward)) < faceAngle
             ) {
-                Debug.Log($"{gameObject.name} collided with : {collision.gameObject.name}");
-                Bump(-transform.forward, bounceForce);
+                //Debug.LogWarning($"{gameObject.name} collided with : {collision.gameObject.name}");
+                if (collision.gameObject.CompareTag("Player")) {
+                    collision.gameObject.GetComponent<Movement>().Bump(transform.forward, bounceForce, SpeedState);
+                }
+                Bump(-transform.forward, bounceForce, SpeedState);
             }
         }
 

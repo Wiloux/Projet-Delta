@@ -14831,9 +14831,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   stun: 0
+  stepHeight: 0.5
   faceAngle: 50
   bounceForce: 15
-  bounceStunTime: 1.5
+  bounceStunTime: 0.7
   offTrackMultiplier: 0.5
   slowRecoveryTime: 2
 --- !u!114 &6569751637473742778
@@ -14861,7 +14862,7 @@ MonoBehaviour:
   maxLaps: 2
   lockMovements: 0
   weightDistributionSpeed: 8
-  forwardRebellionTime: 5
+  forwardRebellionTime: 3
   rebellionTime: 2
 --- !u!114 &3962731580872504403
 MonoBehaviour:
@@ -14876,7 +14877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pushForce: 25
-  _throwBoxDimension: {x: 2.5, y: 2, z: 2}
+  _throwBoxDimension: {x: 3, y: 3, z: 2}
   _cooldown: 1
   _timer: 0
 --- !u!136 &2496713123409052842

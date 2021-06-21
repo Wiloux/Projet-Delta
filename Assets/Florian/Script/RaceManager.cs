@@ -165,7 +165,6 @@ namespace Florian {
         public void TeleportCharacters(Vector3 position, Vector3 orientation, Character character) {
             character.transform.position = position.Override(position.y + 5f, Axis.Y);
             character.transform.localEulerAngles = orientation;
-            Debug.Log(character.transform.position + " .. " + position);
         }
 
         public void TeleportCharacters(Vector3 position, Vector3 orientation) {
