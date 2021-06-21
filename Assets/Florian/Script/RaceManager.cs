@@ -233,7 +233,7 @@ namespace Florian
                 lastInst.transform.Find("1/PlayerColor").GetComponent<Image>().sprite = playerColorImages[i];
                 lastInst.transform.Find("1/PlayerColor/Number").GetComponent<Image>().sprite = playerNumberImages[place];
                 Vector3 lastPos = lastInst.transform.Find("1").transform.position;
-                lastInst.transform.Find("1").transform.position = new Vector3(lastPos.x + 100 * i, lastPos.y, lastPos.z);
+                lastInst.transform.Find("1").transform.position = new Vector3(lastPos.x + 25 * i, lastPos.y, lastPos.z);
             }
 
             for (int i = 0; i < AllPanels.Count; i++)
