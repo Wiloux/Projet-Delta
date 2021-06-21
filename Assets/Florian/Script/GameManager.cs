@@ -198,6 +198,16 @@ namespace Florian
                             Gliding lastGliding = lastSpawnedChild.AddComponent<Gliding>();
                             lastGliding.timerDur = refGliding.timerDur;
                             lastGliding.divideAmount = refGliding.divideAmount;
+
+                            Shark refShark = valueRefs.GetComponent<Shark>();
+                            Shark lastShark = lastSpawnedChild.AddComponent<Shark>();
+                            lastShark.poweredPushForce = refShark.poweredPushForce;
+                            lastShark.poweredPushRadius = refShark.poweredPushRadius;
+                            lastShark.pressTimer = refShark.pressTimer;
+                            lastShark._cooldown = refShark._cooldown;
+                            lastShark.stunTime = refShark.stunTime;
+                            lastShark._timer = refShark._timer;
+
                             //Debug.Log(lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider"));
                             lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(false);
                             lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(true);
