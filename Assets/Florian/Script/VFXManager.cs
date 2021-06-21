@@ -10,14 +10,14 @@ namespace Florian
         private MovementController _movementController = null;
 
         [Header("VFX")]
-        [SerializeField] private GameObject _stunFX = null;
-        [SerializeField] private GameObject _jumpFX = null;
-        [SerializeField] private GameObject _stompFX = null;
-        [SerializeField] private GameObject _flanksAttackFX = null;
-        [SerializeField] private GameObject _textFX = null;
-        [SerializeField] private GameObject _basicTrailsFX = null;
-        [SerializeField] private GameObject _offTrackTrailsFX = null;
-        [SerializeField] private GameObject _bumpFX = null;
+        [SerializeField] private ParticleSystem _stunFX = null;
+        [SerializeField] private ParticleSystem _jumpFX = null;
+        [SerializeField] private ParticleSystem _stompFX = null;
+        [SerializeField] private ParticleSystem _flanksAttackFX = null;
+        [SerializeField] private ParticleSystem _textFX = null;
+        [SerializeField] private ParticleSystem _basicTrailsFX = null;
+        [SerializeField] private ParticleSystem _offTrackTrailsFX = null;
+        [SerializeField] private ParticleSystem _bumpFX = null;
 
         [Header("Set Teleporter Material")]
         public Image _fadeImg;
@@ -44,13 +44,15 @@ namespace Florian
 
         public void JumpSkillFX(Vector3 position, float time)
         {
-            GameObject ob = Instantiate(_jumpFX, position, Quaternion.Euler(-90f, 0f, 0f));
+            ParticleSystem ob = Instantiate(_jumpFX, position, Quaternion.Euler(-90f, 0f, 0f));
+            ob.Play();
             Destroy(ob, time);
         }
 
         public void StompSkillFX(Vector3 position, float time)
         {
-            GameObject ob = Instantiate(_stompFX, position, Quaternion.Euler(-90f, 0f, 0f));
+            ParticleSystem ob = Instantiate(_stompFX, position, Quaternion.Euler(-90f, 0f, 0f));
+            ob.Play();
             Destroy(ob, time);
         }
 
@@ -68,22 +70,38 @@ namespace Florian
 
         public void TrailsFX()
         {
-            if (_movementController.physics.offTracking)
+
+            if (!_movementController.Airborn)
             {
-                _basicTrailsFX.SetActive(false);
-                _offTrackTrailsFX.SetActive(true);
-            } else
+                if (_movementController.physics.offTracking)
+                {
+                    if (!_basicTrailsFX.isPlaying)
+                    {
+                        _basicTrailsFX.Play();
+                        _offTrackTrailsFX.Pause();
+                    }
+                }
+                else
+                {
+                    if (!_offTrackTrailsFX.isPlaying)
+                    {
+                        _basicTrailsFX.Pause();
+                        _offTrackTrailsFX.Play();
+                    }
+                }
+            }
+            else
             {
-                _offTrackTrailsFX.SetActive(false);
-                _basicTrailsFX.SetActive(true);
+                _offTrackTrailsFX.Stop();
+                _basicTrailsFX.Stop();
             }
         }
 
-        IEnumerator PlayerVFX(GameObject fx, float time)
+        IEnumerator PlayerVFX(ParticleSystem fx, float time)
         {
-            fx.SetActive(true);
+            fx.Play();
             yield return new WaitForSeconds(time);
-            fx.SetActive(false);
+            fx.Stop();
         }
     }
 }
