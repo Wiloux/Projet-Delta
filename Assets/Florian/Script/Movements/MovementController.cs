@@ -30,6 +30,7 @@ namespace Florian {
         [Header("Anims")]
         public Animator riderAnim;
         public Animator animalAnim;
+        [SerializeField] private float slopeRotateSpeed = 2f;
 
         [Header("Camera")]
         public Camera playerCamera;
@@ -66,7 +67,7 @@ namespace Florian {
         }
 
         public bool IsMoving {
-            get { return (physics.velocity.sqrMagnitude == 0); }
+            get { return (physics.Speed != 0); }
         }
 
         public bool Accelerating {
@@ -175,6 +176,9 @@ namespace Florian {
                 if (weightAxis.y < -0.7f) {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
+                    if (physics.Speed <= 0f) {
+                        Unrebellion();
+                    }
                 }
             }
 
@@ -289,7 +293,7 @@ namespace Florian {
 
             Quaternion slopeRotation = physics.SlopeTilt();
             if (slopeRotation != Quaternion.identity) {
-                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, slopeRotation, 3f * Time.deltaTime);
+                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, slopeRotation, slopeRotateSpeed * Time.deltaTime);
             } else {
                 model.transform.localEulerAngles = Vector3.zero;
             }
@@ -304,7 +308,7 @@ namespace Florian {
         private void UpdateAnims() {
             if (IsMoving && !physics.Decelerating) {
                 animalAnim.SetBool("isMoving", true);
-                animalAnim.speed = Mathf.Lerp(0.75f, 1.5f, physics.Speed / physics.maxSpeed);
+                animalAnim.speed = Mathf.Lerp(0.75f, 2f, physics.Speed / physics.MaxSpeed);
             } else {
                 animalAnim.SetBool("isMoving", false);
                 animalAnim.speed = 1f;
