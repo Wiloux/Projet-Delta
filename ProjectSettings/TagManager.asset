@@ -6,6 +6,8 @@ TagManager:
   tags:
   - DeathBox
   - OffTrack
+  - Enter
+  - Exit
   layers:
   - Default
   - TransparentFX

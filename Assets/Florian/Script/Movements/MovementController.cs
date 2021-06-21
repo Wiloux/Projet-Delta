@@ -17,6 +17,7 @@ namespace Florian {
         private Shark sharkAttack;
         private float sharkSide;
         private Fear fear;
+        private PlayerTrigger playerTrigger = null;
 
         [Header("Bodys")]
         public Transform model;
@@ -30,6 +31,7 @@ namespace Florian {
         [Header("Anims")]
         public Animator riderAnim;
         public Animator animalAnim;
+        [SerializeField] private float slopeRotateSpeed = 2f;
 
         [Header("Camera")]
         public Camera playerCamera;
@@ -66,7 +68,7 @@ namespace Florian {
         }
 
         public bool IsMoving {
-            get { return (physics.velocity.sqrMagnitude == 0); }
+            get { return (physics.Speed != 0); }
         }
 
         public bool Accelerating {
@@ -133,6 +135,9 @@ namespace Florian {
             fear = GetComponent<Fear>();
             if (fear == null) { Debug.LogError("fear not found on controller object"); }
 
+            playerTrigger = GetComponent<PlayerTrigger>();
+            if (playerTrigger == null) { Debug.LogError("player Trigger not found on controller object"); }
+
             baseScale = model.localScale;
         }
 
@@ -175,6 +180,9 @@ namespace Florian {
                 if (weightAxis.y < -0.7f) {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
+                    if (physics.Speed <= 0f) {
+                        Unrebellion();
+                    }
                 }
             }
 
@@ -289,11 +297,12 @@ namespace Florian {
 
             Quaternion slopeRotation = physics.SlopeTilt();
             if (slopeRotation != Quaternion.identity) {
-                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, slopeRotation, 3f * Time.deltaTime);
+                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, slopeRotation, slopeRotateSpeed * Time.deltaTime);
             } else {
                 model.transform.localEulerAngles = Vector3.zero;
             }
 
+            vfx.TrailsFX();
             UpdateAnims();
         }
 
@@ -304,7 +313,7 @@ namespace Florian {
         private void UpdateAnims() {
             if (IsMoving && !physics.Decelerating) {
                 animalAnim.SetBool("isMoving", true);
-                animalAnim.speed = Mathf.Lerp(0.75f, 1.5f, physics.Speed / physics.maxSpeed);
+                animalAnim.speed = Mathf.Lerp(0.75f, 2f, physics.Speed / physics.MaxSpeed);
             } else {
                 animalAnim.SetBool("isMoving", false);
                 animalAnim.speed = 1f;
@@ -431,6 +440,11 @@ namespace Florian {
             yield return StartCoroutine(coroutine1);
             Debug.Log($"Started {coroutine1}");
             StartCoroutine(coroutine2);
+        }
+
+        public void ResetPlayerTriggerList()
+        {
+            playerTrigger.ResetList();
         }
 
         //private void OnGUI() {

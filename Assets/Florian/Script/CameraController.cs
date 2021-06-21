@@ -52,7 +52,8 @@ namespace Florian {
         private void Update() {
             if (followPlayer) {
                 transform.parent.position = playerToFollow.position;
-                transform.parent.rotation = playerToFollow.rotation;
+                //transform.parent.rotation = playerToFollow.rotation;
+                transform.parent.localEulerAngles = transform.parent.localEulerAngles.Override(playerToFollow.localEulerAngles.y, Axis.Y);
             } else {
                 transform.LookAt(playerToFollow);
                 return;

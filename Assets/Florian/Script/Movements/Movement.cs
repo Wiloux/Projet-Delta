@@ -68,7 +68,6 @@ namespace Florian {
         public AmplitudeCurve gravityCurve = null;
         [SerializeField] private Transform groundCheck = null;
         [SerializeField] private float groundRayDistance = 0.2f;
-        [SerializeField] private float slopeRotateSpeed = 0.5f;
         [HideInInspector] public bool airborn;
 
         [HideInInspector] private bool needLastGroundPosUpdate;
@@ -87,7 +86,7 @@ namespace Florian {
         public float bounceForce = 20f;
         public float bounceStunTime = 2f;
         [Range(0f, 1f), SerializeField] private float offTrackMultiplier = 0.3f;
-        private bool offTracking = false;
+        [HideInInspector] public bool offTracking = false;
 
         [Header("Recovery")]
         [SerializeField] private float slowRecoveryTime = 2f;
@@ -175,14 +174,15 @@ namespace Florian {
             //isAccelerate = decelerateTimer > 0f;
             isDecelerate = false;
             //isTurn = false;
-            airborn = !IsGrounded() || jumping;
+            bool grounded = IsGrounded();
+            airborn = !grounded || jumping;
 
-            if (!IsGrounded() && needLastGroundPosUpdate) {
+            if (!grounded && needLastGroundPosUpdate) {
                 needLastGroundPosUpdate = false;
                 lastGroundPos = transform.position;
             }
 
-            if (IsGrounded()) {
+            if (grounded) {
                 needLastGroundPosUpdate = true;
             }
             //airborn = false;
@@ -215,7 +215,7 @@ namespace Florian {
             } else {
                 isTurn = false;
             }
-            //Roll();
+            Roll();
 
             float frictions = ComputeCurve(this.frictions);
             Vector3 frictionsMask = Vector3.one;
@@ -476,7 +476,6 @@ namespace Florian {
 
         public void Bump(Vector3 worldDirection, float force, SpeedStates state) {
             if (offTracking) {
-                force *= 2f;
                 Bump(worldDirection, force, 0f);
             } else {
                 //Debug.Log(SpeedState);
@@ -596,10 +595,11 @@ namespace Florian {
         private bool IsGrounded() {
             Vector3 direction = -groundCheck.transform.up;
             Debug.DrawRay(groundCheck.position, direction * groundRayDistance, Color.green);
+            Debug.DrawRay(groundCheck.position, groundCheck.transform.right, Color.red);
             RaycastHit hitFloor;
             //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
             if (Physics.Raycast(groundCheck.position, direction, out hitFloor, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore)) {
-                if (hitFloor.collider.gameObject.tag == "OffTrack") {
+                if (hitFloor.collider.gameObject.CompareTag("OffTrack")) {
                     offTracking = true;
                 } else {
                     offTracking = false;
