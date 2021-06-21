@@ -7,12 +7,15 @@ using UnityEngine.UI;
 using TMPro;
 
 
-namespace Florian {
-    public class Character : MonoBehaviour {
+namespace Florian
+{
+    public class Character : MonoBehaviour
+    {
 
     }
 
-    public class RaceManager : MonoBehaviour {
+    public class RaceManager : MonoBehaviour
+    {
         public int lapsNumber = 0;
         public Vector3[] checkpoints = null;
         [HideInInspector] public List<Character> characters;
@@ -31,24 +34,31 @@ namespace Florian {
 
         public GameObject startCountdownUI;
 
-
-
         public GameManager gameManager;
+
+        public List<Sprite> playerColorImages = new List<Sprite>();
+        public List<Sprite> playerNumberImages = new List<Sprite>();
 
         #region Properties
 
-        public int NumberOfCharacters {
+        public int NumberOfCharacters
+        {
             get { return characters.Count; }
         }
 
-        public int NumberOfCheckpoints {
+        public int NumberOfCheckpoints
+        {
             get { return checkpoints.Length; }
         }
 
-        public bool EveryoneEnded {
-            get {
-                for (int i = 0; i < characters.Count; i++) {
-                    if (!HasEnded(CharacterId(characters[i]))) {
+        public bool EveryoneEnded
+        {
+            get
+            {
+                for (int i = 0; i < characters.Count; i++)
+                {
+                    if (!HasEnded(CharacterId(characters[i])))
+                    {
                         return false;
                     }
                 }
@@ -58,10 +68,14 @@ namespace Florian {
 
         #endregion
 
-        public void SpawnCheckpoints() {
-            if (transform.childCount > 0) {
-                for (int i = 0; i < transform.childCount; i++) {
-                    if (transform.GetChild(i).name == "Checkpoints") {
+        public void SpawnCheckpoints()
+        {
+            if (transform.childCount > 0)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    if (transform.GetChild(i).name == "Checkpoints")
+                    {
                         DestroyImmediate(transform.GetChild(i).gameObject);
                     }
                 }
@@ -69,7 +83,8 @@ namespace Florian {
 
             Transform parent = new GameObject("Checkpoints").transform;
             parent.parent = transform;
-            for (int i = 0; i < checkpoints.Length; i++) {
+            for (int i = 0; i < checkpoints.Length; i++)
+            {
                 //GameObject insta = Instantiate(, checkpoints[i], Quaternion.identity);
                 GameObject insta = new GameObject("Checkpoints " + i);
                 insta.transform.position = checkpoints[i];
@@ -81,30 +96,40 @@ namespace Florian {
             }
         }
 
-        private void Update() {
+        private void Update()
+        {
             UpdateRace();
+            if (Input.GetKeyDown(KeyCode.O)) { EndRace(); }
         }
 
-        private void UpdateRace() {
+        private void UpdateRace()
+        {
             ComputePlacements();
 
-            for (int i = 0; i < placements.Length; i++) {
-                for (int j = 0; j < characters.Count; j++) {
-                    if (placements[i] == j) {
+            for (int i = 0; i < placements.Length; i++)
+            {
+                for (int j = 0; j < characters.Count; j++)
+                {
+                    if (placements[i] == j)
+                    {
                         MovementController player = characters[j] as MovementController;
                         player.Placement = i + 1;
                     }
                 }
             }
 
-            for (int i = 0; i < NumberOfCharacters; i++) {
-                if (LapsDone(i)) {
+            for (int i = 0; i < NumberOfCharacters; i++)
+            {
+                if (LapsDone(i))
+                {
                     DoALapse(i);
                     MovementController player = characters[i] as MovementController;
                     player.Laps = laps[i];
-                    if (HasEnded(i)) {
+                    if (HasEnded(i))
+                    {
                         player.lockMovements = true;
-                        if (EveryoneEnded) {
+                        if (EveryoneEnded)
+                        {
                             EndRace();
                         }
                     }
@@ -112,14 +137,16 @@ namespace Florian {
             }
         }
 
-        public void StartRace(Character[] characters) {
+        public void StartRace(Character[] characters)
+        {
             SetCharacters(characters);
 
             placements = new int[characters.Length];
 
             laps = new List<int>();
             checkpointReached = new List<int>();
-            for (int i = 0; i < characters.Length; i++) {
+            for (int i = 0; i < characters.Length; i++)
+            {
                 Debug.Log(characters[i].name);
                 laps.Add(0);
                 checkpointReached.Add(0);
@@ -128,7 +155,7 @@ namespace Florian {
                 (characters[i] as MovementController).Laps = 0;
             }
 
-            TeleportCharacters(checkpoints[0], new Vector3(0,180f,0));
+            TeleportCharacters(checkpoints[0], new Vector3(0, 180f, 0));
             StartCoroutine(BlockPlayerAtTheStartOfTheRace(characters));
             raceStarted = true;
         }
@@ -151,49 +178,74 @@ namespace Florian {
                 characters[i].GetComponent<MovementController>().lockMovements = false;
             }
         }
-        public void TeleportCharacters(Vector3 position, Character character) {
+        public void TeleportCharacters(Vector3 position, Character character)
+        {
             character.transform.position = position.Override(position.y + 5f, Axis.Y);
             Debug.Log(character.transform.position + " .. " + position);
         }
 
-        public void TeleportCharacters(Vector3 position) {
-            for (int i = 0; i < characters.Count; i++) {
+        public void TeleportCharacters(Vector3 position)
+        {
+            for (int i = 0; i < characters.Count; i++)
+            {
                 TeleportCharacters(position, characters[i]);
             }
         }
 
-        public void TeleportCharacters(Vector3 position, Vector3 orientation, Character character) {
+        public void TeleportCharacters(Vector3 position, Vector3 orientation, Character character)
+        {
             character.transform.position = position.Override(position.y + 5f, Axis.Y);
             character.transform.localEulerAngles = orientation;
         }
 
-        public void TeleportCharacters(Vector3 position, Vector3 orientation) {
-            for (int i = 0; i < characters.Count; i++) {
+        public void TeleportCharacters(Vector3 position, Vector3 orientation)
+        {
+            for (int i = 0; i < characters.Count; i++)
+            {
                 TeleportCharacters(position + new Vector3(2f, 0) * i, orientation, characters[i]);
             }
         }
 
-        public void EndRace() {
+        public void EndRace()
+        {
             placementPanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
 
             List<Transform> AllPanels = new List<Transform>();
 
-            for (int i = 0; i < characters.Count; i++) {
+            int place = 0;
+
+            for (int i = 0; i < characters.Count; i++)
+            {
+
+                for (int j = 0; j < placements.Length; j++)
+                {
+                    if (placements[j] == i)
+                        place = j;
+
+                }
                 GameObject lastInst = Instantiate(playerPlacementEndGame, transform.position, Quaternion.identity, placementPanel.transform.Find("PlayersPlacement").transform);
-                //  Debug.Log(gameManager.multiplayerPanel.portraitSprites[gameManager.multiplayerPanel.playerScreens[i].indexPortrait];
-                lastInst.transform.Find("CharSprite").GetComponent<Image>().sprite = gameManager.multiplayerPanel.portraitSprites[gameManager.multiplayerPanel.playerScreens[i].indexPortrait];
-                //     AllPanels.Add(lastInst.transform);
-                //     AllPanels.Sort(characters[i].transform);
-                //     Movement player = characters[i] as Movement;
+                lastInst.transform.Find("1/CharSprite").GetComponent<Image>().sprite = gameManager.multiplayerPanel.portraitSprites[gameManager.multiplayerPanel.playerScreens[i].indexPortrait];
                 lastInst.transform.SetSiblingIndex(0);
-                lastInst.name = "Placement" + characters[i].name;
+                lastInst.name = "Placement " + characters[i].name;
                 AllPanels.Add(lastInst.transform);
-                lastInst.transform.Find("CharSprite/Placement").GetComponent<TextMeshProUGUI>().text = placements[i] + 1 + "";
+                lastInst.transform.Find("1/PlayerName").GetComponent<TextMeshProUGUI>().text = "Player " + (i + 1);
+                lastInst.transform.Find("1/PlayerColor").GetComponent<Image>().sprite = playerColorImages[i];
+                lastInst.transform.Find("1/PlayerColor/Number").GetComponent<Image>().sprite = playerNumberImages[place];
+                Vector3 lastPos = lastInst.transform.Find("1").transform.position;
+                lastInst.transform.Find("1").transform.position = new Vector3(lastPos.x + 100 * i, lastPos.y, lastPos.z);
             }
 
-            for (int i = 0; i < AllPanels.Count; i++) {
-                AllPanels[i].transform.SetSiblingIndex(placements[i]);
+            for (int i = 0; i < AllPanels.Count; i++)
+            {
+                for (int j = 0; j < placements.Length; j++)
+                {
+                    if (placements[j] == i)
+                        place = j;
+
+                }
+                MovementController player = characters[i] as MovementController;
+                AllPanels[i].transform.SetSiblingIndex(place);
                 //Debug.Log(characters[i].name + ".." + characters[i].transform.GetSiblingIndex() + ".." + placements[i] + ".." + AllPanels[i].transform.name);
             }
 
@@ -202,8 +254,10 @@ namespace Florian {
 
         #region Setters
 
-        public bool CheckpointReached(int characterId, int index) {
-            if (checkpointReached[characterId] == index - 1) {
+        public bool CheckpointReached(int characterId, int index)
+        {
+            if (checkpointReached[characterId] == index - 1)
+            {
                 checkpointReached[characterId] = index;
                 Debug.Log("Checkpoint Reached : " + index + " by " + characters[characterId].name);
                 return true;
@@ -212,20 +266,25 @@ namespace Florian {
             return false;
         }
 
-        public void Clean() {
-            for (int charIndex = 0; charIndex < checkpointReached.Count; charIndex++) {
+        public void Clean()
+        {
+            for (int charIndex = 0; charIndex < checkpointReached.Count; charIndex++)
+            {
                 checkpointReached[charIndex] = 0;
             }
         }
 
-        public void SetCharacters(Character[] characters) {
+        public void SetCharacters(Character[] characters)
+        {
             this.characters.Clear();
-            for (int i = 0; i < characters.Length; i++) {
+            for (int i = 0; i < characters.Length; i++)
+            {
                 this.characters.Add(characters[i]);
             }
         }
 
-        public void DoALapse(int characterIndex) {
+        public void DoALapse(int characterIndex)
+        {
             checkpointReached[characterIndex] = 0;
             laps[characterIndex]++;
         }
@@ -234,60 +293,75 @@ namespace Florian {
 
         #region Getters
 
-        public int CharacterId(Character character) {
+        public int CharacterId(Character character)
+        {
             if (!characters.Contains(character)) { return -1; }
 
             return characters.IndexOf(character);
         }
 
-        public bool HasEnded(int characterIndex) {
-            if (laps[characterIndex] < lapsNumber) {
+        public bool HasEnded(int characterIndex)
+        {
+            if (laps[characterIndex] < lapsNumber)
+            {
                 return false;
             }
 
             return true;
         }
 
-        public bool LapsDone(int characterIndex) {
+        public bool LapsDone(int characterIndex)
+        {
             return checkpointReached[characterIndex] == checkpoints.Length - 1;
         }
 
-        public void ComputePlacements() {
+        public void ComputePlacements()
+        {
             // Points = players;
             Dictionary<int, List<int>> points = new Dictionary<int, List<int>>();
 
             int maxPoint = 0;
 
-            for (int i = 0; i < characters.Count; i++) {
+            for (int i = 0; i < characters.Count; i++)
+            {
                 int point = GetPositionPoints(i);
-                if (!points.ContainsKey(point)) {
+                if (!points.ContainsKey(point))
+                {
                     points.Add(point, new List<int>());
                 }
                 points[point].Add(i);
-                if (point > maxPoint) {
+                if (point > maxPoint)
+                {
                     maxPoint = point;
                 }
             }
 
             int place = 0;
-            for (int i = maxPoint; i >= 0; i--) {
-                if (points.ContainsKey(i)) {
-                    if (points[i].Count > 1) {
+            for (int i = maxPoint; i >= 0; i--)
+            {
+                if (points.ContainsKey(i))
+                {
+                    if (points[i].Count > 1)
+                    {
                         List<float> distances = new List<float>();
                         Dictionary<float, int> almanac = new Dictionary<float, int>();
-                        for (int j = 0; j < points[i].Count; j++) {
+                        for (int j = 0; j < points[i].Count; j++)
+                        {
                             int index = points[i][j];
                             distances.Add(Vector3.Distance(characters[index].transform.position, checkpoints[checkpointReached[index] + 1]));
                             almanac.Add(distances[distances.Count - 1], index);
                             //Debug.LogWarning("Player : " + characters[index].name + " // " + distances[distances.Count - 1]);
                         }
                         distances.Sort();
-                        for (int j = 0; j < distances.Count; j++) {
+                        for (int j = 0; j < distances.Count; j++)
+                        {
                             //Debug.LogWarning("/// " + distances[j] + " .. " + characters[almanac[distances[j]]].name + " .. " + almanac[distances[j]]);
                             placements[place] = almanac[distances[j]];
                             place++;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         placements[place] = points[i][0];
                         place++;
                     }
@@ -296,7 +370,8 @@ namespace Florian {
             //  Debug.Log("----------------------------");
         }
 
-        private int GetPositionPoints(int characterIndex) {
+        private int GetPositionPoints(int characterIndex)
+        {
             int points = 0;
             points = laps[characterIndex] * checkpoints.Length;
             points += checkpointReached[characterIndex];
