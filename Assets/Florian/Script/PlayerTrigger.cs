@@ -21,7 +21,7 @@ namespace Florian
             {
                 if (_enterList.Contains(other))
                 {
-                    StartCoroutine(TeleporterFade(this.gameObject, 0.3f, true));
+                    StartCoroutine(TeleporterFade(this.gameObject, 0.05f, true));
                     _enterList.Remove(other);
                 }
             }
@@ -29,7 +29,7 @@ namespace Florian
             {
                 if (_exitList.Contains(other) && this.gameObject.GetComponent<VFXManager>()._fadeImg.material.GetFloat("_Radius") != 25f)
                 {
-                    StartCoroutine(TeleporterFade(this.gameObject, 0.5f, false));
+                    StartCoroutine(TeleporterFade(this.gameObject, 0.2f, false));
                     _exitList.Remove(other);
                 }
             }
