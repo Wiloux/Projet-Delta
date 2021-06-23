@@ -8,6 +8,7 @@ namespace Florian
     public class VFXManager : MonoBehaviour
     {
         private MovementController _movementController = null;
+        private RaceManager raceManager = null;
 
         [Header("VFX")]
         [SerializeField] private ParticleSystem _stunFX = null;
@@ -29,6 +30,9 @@ namespace Florian
 
             _fadeImg = GameObject.Find(GetComponent<MovementController>().playerName + "/PlayerRoot/HUD/TP Fade").GetComponent<Image>();
             _fadeImg.material = Instantiate(_fadeImg.material);
+
+            raceManager = GameObject.Find("----------- Utilities ----------/Utilities/RaceManager").GetComponent<RaceManager>();
+            UpdateFadeUI();
         }
 
         public void Stunned(float stunTime)
@@ -102,6 +106,15 @@ namespace Florian
             fx.Play();
             yield return new WaitForSeconds(time);
             fx.Stop();
+        }
+
+        private void UpdateFadeUI()
+        {
+            if (raceManager.characters.Count == 2)
+            {
+                _fadeImg.gameObject.transform.localPosition += new Vector3(0f, 0f, 276f);
+            }
+
         }
     }
 }
