@@ -36,6 +36,7 @@ namespace Florian
         private int actualCameraId;
         public miniMap miniMap;
         public GameObject valueRefs;
+        public GameObject pausePanel;
 
         #region Properties
 
@@ -86,6 +87,16 @@ namespace Florian
             if (MultPanelActive)
             {
                 UpdateMultPanel();
+            }
+            for (int i = 0; i < playersController.Length; i++)
+            {
+                if (playersController[i] != null)
+                {
+                    if (race.raceStarted && !race.startCountdownUI.activeSelf && (ReInput.players.GetPlayer(i).GetButtonDown("Start game")))
+                    {
+                        PauseGame(pausePanel);
+                    }
+                }
             }
         }
 
@@ -321,6 +332,24 @@ namespace Florian
         }
 
         #endregion
+
+        public void PauseGame(GameObject pausePanel)
+        {
+            if (pausePanel.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                Time.timeScale = 1;
+                pausePanel.SetActive(false);
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Time.timeScale = 0;
+                pausePanel.SetActive(true);
+            }
+        }
 
         private GameObject SpawnKart(Vector3 pos)
         {
