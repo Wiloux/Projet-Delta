@@ -113,7 +113,6 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-        // Make sure we don't end up with a weird float value
         original.volume = 0;
         newSource.volume = musicVolume;
 
