@@ -297,11 +297,23 @@ namespace Florian
                 {
                     if (player.GetButton("Action") && Airborn)
                     {
-
+                        if (gliding.timer >= 0)
+                        {
+                            riderAnim.SetTrigger("plane");
+                            riderAnim.SetBool("planeBool", true);
+                        }
                         gliding.isGliding = true;
                     }
-                    else
+                    else { 
+                        riderAnim.SetBool("planeBool", false);
                         gliding.isGliding = false;
+                    }
+
+
+                    if (!Airborn)
+                    {
+                        riderAnim.SetBool("planeBool", false);
+                    }
                 }
 
                 if (player.GetButtonDown("Jump"))
