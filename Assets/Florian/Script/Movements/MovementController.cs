@@ -229,7 +229,8 @@ namespace Florian
                 {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
-                    if (physics.Speed <= 0f && Rebelling) {
+                    if (physics.Speed <= 0f && Rebelling)
+                    {
                         Unrebellion();
                     }
                 }
@@ -301,17 +302,21 @@ namespace Florian
                         {
                             riderAnim.SetTrigger("plane");
                             riderAnim.SetBool("planeBool", true);
+                            vfx.GlidFX();
                         }
                         gliding.isGliding = true;
                     }
-                    else {
+                    else
+                    {
                         riderAnim.SetBool("planeBool", false);
+                        vfx.GlidFX();
                         gliding.isGliding = false;
                     }
 
 
                     if (!Airborn)
                     {
+                        vfx.GlidFX();
                         riderAnim.SetBool("planeBool", false);
                     }
                 }
@@ -488,8 +493,10 @@ namespace Florian
 
         #region Rebellion
 
-        private void AddRebellion() {
-            if (rebellionStacks == 0) {
+        private void AddRebellion()
+        {
+            if (rebellionStacks == 0)
+            {
                 rebellionSide = (int)(Tools.RandomFloat(-1f, 1f));
             }
 
@@ -529,7 +536,8 @@ namespace Florian
             StartCoroutine(Tools.Delay(Unrebellion, rebellionTime));
         }
 
-        private void Unrebellion() {
+        private void Unrebellion()
+        {
             vfx.AngerClear(rebellionSide);
             rebellionSide = 0;
             rebellionHorizontalDirection = 0f;

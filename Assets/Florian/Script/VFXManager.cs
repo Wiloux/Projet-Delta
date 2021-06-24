@@ -20,6 +20,7 @@ namespace Florian
         [SerializeField] private ParticleSystem _offTrackTrailsFX = null;
         [SerializeField] private ParticleSystem _bumpFX = null;
         [SerializeField] private AngerParticles angerFX = null;
+        [SerializeField] private ParticleSystem _waveFX = null;
 
         [Header("Set Teleporter Material")]
         public Image _fadeImg;
@@ -34,6 +35,18 @@ namespace Florian
 
             raceManager = GameObject.Find("----------- Utilities ----------/Utilities/RaceManager").GetComponent<RaceManager>();
             UpdateFadeUI();
+        }
+
+        public void GlidFX()
+        {
+            if (_waveFX.isPlaying)
+            {
+                _waveFX.Stop();
+            }
+            else
+            {
+                _waveFX.Play();
+            }
         }
 
         public void Stunned(float stunTime)
@@ -83,14 +96,14 @@ namespace Florian
                     if (!_basicTrailsFX.isPlaying)
                     {
                         _basicTrailsFX.Play();
-                        _offTrackTrailsFX.Pause();
+                        _offTrackTrailsFX.Stop();
                     }
                 }
                 else
                 {
                     if (!_offTrackTrailsFX.isPlaying)
                     {
-                        _basicTrailsFX.Pause();
+                        _basicTrailsFX.Stop();
                         _offTrackTrailsFX.Play();
                     }
                 }

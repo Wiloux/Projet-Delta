@@ -10773,7 +10773,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: -0.403, z: -0.85}
   m_LocalScale: {x: 4.621711, y: 4.621711, z: 4.621711}
-  m_Children: []
+  m_Children:
+  - {fileID: 4043698482230425504}
   m_Father: {fileID: 4043698482178678015}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 267.355, y: 414.003, z: -53.55301}
@@ -15637,7 +15638,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4043698480743700880}
-  - {fileID: 4043698482230425504}
   m_Father: {fileID: 3641011592048210489}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15715,12 +15715,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4043698482230425507}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.4, z: -0.754}
-  m_LocalScale: {x: 4.621711, y: 4.621711, z: 4.621711}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.00064909545, z: 0.020771494}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4043698482178678015}
-  m_RootOrder: 1
+  m_Father: {fileID: 4043698480743700880}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 267.355, y: 414.003, z: -53.55301}
 --- !u!198 &4043698482230425518
 ParticleSystem:
@@ -24967,6 +24967,7 @@ MonoBehaviour:
   _offTrackTrailsFX: {fileID: 178717999117784736}
   _bumpFX: {fileID: 0}
   angerFX: {fileID: 8428341984556920599}
+  _waveFX: {fileID: 4043698480743700894}
   _fadeImg: {fileID: 6959107892343051092}
 --- !u!114 &3013010006898061309
 MonoBehaviour:
