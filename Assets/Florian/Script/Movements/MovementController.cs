@@ -302,21 +302,26 @@ namespace Florian
                         {
                             riderAnim.SetTrigger("plane");
                             riderAnim.SetBool("planeBool", true);
-                            vfx.GlidFX();
+                            vfx.GlidFX(true);
+                        }
+                        else
+                        {
+                            riderAnim.SetBool("planeBool", false);
+                            vfx.GlidFX(false);
                         }
                         gliding.isGliding = true;
                     }
                     else
                     {
                         riderAnim.SetBool("planeBool", false);
-                        vfx.GlidFX();
+                        vfx.GlidFX(false);
                         gliding.isGliding = false;
                     }
 
 
                     if (!Airborn)
                     {
-                        vfx.GlidFX();
+                        vfx.GlidFX(false);
                         riderAnim.SetBool("planeBool", false);
                     }
                 }
