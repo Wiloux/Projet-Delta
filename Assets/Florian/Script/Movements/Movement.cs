@@ -613,30 +613,15 @@ namespace Florian {
             RaycastHit hitFloor;
             //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
             if (Physics.Raycast(groundCheck.position, direction, out hitFloor, stepHeight, groundLayers, QueryTriggerInteraction.Ignore)) {
+                if (hitFloor.collider.gameObject.CompareTag("OffTrack")) {
+                    offTracking = true;
+                } else {
+                    offTracking = false;
+                }
                 return true;
             }
             return false;
         }
-
-        //private bool IsGrounded() {
-        //    RaycastHit[] hitFloor = Physics.RaycastAll(groundCheck.position, Vector3.down, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore);
-        //    bool grounded = false;
-        //    //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
-        //    //if (Physics.RaycastAll(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers, QueryTriggerInteraction.Ignore)) {
-        //    if (hitFloor.Length > 0) {
-        //        grounded = true;
-        //        for (int i = 0; i < hitFloor.Length; i++) {
-        //            Debug.Log(hitFloor[i].collider.tag);
-        //            if (hitFloor[i].collider.gameObject.tag == "OffTrack") {
-        //                offTracking = true;
-        //            } else {
-        //                offTracking = false;
-        //            }
-
-        //        }
-        //    }
-        //    return grounded;
-        //}
 
         #endregion
 

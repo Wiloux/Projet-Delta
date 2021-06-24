@@ -380,8 +380,9 @@ namespace Florian
                 if (rebellionStacks > 0)
                 {
                     emptyRebellionTimer += Time.deltaTime;
-                    if (emptyRebellionTimer > forwardRebellionTime * 2f)
+                    if (emptyRebellionTimer > forwardRebellionTime * 1.3f)
                     {
+                        emptyRebellionTimer = 0f;
                         vfx.AngerUnstack(rebellionSide);
                         rebellionStacks--;
                     }
