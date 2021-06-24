@@ -106,6 +106,10 @@ namespace Florian
             angerFX.Create(side);
         }
 
+        public void AngerUnstack(int side) {
+            angerFX.Unstack(side);
+        }
+
         public void AngerClear(int side) {
             angerFX.Clear(side);
         }

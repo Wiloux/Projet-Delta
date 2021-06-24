@@ -380,8 +380,9 @@ namespace Florian
                 if (rebellionStacks > 0)
                 {
                     emptyRebellionTimer += Time.deltaTime;
-                    if (emptyRebellionTimer > forwardRebellionTime)
+                    if (emptyRebellionTimer > forwardRebellionTime * 2f)
                     {
+                        vfx.AngerUnstack(rebellionSide);
                         rebellionStacks--;
                     }
                 }
@@ -487,8 +488,8 @@ namespace Florian
         #region Rebellion
 
         private void AddRebellion() {
-            if (rebellionSide == 0) {
-                rebellionSide = Mathf.FloorToInt(Tools.RandomFloat(-1f, 1f));
+            if (rebellionStacks == 0) {
+                rebellionSide = (int)(Tools.RandomFloat(-1f, 1f));
             }
 
             rebellionStacks++;

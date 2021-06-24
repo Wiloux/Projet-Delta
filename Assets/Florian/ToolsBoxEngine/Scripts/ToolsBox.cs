@@ -443,7 +443,8 @@ namespace ToolsBoxEngine {
         /// <param name="numbers"></param>
         /// <returns></returns>
         public static float RandomFloat(params float[] numbers) {
-            int rand = UnityEngine.Random.Range(0, numbers.Length - 1);
+            int rand = UnityEngine.Random.Range(0, numbers.Length);
+            Debug.Log(rand);
             return numbers[rand];
         }
 

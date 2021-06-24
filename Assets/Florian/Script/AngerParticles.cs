@@ -50,9 +50,20 @@ public class AngerParticles : MonoBehaviour {
         if (actualNumber >= positions.Length) { return; }
         Vector3 pos = positions[actualNumber].position;
         pos.x *= side * 2 - 1;
-        Debug.Log(actualNumber + " . " + pos.x);
         ParticleSystem lastPS = Create(pos, positions[actualNumber].rotation, positions[actualNumber].size);
         instantied[side].Add(lastPS);
+    }
+
+    public void Unstack(int side) {
+        if (side < 1) { side = 0; }
+        else { side = 1; }
+
+        if (instantied[side].Count == 0) { return; }
+
+        ParticleSystem particles = instantied[side][instantied[side].Count - 1];
+
+        Destroy(particles.gameObject);
+        instantied[side].Remove(particles);
     }
 
     public void Clear() {
