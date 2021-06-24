@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace ToolsBoxEngine {
-    public enum Axis { X, Y, Z }
+    public enum Axis { X, Y, Z, W }
 
     #region Nullable vector
     // Nullable Vector
@@ -194,6 +194,21 @@ namespace ToolsBoxEngine {
                     return new Vector3Int(vector.x, vector.y, value);
                 default:
                     return new Vector3Int(vector.x, vector.y, value);
+            }
+        }
+
+        public static Vector3 To3D(this Vector4 vector, Axis axisToIgnore = Axis.W) {
+            switch (axisToIgnore) {
+                case Axis.X:
+                    return new Vector3(vector.y, vector.z, vector.w);
+                case Axis.Y:
+                    return new Vector3(vector.x, vector.z, vector.w);
+                case Axis.Z:
+                    return new Vector3(vector.x, vector.y, vector.w);
+                case Axis.W:
+                    return new Vector3(vector.x, vector.y, vector.z);
+                default:
+                    return new Vector3(vector.x, vector.y, vector.z);
             }
         }
 
@@ -422,6 +437,11 @@ namespace ToolsBoxEngine {
             return weight.Length - 1;
         }
 
+        /// <summary>
+        /// Return a random number from argument
+        /// </summary>
+        /// <param name="numbers"></param>
+        /// <returns></returns>
         public static float RandomFloat(params float[] numbers) {
             int rand = UnityEngine.Random.Range(0, numbers.Length - 1);
             return numbers[rand];

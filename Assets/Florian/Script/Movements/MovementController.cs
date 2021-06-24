@@ -50,6 +50,7 @@ namespace Florian {
         [Header("Rebellion")]
         [SerializeField] private float forwardRebellionTime = 10f;
         [SerializeField] private float rebellionTime = 2f;
+        private int rebellionSide = 0;
         private float rebellionHorizontalDirection = 0f;
         private int rebellionStacks = 0;
         private float emptyRebellionTimer = 0f;
@@ -180,7 +181,7 @@ namespace Florian {
                 if (weightAxis.y < -0.7f) {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
-                    if (physics.Speed <= 0f) {
+                    if (physics.Speed <= 0f && Rebelling) {
                         Unrebellion();
                     }
                 }
@@ -374,7 +375,12 @@ namespace Florian {
         #region Rebellion
 
         private void AddRebellion() {
+            if (rebellionSide == 0) {
+                rebellionSide = Mathf.FloorToInt(Tools.RandomFloat(-1f, 1f));
+            }
+
             rebellionStacks++;
+            vfx.AngerStack(rebellionSide);
 
             int probability = 0;
             switch (rebellionStacks) {
@@ -401,12 +407,14 @@ namespace Florian {
         private void Rebellion() {
             //Debug.Log("REBELLION");
             //rebellionHorizontalDirection = UnityEngine.Random.Range(-0.5f, 0.5f);
-            rebellionHorizontalDirection = Tools.RandomFloat(-0.5f, 0.5f);
+            rebellionHorizontalDirection = 0.5f * rebellionSide;
             rebellionStacks = 0;
             StartCoroutine(Tools.Delay(Unrebellion, rebellionTime));
         }
 
         private void Unrebellion() {
+            vfx.AngerClear(rebellionSide);
+            rebellionSide = 0;
             rebellionHorizontalDirection = 0f;
         }
 

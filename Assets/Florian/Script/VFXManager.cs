@@ -18,6 +18,7 @@ namespace Florian
         [SerializeField] private ParticleSystem _basicTrailsFX = null;
         [SerializeField] private ParticleSystem _offTrackTrailsFX = null;
         [SerializeField] private ParticleSystem _bumpFX = null;
+        [SerializeField] private AngerParticles angerFX = null;
 
         [Header("Set Teleporter Material")]
         public Image _fadeImg;
@@ -95,6 +96,14 @@ namespace Florian
                 _offTrackTrailsFX.Stop();
                 _basicTrailsFX.Stop();
             }
+        }
+
+        public void AngerStack(int side) {
+            angerFX.Create(side);
+        }
+
+        public void AngerClear(int side) {
+            angerFX.Clear(side);
         }
 
         IEnumerator PlayerVFX(ParticleSystem fx, float time)
