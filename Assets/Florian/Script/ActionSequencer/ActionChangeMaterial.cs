@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Florian.ActionSequencer {
     public class ActionChangeMaterial : ActionGameObject {
-        public Material material;
+        public Color colorTo = new Color(0,0,0,1);
+        private bool ended = false;
 
         protected override void OnStart() { }
 
@@ -12,11 +14,29 @@ namespace Florian.ActionSequencer {
             MeshRenderer entityMaterial = entity.GetComponent<MeshRenderer>();
             if (entityMaterial == null) { return; }
 
-            entityMaterial.material = material;
+            StartCoroutine(LerpMat(5f, entityMaterial));
+        }
+
+        IEnumerator LerpMat(float time, MeshRenderer go)
+        {
+            Debug.Log(go.material.GetVector("_BaseColor"));
+
+
+            float timepassed = 0;
+
+            while(timepassed < time)
+            {
+                Vector4 color = Vector4.Lerp(go.material.color, colorTo, timepassed / time);
+                go.material.SetVector("_BaseColor", color);
+                timepassed += Time.deltaTime;
+
+                yield return new WaitForEndOfFrame();
+            }
+
         }
 
         public override bool IsActionEnded() {
-            return true;
+            return ended;
         }
 
         public override void ResetAction() {

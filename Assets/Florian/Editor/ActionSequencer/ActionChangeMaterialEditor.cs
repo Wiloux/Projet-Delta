@@ -10,10 +10,10 @@ namespace Florian.ActionSequencer.Editor {
             base.OnInspector();
 
             EditorGUILayout.BeginVertical("box");
-            GUILayout.Label("Material");
+            GUILayout.Label("Color To");
             EditorGUILayout.Space(SPACE);
 
-            SerializedProperty materialProp = serializedObject.FindProperty("material");
+            SerializedProperty materialProp = serializedObject.FindProperty("colorTo");
             EditorGUILayout.PropertyField(materialProp);
 
             EditorGUILayout.EndVertical();
