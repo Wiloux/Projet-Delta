@@ -11,7 +11,7 @@ namespace Florian
 
         private MovementController _playerMovementController;
         public bool isGliding;
-        private float timer;
+        public float timer;
         public float timerDur;
         public float divideAmount;
 
