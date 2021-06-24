@@ -54,7 +54,7 @@ namespace Florian.ActionSequencer {
                 ExecuteAction(actions[actionIndex]);
             }
 
-            if (actions[actions.Length - 1].IsFinished()) {
+            if ((actionIndex >= actions.Length - 1) && actions[actions.Length - 1].IsFinished()) {
                 ResetActions();
                 if (oneTimeUse) {
                     gameObject.SetActive(false);

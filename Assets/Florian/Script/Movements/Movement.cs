@@ -175,7 +175,7 @@ namespace Florian {
             isDecelerate = false;
             //isTurn = false;
             bool grounded = IsGrounded();
-            airborn = !grounded || jumping;
+            airborn = !(grounded || GroundIsClose()) || jumping;
 
             if (!grounded && needLastGroundPosUpdate) {
                 needLastGroundPosUpdate = false;
@@ -185,14 +185,10 @@ namespace Florian {
             if (grounded) {
                 needLastGroundPosUpdate = true;
             }
-            //airborn = false;
 
-            if (!airborn) {
+            if (grounded && !jumping) {
                 velocity.y = 0f;
             }
-            //if (IsGrounded()) {
-            //    velocity.y = 0f;
-            //}
         }
 
         #endregion
@@ -360,7 +356,7 @@ namespace Florian {
 
         public Quaternion SlopeTilt() {
             RaycastHit hitFloor;
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, groundRayDistance, groundLayers)) {
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hitFloor, stepHeight, groundLayers)) {
                 Vector3 forwardNoY = transform.forward;
                 forwardNoY.y = 0f;
                 forwardNoY.Normalize();
@@ -593,7 +589,8 @@ namespace Florian {
         }
 
         private bool IsGrounded() {
-            Vector3 direction = -groundCheck.transform.up;
+            //Vector3 direction = -groundCheck.transform.up;
+            Vector3 direction = Vector3.down;
             Debug.DrawRay(groundCheck.position, direction * groundRayDistance, Color.green);
             Debug.DrawRay(groundCheck.position, groundCheck.transform.right, Color.red);
             RaycastHit hitFloor;
@@ -604,6 +601,18 @@ namespace Florian {
                 } else {
                     offTracking = false;
                 }
+                return true;
+            }
+            return false;
+        }
+
+        private bool GroundIsClose() {
+            //Vector3 direction = -groundCheck.transform.up;
+            Vector3 direction = Vector3.down;
+
+            RaycastHit hitFloor;
+            //if (Physics.Raycast(groundCheck.position, -transform.up, out hitFloor, groundRayDistance, layerMask)) {
+            if (Physics.Raycast(groundCheck.position, direction, out hitFloor, stepHeight, groundLayers, QueryTriggerInteraction.Ignore)) {
                 return true;
             }
             return false;

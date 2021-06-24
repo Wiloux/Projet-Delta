@@ -16,14 +16,17 @@ namespace Florian.ActionSequencer.Editor {
             SerializedProperty materialProp = serializedObject.FindProperty("colorTo");
             EditorGUILayout.PropertyField(materialProp);
 
+            SerializedProperty transitionTimeProp = serializedObject.FindProperty("transitionTime");
+            EditorGUILayout.PropertyField(transitionTimeProp);
+
             EditorGUILayout.EndVertical();
         }
 
         protected override string ChangeName() {
             string name = base.ChangeName();
-            SerializedProperty materialProp = serializedObject.FindProperty("material");
-            name += " change material to ";
-            if (materialProp.objectReferenceValue != null) { name += materialProp.objectReferenceValue.name; }
+            SerializedProperty colorProp = serializedObject.FindProperty("colorTo");
+            name += " change color to ";
+            if (colorProp.objectReferenceValue != null) { name += colorProp.colorValue.ToString(); }
             return name;
         }
     }

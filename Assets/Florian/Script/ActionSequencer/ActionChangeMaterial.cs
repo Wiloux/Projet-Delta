@@ -5,7 +5,8 @@ using DG.Tweening;
 
 namespace Florian.ActionSequencer {
     public class ActionChangeMaterial : ActionGameObject {
-        public Color colorTo = new Color(0,0,0,1);
+        public Color colorTo = new Color(0, 0, 0, 1);
+        public float transitionTime = 2f;
         private bool ended = false;
 
         protected override void OnStart() { }
@@ -14,25 +15,21 @@ namespace Florian.ActionSequencer {
             MeshRenderer entityMaterial = entity.GetComponent<MeshRenderer>();
             if (entityMaterial == null) { return; }
 
-            StartCoroutine(LerpMat(5f, entityMaterial));
+            StartCoroutine(LerpMat(transitionTime, entityMaterial));
         }
 
-        IEnumerator LerpMat(float time, MeshRenderer go)
-        {
-            Debug.Log(go.material.GetVector("_BaseColor"));
-
-
+        IEnumerator LerpMat(float time, MeshRenderer go) {
+            Color baseColor = go.material.color;
             float timepassed = 0;
 
-            while(timepassed < time)
-            {
-                Vector4 color = Vector4.Lerp(go.material.color, colorTo, timepassed / time);
-                go.material.SetVector("_BaseColor", color);
+            while (timepassed < time) {
+                Color color = Color.Lerp(baseColor, colorTo, timepassed / time);
+                go.material.SetColor("_BaseColor", color);
                 timepassed += Time.deltaTime;
-
                 yield return new WaitForEndOfFrame();
             }
 
+            ended = true;
         }
 
         public override bool IsActionEnded() {
@@ -41,6 +38,7 @@ namespace Florian.ActionSequencer {
 
         public override void ResetAction() {
             base.ResetAction();
+            ended = false;
         }
     }
 }

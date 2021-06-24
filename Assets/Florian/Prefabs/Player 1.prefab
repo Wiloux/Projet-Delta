@@ -15058,7 +15058,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   stun: 0
-  stepHeight: 0.5
+  stepHeight: 2
   faceAngle: 50
   bounceForce: 15
   bounceStunTime: 0.7
@@ -15084,7 +15084,7 @@ MonoBehaviour:
   playerName: P1
   riderAnim: {fileID: 3655113610718269388}
   animalAnim: {fileID: 4282974931131541835}
-  slopeRotateSpeed: 2
+  slopeRotateSpeed: 2.5
   playerCamera: {fileID: 3490258877651621939}
   placementText: {fileID: 7081062503002371621}
   lapsText: {fileID: 2918554450205431541}
