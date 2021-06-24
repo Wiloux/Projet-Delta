@@ -37,13 +37,14 @@ namespace Florian
             UpdateFadeUI();
         }
 
-        public void GlidFX()
+        public void GlidFX(bool active)
         {
-            if (_waveFX.isPlaying)
+            _waveFX.gameObject.SetActive(active);
+            if (_waveFX.isPlaying && !active)
             {
                 _waveFX.Stop();
             }
-            else
+            else if (!_waveFX.isPlaying && active)
             {
                 _waveFX.Play();
             }
@@ -115,15 +116,18 @@ namespace Florian
             }
         }
 
-        public void AngerStack(int side) {
+        public void AngerStack(int side)
+        {
             angerFX.Create(side);
         }
 
-        public void AngerUnstack(int side) {
+        public void AngerUnstack(int side)
+        {
             angerFX.Unstack(side);
         }
 
-        public void AngerClear(int side) {
+        public void AngerClear(int side)
+        {
             angerFX.Clear(side);
         }
 
