@@ -21,6 +21,7 @@ namespace Florian
         [SerializeField] private ParticleSystem _bumpFX = null;
         [SerializeField] private AngerParticles angerFX = null;
         [SerializeField] private ParticleSystem _waveFX = null;
+        [SerializeField] private ParticleSystem _splashFX = null;
 
         [Header("Set Teleporter Material")]
         public Image _fadeImg;
@@ -39,13 +40,16 @@ namespace Florian
 
         public void GlidFX(bool active)
         {
+
             _waveFX.gameObject.SetActive(active);
             if (_waveFX.isPlaying && !active)
             {
+                _splashFX.Play();
                 _waveFX.Stop();
             }
             else if (!_waveFX.isPlaying && active)
             {
+                _splashFX.Play();
                 _waveFX.Play();
             }
         }
