@@ -26,6 +26,7 @@ public class AudioManager : MonoBehaviour
 
     #region Fields
     private AudioSource musicSource;
+    private AudioSource ambiantSource;
     private AudioSource musicSource2;
     private AudioSource sfxSource;
     private float musicVolume = 1;
@@ -39,6 +40,7 @@ public class AudioManager : MonoBehaviour
 
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource2 = gameObject.AddComponent<AudioSource>();
+        ambiantSource = gameObject.AddComponent<AudioSource>();
         sfxSource = gameObject.AddComponent<AudioSource>();
 
         musicSource.loop = true;
@@ -47,8 +49,24 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(AudioClip musicClip)
     {
-        musicSource.clip = musicClip;
-        musicSource.Play();
+        if (musicClip == null)
+            musicSource.Stop();
+        else
+        {
+            musicSource.clip = musicClip;
+            musicSource.Play();
+        }
+    }
+        public void PlayAmbiant(AudioClip ambiant, float volume)
+    {
+        if (ambiant == null)
+            ambiantSource.Stop();
+        else
+        {
+            ambiantSource.clip = ambiant;
+            ambiantSource.volume = volume;
+            ambiantSource.Play();
+        }
     }
 
     public void PlayMusicWithFade(AudioClip musicClip, float transitionTime = 1.0f)
@@ -127,6 +145,10 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(AudioClip clip, float volume)
     {
         sfxSource.PlayOneShot(clip, volume);
+    }
+    public void Play3DSourceSFX(AudioClip clip, AudioSource source, float volume)
+    {
+        source.PlayOneShot(clip, volume);
     }
 
     public void SetMusicVolume(float volume)

@@ -154,7 +154,8 @@ namespace Florian
                 (characters[i] as MovementController).maxLaps = lapsNumber;
                 (characters[i] as MovementController).Laps = 0;
             }
-
+            AudioManager.Instance.PlayMusicWithFade(ClipsContainer.Instance.AllClips[15], 0.7f);
+            AudioManager.Instance.PlayAmbiant(ClipsContainer.Instance.AllClips[16], 0.3f);
             TeleportCharacters(checkpoints[0], new Vector3(0, 180f, 0));
             StartCoroutine(BlockPlayerAtTheStartOfTheRace(characters));
             raceStarted = true;
@@ -170,6 +171,8 @@ namespace Florian
             }
 
             yield return new WaitForSeconds(3);
+
+            AudioManager.Instance.PlayMusicWithFade(ClipsContainer.Instance.AllClips[14], 0.3f);
 
             startCountdownUI.SetActive(false);
             for (int i = 0; i < characters.Length; i++)
@@ -210,6 +213,9 @@ namespace Florian
         {
             placementPanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
+            AudioManager.Instance.PlayMusicWithCrossFade(ClipsContainer.Instance.AllClips[17], 0.3f);
+            AudioManager.Instance.PlayAmbiant(null, 0f);
+
 
             List<Transform> AllPanels = new List<Transform>();
 

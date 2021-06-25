@@ -49,6 +49,8 @@ namespace Florian
             }
             else if (!_waveFX.isPlaying && active)
             {
+                AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[7], 1f);
+                
                 _splashFX.Play();
                 _waveFX.Play();
             }

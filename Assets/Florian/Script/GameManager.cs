@@ -315,6 +315,7 @@ namespace Florian
 
         public void ChangeScene(int sceneId)
         {
+            AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[0]);
             SceneManager.LoadScene(sceneId);
         }
 
@@ -322,12 +323,14 @@ namespace Florian
         {
             if (panel)
             {
+                AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[0]);
                 panel.SetActive(!panel.activeSelf);
             }
         }
 
         public void Quit()
         {
+            AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[0]);
             Application.Quit();
         }
 
@@ -398,6 +401,9 @@ namespace Florian
 
         public void RestartTheGame()
         {
+            AudioManager.Instance.PlayMusic(null);
+            AudioManager.Instance.PlayAmbiant(null, 0.3f);
+
             SceneManager.LoadScene(0);
         }
     }
