@@ -8999,7 +8999,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 4000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -9046,7 +9046,7 @@ MonoBehaviour:
   accelDuration: 1
   decelPosition: {x: 0, y: 1.665, z: -1}
   decelDuration: 0.2
-  turnPosition: {x: 1.3, y: 1.665, z: 0}
+  turnPosition: {x: 2.5, y: 1.665, z: 0}
   turnRotationMin: {x: 0, y: 0, z: -3}
   turnRotationMax: {x: 0, y: 0, z: -10}
   turnDuration: 1
