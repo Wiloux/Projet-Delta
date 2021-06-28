@@ -303,8 +303,15 @@ namespace Florian
                 // Mount throw
                 if (gliding != null)
                 {
+
+                    if (player.GetButtonDown("Action") && Airborn)
+                    {
+
+                        AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[18], 1f);
+                    }
                     if (player.GetButton("Action") && Airborn)
                     {
+
                         if (gliding.timer >= 0)
                         {
 
