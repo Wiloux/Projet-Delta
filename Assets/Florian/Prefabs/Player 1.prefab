@@ -24965,8 +24965,8 @@ MonoBehaviour:
   _stompFX: {fileID: 198923921265718238, guid: 1b19a171deaf2304493f277628ef15dd, type: 3}
   _flanksAttackFX: {fileID: 2513841607043264861}
   _textFX: {fileID: 2029202971396075480}
-  _basicTrailsFX: {fileID: 2382220048156497420}
-  _offTrackTrailsFX: {fileID: 178717999117784736}
+  _basicTrailsFX: {fileID: 178717999117784736}
+  _offTrackTrailsFX: {fileID: 2382220048156497420}
   _bumpFX: {fileID: 0}
   angerFX: {fileID: 8428341984556920599}
   _waveFX: {fileID: 4043698480743700894}
