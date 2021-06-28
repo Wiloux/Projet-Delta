@@ -86,12 +86,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645d74d069d05fa44961c6904ad82d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 25
-  pushRadius: 10
-  poweredPushForce: 35
-  poweredPushRadius: 20
+  poweredPushForce: 2
+  poweredPushRadius: 2
+  stunTime: 1
   pressTimer: 0
-  _cooldown: 1
+  _cooldown: 2
   _timer: 0
 --- !u!114 &7805793657571103434
 MonoBehaviour:
@@ -106,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGliding: 0
+  timer: 0
   timerDur: 2
   divideAmount: 0.7
 --- !u!1001 &6844712602205460719
