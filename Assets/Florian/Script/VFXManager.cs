@@ -22,6 +22,7 @@ namespace Florian
         [SerializeField] private AngerParticles angerFX = null;
         [SerializeField] private ParticleSystem _waveFX = null;
         [SerializeField] private ParticleSystem _splashFX = null;
+        public ParticleSystem sharkChargeFX = null;
 
         [Header("Set Teleporter Material")]
         public Image _fadeImg;
@@ -36,6 +37,19 @@ namespace Florian
 
             raceManager = GameObject.Find("----------- Utilities ----------/Utilities/RaceManager").GetComponent<RaceManager>();
             UpdateFadeUI();
+        }
+
+        public void SharkFX(float timer)
+        {
+            ParticleSystem.MainModule colorSharkFX = sharkChargeFX.main;
+            if(timer <= 0.3f)
+                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.blue);
+            else if (timer <= 1f)
+                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.green);
+            else if (timer <= 2f)
+                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.yellow);
+            else
+                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.red);
         }
 
         public void GlidFX(bool active)
