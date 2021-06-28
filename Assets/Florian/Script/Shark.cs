@@ -5,6 +5,7 @@ namespace Florian {
     public class Shark : MonoBehaviour {
         private MovementController _movementController;
         private FlanksAttack flanksAttack;
+        private VFXManager vFXManager;
 
         //public float pushForce;
         //public float pushRadius;
@@ -19,6 +20,7 @@ namespace Florian {
         private void Start() {
             _movementController = GetComponent<MovementController>();
             flanksAttack = GetComponent<FlanksAttack>();
+            vFXManager = GetComponent<VFXManager>();
         }
 
         private void Update() {

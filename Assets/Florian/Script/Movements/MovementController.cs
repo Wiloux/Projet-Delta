@@ -269,7 +269,10 @@ namespace Florian
                     if (player.GetAxisRaw("Attack") != 0f && sharkAttack._timer <= 0f)
                     {
                         Debug.Log("BEGIN SHARK ATTACK");
+                        if (!vfx.sharkChargeFX.isPlaying)
+                            vfx.sharkChargeFX.Play();
                         sharkAttack.pressTimer += Time.deltaTime;
+                        vfx.SharkFX(sharkAttack.pressTimer);
                         if (player.GetAxisRaw("Attack") > 0f)
                         {
                             riderAnim.SetBool("chargingAttackD", true);
@@ -283,6 +286,7 @@ namespace Florian
                     else if (player.GetAxisRaw("Attack") == 0f && sharkAttack.pressTimer != 0f)
                     {
                         Debug.Log("MUUUUUURA !");
+                        vfx.sharkChargeFX.Stop();
                         sharkAttack.ComputeAttack(sharkSide);
                         AudioManager.Instance.Play3DSourceSFX(ClipsContainer.Instance.AllClips[8], AS, 1f);
 
