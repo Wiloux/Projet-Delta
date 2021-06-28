@@ -188,7 +188,7 @@ namespace Florian
                     switch (multiplayerPanel.playerScreens[i].indexPortrait)
                     {
                         case 0:
-                            lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").GetComponent<Animator>();
+                            lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Domi_anims").GetComponent<Animator>();
                             Fear lastFear = lastSpawnedChild.AddComponent<Fear>();
                             Fear refFear = valueRefs.GetComponent<Fear>();
                             lastFear.sphereGrowthCurve = refFear.sphereGrowthCurve.Clone();
@@ -200,11 +200,11 @@ namespace Florian
                             lastJumping._megaJumpForce = refJumping._megaJumpForce;
                             lastJumping.cooldown = refJumping.cooldown;
                             lastJumping._stompRadius = refJumping._stompRadius;
-                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(false);
-                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(true);
+                            lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(false);
+                            lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(true);
                             break;
                         case 1:
-                            lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").GetComponent<Animator>();
+                            lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Lifeguard_anims").GetComponent<Animator>();
                             Gliding refGliding = valueRefs.GetComponent<Gliding>();
                             Gliding lastGliding = lastSpawnedChild.AddComponent<Gliding>();
                             lastGliding.timerDur = refGliding.timerDur;
@@ -220,8 +220,8 @@ namespace Florian
                             lastShark._timer = refShark._timer;
 
                             //Debug.Log(lastSpawnedChild.transform.Find("Anims_Mouton/Bip002/Anims_Rider"));
-                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(false);
-                            lastSpawnedChild.transform.Find("Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(true);
+                            lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(false);
+                            lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(true);
 
                             break;
                     }

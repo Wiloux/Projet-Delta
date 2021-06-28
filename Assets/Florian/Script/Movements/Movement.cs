@@ -652,9 +652,8 @@ namespace Florian {
         }
 
         private void Respawn() {
-            FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos, (respawnOrientationFactor == -1f));
-            
             OnRespawn();
+            FallManager.instance.CheckPlayerBestCheckPoint(transform.gameObject, lastGroundPos, (respawnOrientationFactor == -1f));
         }
     }
 }

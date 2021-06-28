@@ -134,7 +134,11 @@ namespace Florian
 
         public void AngerClear(int side)
         {
-            angerFX.Clear(side);
+            angerFX.ClearParticles(side);
+        }
+
+        public void AngerRadiant() {
+            angerFX.PlayRadiant();
         }
 
         IEnumerator PlayerVFX(ParticleSystem fx, float time)

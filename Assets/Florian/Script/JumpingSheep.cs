@@ -26,7 +26,7 @@ namespace Florian
         private void Start()
         {
             _movementController = GetComponent<MovementController>();
-            _woolMaterial = GameObject.Find(_movementController.playerName + "/PlayerRoot/Mounton_Anims/Mouton_Mesh").GetComponent<SkinnedMeshRenderer>().material;
+            _woolMaterial = GameObject.Find(_movementController.playerName + "/PlayerRoot/Model/Mounton_Anims/Mouton_Mesh").GetComponent<SkinnedMeshRenderer>().material;
         }
 
         public void MegaJump()

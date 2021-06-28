@@ -12,23 +12,20 @@ public class AngerParticles : MonoBehaviour {
         public float size;
     }
 
+    [Header("Particles")]
     [SerializeField] private Transform particlesParent;
     [SerializeField] private ParticleSystem particle;
     [SerializeField] private Position[] positions;
     private List<ParticleSystem>[] instantied;
+
+    [Header("Anger animation")]
+    [SerializeField] private Animator radiantAnimator = null;
 
     private void Start() {
         instantied = new List<ParticleSystem>[2];
         for (int i = 0; i < instantied.Length; i++) {
             instantied[i] = new List<ParticleSystem>();
         }
-
-        //Create(-1);
-        //Create(-1);
-        //Create(-1);
-        //Create(1);
-        //Create(1);
-        //Create(1);
     }
 
     public ParticleSystem Create(Vector3 position, float rotation, float size) {
@@ -66,12 +63,12 @@ public class AngerParticles : MonoBehaviour {
         instantied[side].Remove(particles);
     }
 
-    public void Clear() {
-        Clear(-1);
-        Clear(1);
+    public void ClearParticles() {
+        ClearParticles(-1);
+        ClearParticles(1);
     }
 
-    public void Clear(int side) {
+    public void ClearParticles(int side) {
         if (side < 1) { side = 0; }
         else { side = 1; }
 
@@ -81,12 +78,12 @@ public class AngerParticles : MonoBehaviour {
         instantied[side].Clear();
     }
 
-    public void Play() {
-        Play(-1);
-        Play(1);
+    public void PlayParticles() {
+        PlayParticles(-1);
+        PlayParticles(1);
     }
 
-    public void Play(int side) {
+    public void PlayParticles(int side) {
         if (side < 1) { side = 0; }
         else { side = 1; }
 
@@ -94,12 +91,12 @@ public class AngerParticles : MonoBehaviour {
             instantied[side][j].Play();
     }
 
-    public void Pause() {
-        Pause(-1);
-        Pause(1);
+    public void PauseParticles() {
+        PauseParticles(-1);
+        PauseParticles(1);
     }
 
-    public void Pause(int side) {
+    public void PauseParticles(int side) {
         if (side < 1) { side = 0; }
         else { side = 1; }
 
@@ -107,17 +104,21 @@ public class AngerParticles : MonoBehaviour {
             instantied[side][j].Pause();
     }
 
-    public void Stop() {
-        Stop(-1);
-        Stop(1);
+    public void StopParticles() {
+        StopParticles(-1);
+        StopParticles(1);
     }
 
-    public void Stop(int side) {
+    public void StopParticles(int side) {
         if (side < 1) { side = 0; } 
         else { side = 1; }
 
         for (int j = 0; j < instantied[side].Count; j++)
             instantied[side][j].Stop();
+    }
+
+    public void PlayRadiant() {
+        radiantAnimator.SetTrigger("DoRadiant");
     }
 
     private void OnDrawGizmos() {
