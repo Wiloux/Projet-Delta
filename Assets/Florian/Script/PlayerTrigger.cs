@@ -21,7 +21,7 @@ namespace Florian
             {
                 if (_enterList.Contains(other))
                 {
-                    StartCoroutine(TeleporterFade(this.gameObject, 0.05f, true));
+                    StartCoroutine(TeleporterFade(this.gameObject, 0.04f, true));
                     _enterList.Remove(other);
                 }
             }

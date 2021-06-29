@@ -24,11 +24,10 @@ namespace Florian {
                     }
                 }
 
-                if (other.GetComponent<VFXManager>()._fadeImg.material.GetFloat("_Radius") <= 1f)
+                if (other.GetComponent<VFXManager>()._fadeImg.material.GetFloat("_Radius") <= 5f)
                 {
                     other.transform.position = exits[index].position;
                     other.transform.rotation = exits[index].rotation;
-                    Debug.Log("TP");
                 }
 
                 if (exits[index].parent.GetComponent<Teleporter>().inverseRespawn) {
@@ -51,10 +50,9 @@ namespace Florian {
                         }
 
 
-                        if (other.GetComponent<VFXManager>()._fadeImg.material.GetFloat("_Radius") <= 1f)
+                        if (other.GetComponent<VFXManager>()._fadeImg.material.GetFloat("_Radius") <= 5f)
                         {
                             playerNames.Remove(n);
-                            Debug.Log("TP");
                             other.transform.position = exits[index].position;
                             other.transform.rotation = exits[index].rotation;
                         }
