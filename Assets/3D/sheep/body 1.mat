@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: body 1
-  m_Shader: {fileID: -6465566751694194690, guid: e8ac731363e5fc04a94fc09cca9ccee2, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7ffc1bc2bbb1ef64f84b552b2d2f0619, type: 3}
   m_ShaderKeywords: OUTLINES TCP2_DISABLE_WRAPPED_LIGHT TCP2_REFLECTIONS_FRESNEL
     TCP2_RIM_LIGHTING TCP2_RIM_LIGHTING_LIGHTMASK TCP2_RIM_OUTLINE TCP2_SHADOW_LIGHT_COLOR
     TCP2_UV_NORMALS_FULL
@@ -29,12 +29,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - Texture2D_ae3f852705e64b08bea8512ee6551fdc:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6e5059cc015fd5740bfce1d72c0ff462, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap_snow:
@@ -114,11 +118,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_42c22622bf49443f9d55c3d545b58bfe: 0.5
     - Vector1_64b06da2666f4e36bbc4b9150eae0279: 1
     - Vector1_8af2f3e90b13425fa6b86ac5dbc4cf35: 0
+    - Vector1_cbc875be3c42408b9d5ee02c2646a9ff: 0
     - _BumpScale: 1
     - _BumpScale_snow: 1
-    - _Cull: 0
+    - _Cull: 2
     - _Cutoff: 0
     - _DetailNormalMapScale: 1
     - _DirectIntensityOutline: 1
@@ -223,6 +229,8 @@ Material:
     - _contrast_snow: 0.5
     m_Colors:
     - Color_d40f4a649b294e2fb9af98ca17261aaa: {r: 1, g: 1, b: 1, a: 0}
+    - Color_e85459c1f53e4754a7d878b47b2297bf: {r: 1, g: 1, b: 1, a: 0}
+    - Vector2_90d64a2f2d5640cb90af735ab8a123df: {r: 1, g: 1, b: 0, a: 0}
     - _Albedo_snow: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.8962264, g: 0.7303281, b: 0.612985, a: 1}
@@ -235,7 +243,7 @@ Material:
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 0.5}
     - _RimDirVert: {r: 0, g: 0, b: 1, a: 1}
-    - _SColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
+    - _SColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
     - _SColor_snow: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _ShadowLineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
