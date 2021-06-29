@@ -174,7 +174,7 @@ namespace Florian
         {
             if (raceManager.characters.Count == 2)
             {
-                _fadeImg.gameObject.transform.localPosition += new Vector3(0f, 0f, 276f);
+                _fadeImg.gameObject.transform.localPosition += new Vector3(0f, 0f, -20f);
             }
 
         }
