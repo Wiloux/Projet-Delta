@@ -240,6 +240,11 @@ namespace Florian {
                 velocity = Vector3.zero.Override(velocity.y, Axis.Y);
             } else {
                 velocity += -frictions * velocity.normalized.MultiplyIndividually(frictionsMask) * Time.fixedDeltaTime;
+                if (velocity.x != 0 && frictions * Time.fixedDeltaTime < Mathf.Abs(velocity.x)) {
+                    velocity.x += -frictions * Mathf.Sign(velocity.x) * Time.fixedDeltaTime;
+                } else if (velocity.x != 0) {
+                    velocity.x = 0f;
+                }
             }
 
             if (offTrackVelocity != Vector3.zero) {

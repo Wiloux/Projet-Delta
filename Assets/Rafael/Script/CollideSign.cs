@@ -6,7 +6,7 @@ using DG.Tweening;
 public class CollideSign : MonoBehaviour {
     private bool ended = false;
 
-    //private void Update() {
+    //private void Start() {
     //    Rotate();
     //}
 
@@ -19,7 +19,7 @@ public class CollideSign : MonoBehaviour {
     public void Rotate() {
         if (!ended) {
             ended = true;
-            transform.DORotate(transform.rotation * new Vector3(0, 2480, 0), .5f, RotateMode.FastBeyond360).OnComplete(() => { ended = false; });
+            transform.DORotate(transform.localEulerAngles + new Vector3(0f, 1440f, 0f), .5f, RotateMode.FastBeyond360).OnComplete(() => { ended = false; });
         }
     }
 }
