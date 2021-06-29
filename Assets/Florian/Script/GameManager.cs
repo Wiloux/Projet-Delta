@@ -399,6 +399,22 @@ namespace Florian
             function();
         }
 
+        public void SetRes(float res)
+        {
+            switch (res)
+            {
+                case 1280:
+                    Screen.SetResolution(1280, 720, true);
+                    break;
+                case 1920:
+                    Screen.SetResolution(1920, 1080, true);
+                    break;
+                case 2160:
+                    Screen.SetResolution(2160, 1440, true);
+                    break;
+            }
+        }
+
         public void RestartTheGame()
         {
             AudioManager.Instance.PlayMusic(null);
