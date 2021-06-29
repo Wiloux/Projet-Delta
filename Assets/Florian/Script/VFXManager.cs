@@ -42,14 +42,22 @@ namespace Florian
         public void SharkFX(float timer)
         {
             ParticleSystem.MainModule colorSharkFX = sharkChargeFX.main;
-            if(timer <= 0.3f)
+            if (timer <= 0.3f)
+            {
                 colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.blue);
+            }
             else if (timer <= 1f)
+            {
                 colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.green);
+            }
             else if (timer <= 2f)
+            {
                 colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.yellow);
+            }
             else
+            {
                 colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.red);
+            }
         }
 
         public void GlidFX(bool active)

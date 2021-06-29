@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -29,6 +31,10 @@ public class AudioManager : MonoBehaviour
     private AudioSource ambiantSource;
     private AudioSource musicSource2;
     private AudioSource sfxSource;
+    public AudioMixer musicMixer;
+    public AudioMixer sfxMixer;
+    public Slider musicSlider;
+    public Slider sfxSlider;
     private float musicVolume = 1;
     // Multiple musics
     private bool firstMusicSourceIsActive;
@@ -43,8 +49,32 @@ public class AudioManager : MonoBehaviour
         ambiantSource = gameObject.AddComponent<AudioSource>();
         sfxSource = gameObject.AddComponent<AudioSource>();
 
+        musicSource.outputAudioMixerGroup = musicMixer.FindMatchingGroups("Master")[0];
+        musicSource2.outputAudioMixerGroup = musicMixer.FindMatchingGroups("Master")[0];
+        ambiantSource.outputAudioMixerGroup = sfxMixer.FindMatchingGroups("Master")[0];
+        sfxSource.outputAudioMixerGroup = sfxMixer.FindMatchingGroups("Master")[0];
+
         musicSource.loop = true;
         musicSource2.loop = true;
+
+        float v1;
+        musicMixer.GetFloat("MusicVol", out v1);
+        musicSlider.value = v1;
+
+        float v2;
+        musicMixer.GetFloat("SFXVol", out v2);
+        musicSlider.value = v2;
+
+
+        musicSlider.onValueChanged.AddListener((v) =>
+        {
+            musicMixer.SetFloat("MusicVol", v);
+        });
+
+        sfxSlider.onValueChanged.AddListener((v) =>
+        {
+            sfxMixer.SetFloat("SFXVol", v);
+        });
     }
 
     public void PlayMusic(AudioClip musicClip)
@@ -57,7 +87,7 @@ public class AudioManager : MonoBehaviour
             musicSource.Play();
         }
     }
-        public void PlayAmbiant(AudioClip ambiant, float volume)
+    public void PlayAmbiant(AudioClip ambiant, float volume)
     {
         if (ambiant == null)
             ambiantSource.Stop();
