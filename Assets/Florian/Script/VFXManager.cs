@@ -41,22 +41,26 @@ namespace Florian
 
         public void SharkFX(float timer)
         {
-            ParticleSystem.MainModule colorSharkFX = sharkChargeFX.main;
+            ParticleSystem.MainModule mainSharkFX = sharkChargeFX.main;
             if (timer <= 0.3f)
             {
-                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.blue);
+                mainSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.blue);
+                mainSharkFX.startSpeed = new ParticleSystem.MinMaxCurve(-5f, -2f);
             }
             else if (timer <= 1f)
             {
-                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.green);
+                mainSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.green);
+                mainSharkFX.startSpeed = new ParticleSystem.MinMaxCurve(-6f, -3f);
             }
             else if (timer <= 2f)
             {
-                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.yellow);
+                mainSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.yellow);
+                mainSharkFX.startSpeed = new ParticleSystem.MinMaxCurve(-7f, -4f);
             }
             else
             {
-                colorSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.red);
+                mainSharkFX.startColor = new ParticleSystem.MinMaxGradient(Color.red);
+                mainSharkFX.startSpeed = new ParticleSystem.MinMaxCurve(-9f, -5f);
             }
         }
 
@@ -174,7 +178,7 @@ namespace Florian
         {
             if (raceManager.characters.Count == 2)
             {
-                _fadeImg.gameObject.transform.localPosition += new Vector3(0f, 0f, 276f);
+                _fadeImg.gameObject.transform.localPosition += new Vector3(0f, 0f, -20f);
             }
 
         }

@@ -1263,7 +1263,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 1
+    enabled: 0
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -6092,7 +6092,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 1
+    enabled: 0
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -10912,7 +10912,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 1
+    enabled: 0
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -14460,7 +14460,7 @@ Transform:
   m_GameObject: {fileID: 177804}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.0025399993, y: 0.0025399996, z: 0.0025400002}
   m_Children:
   - {fileID: 491864}
   - {fileID: 440798}
@@ -14587,7 +14587,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: -2
-      minScalar: -9
+      minScalar: -5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -15744,7 +15744,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 1
+    enabled: 0
     gradient:
       serializedVersion: 2
       minMaxState: 1
