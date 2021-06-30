@@ -189,6 +189,7 @@ namespace Florian
                     {
                         case 0:
                             lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Domi_anims").GetComponent<Animator>();
+                            //lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Model/Dominatrice").GetComponent<Animator>();
                             Fear lastFear = lastSpawnedChild.AddComponent<Fear>();
                             Fear refFear = valueRefs.GetComponent<Fear>();
                             lastFear.sphereGrowthCurve = refFear.sphereGrowthCurve.Clone();
@@ -202,6 +203,7 @@ namespace Florian
                             lastJumping._stompRadius = refJumping._stompRadius;
                             lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Lifeguard_anims").gameObject.SetActive(false);
                             lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Domi_anims").gameObject.SetActive(true);
+                            //lastSpawnedChild.transform.Find("Model/Dominatrice").gameObject.SetActive(true);
                             break;
                         case 1:
                             lastSpawnedChild.GetComponent<MovementController>().riderAnim = lastSpawnedChild.transform.Find("Model/Mounton_Anims/Bip002/Lifeguard_anims").GetComponent<Animator>();

@@ -95,6 +95,7 @@ namespace Florian {
         [HideInInspector] public Tools.BasicDelegate<float> OnStun;
         [HideInInspector] public Tools.BasicDelegate<float> OnFallingDeath;
         [HideInInspector] public Tools.BasicDelegate OnRespawn;
+        [HideInInspector] public Tools.BasicDelegate OnBump;
         private bool slowable = true;
 
         private Dictionary<string, TimedChangeCoroutineStruct<object>> timedChangedRoutines = null;
@@ -374,8 +375,8 @@ namespace Florian {
                 Vector3 projectedForward = Vector3.ProjectOnPlane(forwardNoY, hitFloor.normal);
                 //Debug.DrawRay(transform.position, transform.up * 10f, Color.green);
                 Quaternion retour = Quaternion.LookRotation(projectedForward, hitFloor.normal);
-                Debug.DrawRay(transform.position, retour * Vector3.up * 10f, Color.green);
-                Debug.DrawRay(transform.position, hitFloor.normal * 10f, Color.red);
+                //Debug.DrawRay(transform.position, retour * Vector3.up * 10f, Color.green);
+                //Debug.DrawRay(transform.position, hitFloor.normal * 10f, Color.red);
                 return retour;
                 //transform.rotation = Quaternion.LookRotation(projectedForward, hitFloor.normal);
                 //rotation = Quaternion.FromToRotation(Vector3.up, hitFloor.normal) * Quaternion.LookRotation(forwardNoZ, hitFloor.normal);
@@ -409,6 +410,7 @@ namespace Florian {
         #region Movements setters
 
         public void Stun(float time) {
+            if (time <= 0f) { return; }
             TimedChange(ref frictions.curve, "frictions.curve", AnimationCurve.Constant(0f, 1f, 1f), time);
             TimedChange(ref frictions.amplitude, "frictions.amplitude", frictions.amplitude * 5f, time);
             TimedChange(ref stun, "stun", true, time);
@@ -508,7 +510,11 @@ namespace Florian {
             NegateVelocity(Axis.Z);
             Vector3 direction = worldDirection.Redirect(transform.forward, Vector3.forward);
             AddVelocity(direction * force);
-            Stun(stunTime);
+            if (stunTime <= 0f) {
+                TimedChange(ref frictions.amplitude, "frictions.amplitude", frictions.amplitude * 5f, 1f * (force / 30f));
+            } else {
+                Stun(stunTime);
+            }
         }
 
         #region TimedChanged
@@ -640,15 +646,25 @@ namespace Florian {
         private void OnCollisionEnter(Collision collision) {
             float dot = Vector3.Dot(collision.contacts[0].normal, -transform.forward);
 
-            if (/*!(groundLayers.Contains(collision.gameObject.layer)) &&*/
-                Mathf.Abs(collision.contacts[0].point.y - groundCheck.position.y) > stepHeight &&
+            if (!(groundLayers.Contains(collision.gameObject.layer))) {
+                Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal, Color.red, 10f);
+                Debug.DrawRay(transform.position, -transform.forward, Color.green, 10f);
+                Debug.Log(Mathf.Abs(collision.contacts[0].point.y - groundCheck.position.y) + " . " + stepHeight);
+            }
+
+            if (!(groundLayers.Contains(collision.gameObject.layer)) &&
+                /*Mathf.Abs(collision.contacts[0].point.y - groundCheck.position.y) > stepHeight &&*/
                 Mathf.Lerp(90f, 0f, Vector3.Dot(collision.contacts[0].normal, -transform.forward)) < faceAngle
             ) {
+                Debug.Log("Bounce");
                 //Debug.LogWarning($"{gameObject.name} collided with : {collision.gameObject.name}");
                 if (collision.gameObject.CompareTag("Player")) {
                     collision.gameObject.GetComponent<Movement>().Bump(transform.forward, bounceForce, SpeedState);
                 }
                 Bump(-transform.forward, bounceForce, SpeedState);
+                if (OnBump != null) {
+                    OnBump();
+                }
             }
         }
 

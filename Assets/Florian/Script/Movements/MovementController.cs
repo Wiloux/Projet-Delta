@@ -148,6 +148,7 @@ namespace Florian {
             physics.OnStun += OnStun;
             physics.OnFallingDeath += OnFallingDeath;
             physics.OnRespawn += OnRespawn;
+            physics.OnBump += OnBump;
 
             vfx = GetComponent<VFXManager>();
 
@@ -356,7 +357,7 @@ namespace Florian {
             if (emptyRebellion) {
                 if (rebellionStacks > 0) {
                     emptyRebellionTimer += Time.deltaTime;
-                    if (emptyRebellionTimer > forwardRebellionTime * 1.3f) {
+                    if (emptyRebellionTimer > forwardRebellionTime) {
                         emptyRebellionTimer = 0f;
                         vfx.AngerUnstack(rebellionSide);
                         rebellionStacks--;
@@ -422,6 +423,10 @@ namespace Florian {
             riderAnim.SetTrigger("stunned");
             Unstunned(false);
             StartCoroutine(Tools.Delay(Unstunned, true, time));
+        }
+
+        private void OnBump() {
+            AddRebellion();
         }
 
         private void Unstunned(bool value) {
@@ -530,6 +535,7 @@ namespace Florian {
             cameraController.followPlayer = true;
             cameraController.ResetCamera();
             physics.stun = false;
+            Unrebellion();
             Unstunned(true);
         }
 

@@ -284,6 +284,15 @@ namespace ToolsBoxEngine {
 
         #endregion
 
+        public static int Find(this int[] array, int value) {
+            for (int i = 0; i < array.Length; i++) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         public static float Positive(this float number) {
             if (number < 0) {
                 number = 0;
