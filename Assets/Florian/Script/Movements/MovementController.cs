@@ -240,7 +240,6 @@ namespace Florian {
                     // Shark Attack
                 } else {
                     if (player.GetAxisRaw("Attack") != 0f && sharkAttack._timer <= 0f) {
-                        Debug.Log("BEGIN SHARK ATTACK");
                         if (!vfx.sharkChargeFX.isPlaying)
                             vfx.sharkChargeFX.Play();
                         sharkAttack.pressTimer += Time.deltaTime;
@@ -253,7 +252,6 @@ namespace Florian {
                         }
                         sharkSide = player.GetAxisRaw("Attack");
                     } else if (player.GetAxisRaw("Attack") == 0f && sharkAttack.pressTimer != 0f) {
-                        Debug.Log("MUUUUUURA !");
                         vfx.sharkChargeFX.Stop();
                         sharkAttack.ComputeAttack(sharkSide);
                         AudioManager.Instance.Play3DSourceSFX(ClipsContainer.Instance.AllClips[8], AS, 1f);
@@ -402,6 +400,7 @@ namespace Florian {
             radiantAnim.SetBool("stop", physics.Decelerating);
             animalAnim.SetFloat("velocity", physics.Speed / physics.MaxSpeed);
             radiantAnim.SetFloat("velocity", physics.Speed / physics.MaxSpeed);
+            animalAnim.SetFloat("Horizontal", physics.HorizontalDirection);
         }
 
         #endregion
@@ -463,24 +462,29 @@ namespace Florian {
             rebellionStacks++;
             vfx.AngerStack(rebellionSide);
 
-            int probability = 0;
-            switch (rebellionStacks) {
-                case 1:
-                    probability = 15;
-                    break;
-                case 2:
-                    probability = 30;
-                    break;
-                case 3:
-                    probability = 50;
-                    break;
-                case 4:
-                    probability = 100;
-                    break;
-            }
-            int random = UnityEngine.Random.Range(0, 100);
+            //int probability = 0;
+            //switch (rebellionStacks) {
+            //    case 1:
+            //        probability = 15;
+            //        break;
+            //    case 2:
+            //        probability = 30;
+            //        break;
+            //    case 3:
+            //        probability = 50;
+            //        break;
+            //    case 4:
+            //        probability = 100;
+            //        break;
+            //}
 
-            if (random < probability) {
+            //int random = UnityEngine.Random.Range(0, 100);
+
+            //if (random < probability) {
+            //    Rebellion();
+            //}
+
+            if (rebellionStacks >= 4) {
                 Rebellion();
             }
         }

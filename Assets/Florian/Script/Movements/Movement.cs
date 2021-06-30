@@ -61,6 +61,7 @@ namespace Florian {
         private float targetHorizontalDirection = 0f;
         private float horizontalDirection = 0f;
         public AmplitudeCurve turn = null;
+        public AmplitudeCurve turnAirborn = null;
         [HideInInspector] public bool isTurn = false;
         [SerializeField] private float rollAngle = 10f;
 
@@ -335,7 +336,12 @@ namespace Florian {
         }
 
         private void Turn() {
-            float turnSpeed = turn.amplitude * turn.curve.Evaluate(SpeedRatio) * Time.fixedDeltaTime;
+            float turnSpeed;
+            if (airborn) {
+                turnSpeed = turnAirborn.amplitude * turnAirborn.curve.Evaluate(SpeedRatio) * Time.fixedDeltaTime;
+            } else {
+                turnSpeed = turn.amplitude * turn.curve.Evaluate(SpeedRatio) * Time.fixedDeltaTime;
+            }
             //transform.Rotate(new Vector2(0, 1) * horizontalDirection * turnSpeed * Time.fixedDeltaTime, Space.Self);
             Vector3 forwardNoY = transform.forward;
             forwardNoY.y = 0f;
@@ -388,6 +394,7 @@ namespace Florian {
             Vector3 velocity = this.velocity;
             if (offTracking) {
                 velocity = (velocity - offTrackVelocity) * offTrackMultiplier + offTrackVelocity;
+                velocity.y = this.velocity.y;
             }
 
             if (_rb != null) {
