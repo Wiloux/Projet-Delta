@@ -97,14 +97,14 @@ namespace Florian
         {
             ParticleSystem ob = Instantiate(_jumpFX, position, Quaternion.Euler(-90f, 0f, 0f));
             ob.Play();
-            Destroy(ob, time);
+            Destroy(ob.gameObject, time);
         }
 
         public void StompSkillFX(Vector3 position, float time)
         {
             ParticleSystem ob = Instantiate(_stompFX, position, Quaternion.Euler(-90f, 0f, 0f));
             ob.Play();
-            Destroy(ob, time);
+            Destroy(ob.gameObject, time);
         }
 
         public void AttackSkillFX(Vector3 position, float time)

@@ -302,11 +302,16 @@ namespace Florian {
                 if (player.GetButtonDown("Jump")) {
                     // Jump sheep
                     if (jumpingSheep != null && jumpingSheep._nbrStomp > 0) {
-                        if (!Airborn && jumpingSheep._nbrStomp != 0) {
+                        if (!Airborn && jumpingSheep._nbrStomp != 0)
+                        {
                             AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[5], 1f);
                             jumpingSheep.MegaJump();
-                        } else if (Airborn && jumpingSheep._nbrStomp >= 2)
+                        }
+                        else if (Airborn && jumpingSheep.stompTimer <= 0)
+                        {
                             jumpingSheep.Stomp();
+                            jumpingSheep.stompTimer = jumpingSheep.stompDuration;
+                        }
                         // Jump
                     } else if (!Airborn) {
                         AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[5], 1f);

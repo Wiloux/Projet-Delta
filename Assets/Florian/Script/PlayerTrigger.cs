@@ -43,7 +43,7 @@ namespace Florian
                 if (inverse)
                     radius = 25f - radius;
                 player.GetComponent<VFXManager>()._fadeImg.material.SetFloat("_Radius", radius);
-                yield return new WaitForSeconds(time / 25f);
+                yield return new WaitForEndOfFrame();
             }
         }
 

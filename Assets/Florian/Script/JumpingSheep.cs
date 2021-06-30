@@ -22,11 +22,19 @@ namespace Florian
         public float _stompSpeed = 50f;
         public float cooldown = 5f;
         public float stunTime = 1.5f;
+        public float stompDuration = 3f;
+        /*[HideInInspector]*/ public float stompTimer = 0f;
 
         private void Start()
         {
             _movementController = GetComponent<MovementController>();
             _woolMaterial = GameObject.Find(_movementController.playerName + "/PlayerRoot/Model/Mounton_Anims/Mouton_Mesh").GetComponent<SkinnedMeshRenderer>().material;
+        }
+
+        private void Update()
+        {
+            if (stompTimer >= 0)
+                stompTimer -= Time.deltaTime;
         }
 
         public void MegaJump()
@@ -46,13 +54,13 @@ namespace Florian
             //Movement physics = _movementController.physics;
             //physics.TimedChange(ref physics.gravityCurve.curve, "gravityCurve.curve", AnimationCurve.Constant(0f, 1f, 1f), 1f);
             StartCoroutine(CheckGrounded());
-            _nbrStomp = 0;
+            /*_nbrStomp = 0;
             if(charging != null)
             {
                 StopCoroutine(charging);
                 charging = null;
             }
-            RetrieveACharge();
+            RetrieveACharge(); */
         }
 
         private void RetrieveACharge()
