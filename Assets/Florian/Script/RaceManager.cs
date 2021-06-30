@@ -215,7 +215,12 @@ namespace Florian
             Cursor.lockState = CursorLockMode.None;
             AudioManager.Instance.PlayMusicWithCrossFade(ClipsContainer.Instance.AllClips[17], 0.3f);
             AudioManager.Instance.PlayAmbiant(null, 0f);
+            PlacementPanels();
 
+        }
+
+        public void PlacementPanels()
+        {
 
             List<Transform> AllPanels = new List<Transform>();
 
@@ -254,7 +259,6 @@ namespace Florian
                 AllPanels[i].transform.SetSiblingIndex(place);
                 //Debug.Log(characters[i].name + ".." + characters[i].transform.GetSiblingIndex() + ".." + placements[i] + ".." + AllPanels[i].transform.name);
             }
-
 
         }
 
@@ -330,15 +334,18 @@ namespace Florian
 
             for (int i = 0; i < characters.Count; i++)
             {
-                int point = GetPositionPoints(i);
-                if (!points.ContainsKey(point))
+                if (!HasEnded(i))
                 {
-                    points.Add(point, new List<int>());
-                }
-                points[point].Add(i);
-                if (point > maxPoint)
-                {
-                    maxPoint = point;
+                    int point = GetPositionPoints(i);
+                    if (!points.ContainsKey(point))
+                    {
+                        points.Add(point, new List<int>());
+                    }
+                    points[point].Add(i);
+                    if (point > maxPoint)
+                    {
+                        maxPoint = point;
+                    }
                 }
             }
 
