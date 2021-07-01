@@ -63,6 +63,12 @@ namespace Florian
             RetrieveACharge(); */
         }
 
+
+        public void StopStomp()
+        {
+            StopCoroutine(CheckGrounded());
+        }
+
         private void RetrieveACharge()
         {
             if (charging != null)

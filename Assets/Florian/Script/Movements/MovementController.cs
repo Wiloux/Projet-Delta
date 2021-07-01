@@ -568,6 +568,9 @@ namespace Florian {
             cameraController.followPlayer = true;
             cameraController.ResetCamera();
             physics.stun = false;
+
+            jumpingSheep.StopStomp();
+
             Unrebellion();
             Unstunned(true);
         }
