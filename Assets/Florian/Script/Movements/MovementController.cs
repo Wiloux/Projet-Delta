@@ -4,10 +4,13 @@ using UnityEngine;
 using Rewired;
 using Florian;
 using TMPro;
+using System;
 using ToolsBoxEngine;
 
-namespace Florian {
-    public class MovementController : Character {
+namespace Florian
+{
+    public class MovementController : Character
+    {
         public Movement physics;
         public CameraController cameraController;
         private VFXManager vfx;
@@ -22,6 +25,10 @@ namespace Florian {
         [Header("Bodys")]
         public Transform model;
         public Transform body;
+        public SkinnedMeshRenderer bodyMount;
+        public SkinnedMeshRenderer bodyDomi;
+        public SkinnedMeshRenderer bodyLifeGuard;
+        public List<Color> playerColors = new List<Color>();
         private Vector3 baseScale = Vector3.zero;
         private Coroutine scaleRoutine = null;
 
@@ -69,43 +76,54 @@ namespace Florian {
 
         #region Getters
 
-        public float Speed {
+        public float Speed
+        {
             get { return physics.Speed; }
         }
 
-        public float MaxSpeed {
+        public float MaxSpeed
+        {
             get { return physics.MaxSpeed; }
         }
 
-        public bool IsMoving {
+        public bool IsMoving
+        {
             get { return (physics.Speed != 0); }
         }
 
-        public bool Accelerating {
+        public bool Accelerating
+        {
             get { return physics.Accelerating; }
         }
 
-        public bool Decelerating {
+        public bool Decelerating
+        {
             get { return physics.Decelerating; }
         }
 
-        public bool Turning {
+        public bool Turning
+        {
             get { return physics.Turning; }
         }
 
-        public bool Airborn {
+        public bool Airborn
+        {
             get { return physics.airborn; }
         }
 
-        public bool Rebelling {
+        public bool Rebelling
+        {
             get { return rebellionHorizontalDirection != 0f; }
         }
 
         #endregion
 
-        public int Placement {
-            set {
-                switch (value) {
+        public int Placement
+        {
+            set
+            {
+                switch (value)
+                {
 
                     case 1:
                         placementText.text = value.ToString() + "st";
@@ -125,15 +143,18 @@ namespace Florian {
 
         }
 
-        public int Laps {
+        public int Laps
+        {
             set { lapsText.text = "LAP  " + value.ToString() + "/" + maxLaps; }
         }
 
-        public bool CanMove {
+        public bool CanMove
+        {
             get { return !(physics.stun || lockMovements || stopYou); }
         }
 
-        private Animator AnimalAnim {
+        private Animator AnimalAnim
+        {
             get { return animalAnim; }
             set { animalAnim = value; radiantAnim = value; }
         }
@@ -142,11 +163,13 @@ namespace Florian {
 
         #region Unity Callbacks
 
-        void Start() {
+        void Start()
+        {
 
             AS = GetComponent<AudioSource>();
 
-            if (physics == null) {
+            if (physics == null)
+            {
                 physics = GetComponent<Movement>();
             }
 
@@ -158,63 +181,86 @@ namespace Florian {
             vfx = GetComponent<VFXManager>();
 
             flanksAttack = GetComponent<FlanksAttack>();
-            if (flanksAttack == null) { Debug.LogError("Flank attack not found on controller object"); }
 
             jumpingSheep = GetComponent<JumpingSheep>();
-            if (jumpingSheep == null) { Debug.LogError("jumping Sheep not found on controller object"); }
 
             gliding = GetComponent<Gliding>();
-            if (gliding == null) { Debug.LogError("mount Throwing not found on controller object"); }
 
             sharkAttack = GetComponent<Shark>();
-            if (gliding == null) { Debug.LogError("shark not found on controller object"); }
 
             fear = GetComponent<Fear>();
-            if (fear == null) { Debug.LogError("fear not found on controller object"); }
 
             playerTrigger = GetComponent<PlayerTrigger>();
-            if (playerTrigger == null) { Debug.LogError("player Trigger not found on controller object"); }
 
             baseScale = model.localScale;
 
+            if (jumpingSheep == null)
+            {
+                Material[] materials = bodyLifeGuard.materials;
+                materials[0].SetColor("_newColor", playerColors[Int32.Parse(playerName[1].ToString()) - 1]);
+                bodyLifeGuard.materials = materials;
+            }
+            else
+            {
+                Debug.Log(playerColors[Int32.Parse(playerName[1].ToString()) -1]);
+                Material[] materials = bodyDomi.materials;
+                materials[2].SetColor("_newColor", playerColors[Int32.Parse(playerName[1].ToString()) - 1]);
+                materials[3].SetColor("_newColor", playerColors[Int32.Parse(playerName[1].ToString()) - 1]);
+                bodyDomi.materials = materials;
+            }
             //StartCoroutine(ScaleTo(Vector3.one * 5f, 3f));
         }
 
-        void Update() {
+        void Update()
+        {
             float horizontalDirection = 0f;
             bool emptyRebellion = true;
 
-            if (stopYou) {
+            if (stopYou)
+            {
                 if (physics.Speed > 0f)
                     physics.Decelerate();
-                else {
+                else
+                {
                     physics.Accelerate(Movement.AccelerationType.NONE);
                     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                 }
-            } else {
+            }
+            else
+            {
                 GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
             }
 
             physics.cheating = player.GetButton("Cheat");
 
-            if (CanMove && !Airborn) {
+            if (CanMove && !Airborn)
+            {
                 // Acceleration
-                if (Rebelling) {
+                if (Rebelling)
+                {
                     physics.Accelerate(Movement.AccelerationType.FORWARD, 1f);
-                } else {
-                    if (!Decelerating && player.GetButtonDown("Accelerate")) {
+                }
+                else
+                {
+                    if (!Decelerating && player.GetButtonDown("Accelerate"))
+                    {
                         physics.Accelerate(Movement.AccelerationType.WHIP);
                         AddRebellion();
                         emptyRebellion = false;
-                    } else if (weightAxis.y > 0.7f) {
+                    }
+                    else if (weightAxis.y > 0.7f)
+                    {
                         physics.Accelerate(Movement.AccelerationType.FORWARD, 1f);
                         forwardTimer += Time.deltaTime;
                         emptyRebellion = false;
-                        if (forwardTimer >= forwardRebellionTime) {
+                        if (forwardTimer >= forwardRebellionTime)
+                        {
                             forwardTimer = 0f;
                             AddRebellion();
                         }
-                    } else {
+                    }
+                    else
+                    {
                         physics.Accelerate(Movement.AccelerationType.BASE);
                         if (forwardTimer > 0f)
                             forwardTimer -= Time.deltaTime;
@@ -222,10 +268,12 @@ namespace Florian {
                 }
 
                 // Deceleration
-                if (weightAxis.y < -0.7f) {
+                if (weightAxis.y < -0.7f)
+                {
                     physics.Decelerate();
                     riderAnim.SetFloat("Vertical", player.GetAxis("Vertical"));
-                    if (physics.Speed <= 0f && Rebelling) {
+                    if (physics.Speed <= 0f && Rebelling)
+                    {
                         Unrebellion();
                     }
                 }
@@ -237,10 +285,13 @@ namespace Florian {
             //        horizontalDirection += player.GetAxis("Horizontal");
             //}
 
-            if (CanMove) {
+            if (CanMove)
+            {
                 // Flank Attack
-                if (sharkAttack == null) {
-                    if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f) {
+                if (sharkAttack == null)
+                {
+                    if (player.GetAxisRaw("Attack") != 0f && flanksAttack._timer <= 0f)
+                    {
                         AudioManager.Instance.Play3DSourceSFX(ClipsContainer.Instance.AllClips[0], AS, 1f);
                         flanksAttack.Push(Mathf.Sign(player.GetAxisRaw("Attack")));
                         flanksAttack._timer = flanksAttack._cooldown;
@@ -250,8 +301,11 @@ namespace Florian {
                             riderAnim.SetTrigger("attackG");
                     }
                     // Shark Attack
-                } else {
-                    if (player.GetAxisRaw("Attack") != 0f && sharkAttack._timer <= 0f) {
+                }
+                else
+                {
+                    if (player.GetAxisRaw("Attack") != 0f && sharkAttack._timer <= 0f)
+                    {
                         if (!vfx.sharkChargeFX.isPlaying)
                             vfx.sharkChargeFX.Play();
                         sharkAttack.pressTimer += Time.deltaTime;
@@ -259,11 +313,15 @@ namespace Florian {
                         if (player.GetAxisRaw("Attack") > 0f)
                         {
                             riderAnim.SetBool("chargingAttackD", true);
-                        } else {
+                        }
+                        else
+                        {
                             riderAnim.SetBool("chargingAttackG", true);
                         }
                         sharkSide = player.GetAxisRaw("Attack");
-                    } else if (player.GetAxisRaw("Attack") == 0f && sharkAttack.pressTimer != 0f) {
+                    }
+                    else if (player.GetAxisRaw("Attack") == 0f && sharkAttack.pressTimer != 0f)
+                    {
                         vfx.sharkChargeFX.Stop();
                         sharkAttack.ComputeAttack(sharkSide);
                         AudioManager.Instance.Play3DSourceSFX(ClipsContainer.Instance.AllClips[8], AS, 1f);
@@ -271,49 +329,63 @@ namespace Florian {
                         sharkAttack.pressTimer = 0f;
                         sharkAttack._timer = sharkAttack._cooldown;
 
-                        if (sharkSide > 0f) {
+                        if (sharkSide > 0f)
+                        {
                             riderAnim.SetBool("chargingAttackD", false);
-                        } else if (sharkSide < 0f) {
+                        }
+                        else if (sharkSide < 0f)
+                        {
                             riderAnim.SetBool("chargingAttackG", false);
                         }
                     }
                 }
 
                 // Mount throw
-                if (gliding != null) {
+                if (gliding != null)
+                {
 
-                    if (player.GetButtonDown("Action") && Airborn) {
+                    if (player.GetButtonDown("Action") && Airborn)
+                    {
 
                         AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[18], 1f);
                     }
-                    if (player.GetButton("Action") && Airborn) {
+                    if (player.GetButton("Action") && Airborn)
+                    {
 
-                        if (gliding.timer >= 0) {
+                        if (gliding.timer >= 0)
+                        {
 
                             riderAnim.SetTrigger("plane");
                             riderAnim.SetBool("planeBool", true);
                             vfx.GlidFX(true);
-                        } else {
+                        }
+                        else
+                        {
                             riderAnim.SetBool("planeBool", false);
                             vfx.GlidFX(false);
                         }
                         gliding.isGliding = true;
-                    } else {
+                    }
+                    else
+                    {
                         riderAnim.SetBool("planeBool", false);
                         vfx.GlidFX(false);
                         gliding.isGliding = false;
                     }
 
 
-                    if (!Airborn) {
+                    if (!Airborn)
+                    {
                         vfx.GlidFX(false);
                         riderAnim.SetBool("planeBool", false);
                     }
                 }
 
-                if (player.GetButtonDown("Jump")) {
+                if (player.GetButtonDown("Jump"))
+                {
                     // Jump sheep
-                    if (jumpingSheep != null && jumpingSheep._nbrStomp > 0) {
+                    if (jumpingSheep != null && jumpingSheep._nbrStomp > 0)
+                    {
                         if (!Airborn && jumpingSheep._nbrStomp != 0)
                         {
                             AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[5], 1f);
@@ -325,19 +397,24 @@ namespace Florian {
                             jumpingSheep.stompTimer = jumpingSheep.stompDuration;
                         }
                         // Jump
-                    } else if (!Airborn) {
+                    }
+                    else if (!Airborn)
+                    {
                         AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[5], 1f);
                         physics.Jump();
                     }
                 }
 
                 // Fear
-                if (fear != null) {
+                if (fear != null)
+                {
                     fear.AbilityUpdate();
                 }
 
-                if (player.GetButtonDown("Action")) {
-                    if (fear != null && fear.castable) {
+                if (player.GetButtonDown("Action"))
+                {
+                    if (fear != null && fear.castable)
+                    {
                         AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[4], 1f);
                         fear.Activate();
                     }
@@ -351,15 +428,23 @@ namespace Florian {
             weightAxis.Set(weightX, weightY);
 
             //if (CanMove && (weightAxis.x == -1 || weightAxis.x == 1))
-            if (CanMove && !weightAxis.x.IsInside(-0.7f, 0.7f)) {
-                if (Rebelling) {
+            if (CanMove && !weightAxis.x.IsInside(-0.7f, 0.7f))
+            {
+                if (Rebelling)
+                {
                     physics.SetHorizontalDirection(Mathf.Clamp(weightAxis.x + rebellionHorizontalDirection, -1f, 1f));
-                } else {
+                }
+                else
+                {
                     physics.SetHorizontalDirection(weightAxis.x);
                 }
-            } else if (CanMove) {
+            }
+            else if (CanMove)
+            {
                 physics.SetHorizontalDirection(0f + rebellionHorizontalDirection);
-            } else {
+            }
+            else
+            {
                 physics.SetHorizontalDirection(0f);
             }
 
@@ -367,23 +452,34 @@ namespace Florian {
             riderAnim.SetFloat("Vertical", weightAxis.y);
 
             // Rebellion
-            if (emptyRebellion) {
-                if (rebellionStacks > 0) {
+            if (emptyRebellion)
+            {
+                if (rebellionStacks > 0)
+                {
                     emptyRebellionTimer += Time.deltaTime;
-                    if (emptyRebellionTimer > forwardRebellionTime) {
+                    if (emptyRebellionTimer > forwardRebellionTime)
+                    {
                         emptyRebellionTimer = 0f;
                         vfx.AngerUnstack(rebellionSide);
                         rebellionStacks--;
+                        Material[] materials = bodyMount.materials;
+                        materials[1].SetColor("_newColor", Color.Lerp(Color.black, Color.red, rebellionStacks / 4f));
+                        bodyMount.materials = materials;
                     }
                 }
-            } else {
+            }
+            else
+            {
                 emptyRebellionTimer = 0f;
             }
 
             Quaternion slopeRotation = physics.SlopeTilt();
-            if (slopeRotation != Quaternion.identity) {
+            if (slopeRotation != Quaternion.identity)
+            {
                 model.rotation = Quaternion.Slerp(model.rotation, slopeRotation, slopeRotateSpeed * Time.deltaTime);
-            } else {
+            }
+            else
+            {
                 model.localEulerAngles = Vector3.zero;
             }
 
@@ -391,30 +487,36 @@ namespace Florian {
             UpdateAnims();
         }
 
-        private void FixedUpdate() {
+        private void FixedUpdate()
+        {
             physics.UpdateMovements();
         }
 
-        private void UpdateAnims() {
-            if (IsMoving && !physics.Decelerating) {
+        private void UpdateAnims()
+        {
+            if (IsMoving && !physics.Decelerating)
+            {
                 animalAnim.SetBool("isMoving", true);
                 radiantAnim.SetBool("isMoving", true);
                 animalAnim.speed = Mathf.Lerp(0.75f, 2f, physics.Speed / physics.MaxSpeed);
                 radiantAnim.speed = Mathf.Lerp(0.75f, 2f, physics.Speed / physics.MaxSpeed);
-            } else {
+            }
+            else
+            {
                 animalAnim.SetBool("isMoving", false);
                 radiantAnim.SetBool("isMoving", false);
                 animalAnim.speed = 1f;
                 radiantAnim.speed = 1f;
             }
 
-            if (player.GetButton("Accelerate")) {
-                if (player.GetButtonDown("Accelerate")) {
+            if (player.GetButton("Accelerate"))
+            {
+                if (player.GetButtonDown("Accelerate"))
+                {
                     animalAnim.SetTrigger("whipped");
                     radiantAnim.SetTrigger("whipped");
                     if (triggerUnstunned)
                     {
-                        Debug.Log("debug :)");
                         riderAnim.SetTrigger("whip");
                     }
                 }
@@ -428,7 +530,8 @@ namespace Florian {
 
         #endregion
 
-        public Coroutine GoToDestination(Vector3 position, float speed, float range = 5f) {
+        public Coroutine GoToDestination(Vector3 position, float speed, float range = 5f)
+        {
             lockMovements = true;
             physics.NegateVelocity(Axis.X, Axis.Y, Axis.Z);
 
@@ -437,8 +540,10 @@ namespace Florian {
             return moveToRoutine;
         }
 
-        private IEnumerator MoveTo(Vector3 position, float speed, float range) {
-            while((position - transform.position).sqrMagnitude > range * range) {
+        private IEnumerator MoveTo(Vector3 position, float speed, float range)
+        {
+            while ((position - transform.position).sqrMagnitude > range * range)
+            {
                 position = position.Override(transform.position.y, Axis.Y);
                 Quaternion rotation = Quaternion.LookRotation(position - transform.position, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
@@ -448,16 +553,21 @@ namespace Florian {
             physics.NegateVelocity(Axis.X, Axis.Y, Axis.Z);
         }
 
-        public void StopDestinationRoutine() {
+        public void StopDestinationRoutine()
+        {
             StopCoroutine(moveToRoutine);
         }
 
         #region Setters
 
-        public void OnStun(float time) {
-            if (gliding != null) {
+        public void OnStun(float time)
+        {
+            if (gliding != null)
+            {
                 AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[3], 1f);
-            } else {
+            }
+            else
+            {
                 AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[2], 1f);
             }
             vfx.Stunned(time);
@@ -466,24 +576,28 @@ namespace Florian {
             StartCoroutine(Tools.Delay(Unstunned, true, time));
         }
 
-        private void OnBump() {
+        private void OnBump()
+        {
             AddRebellion();
         }
 
         bool triggerUnstunned = false;
 
-        private void Unstunned(bool value) {
+        private void Unstunned(bool value)
+        {
             riderAnim.SetBool("unstunned", value);
             triggerUnstunned = value;
         }
 
-        public void SetController(string name) {
+        public void SetController(string name)
+        {
             player = ReInput.players.GetPlayer(name);
             if (player != null) { Debug.Log("Controller found : " + player.name); } else { Debug.LogWarning("Controller not found"); return; }
             playerName = name;
         }
 
-        public void SetController(string name, Controller controller) {
+        public void SetController(string name, Controller controller)
+        {
             player = ReInput.players.GetPlayer(name);
             player.controllers.ClearAllControllers();
             player.controllers.AddController(controller, true);
@@ -491,13 +605,16 @@ namespace Florian {
             playerName = name;
         }
 
-        public void SetCamera(int playerId, int maxPlayer) {
+        public void SetCamera(int playerId, int maxPlayer)
+        {
             playerCamera.rect = Tools.GetPlayerRect(playerId, maxPlayer);
         }
 
-        public void ChangeTexture(Material mat) {
+        public void ChangeTexture(Material mat)
+        {
             MeshRenderer renderder = body.GetComponent<MeshRenderer>();
-            if (renderder) {
+            if (renderder)
+            {
                 renderder.material = mat;
             }
         }
@@ -506,22 +623,31 @@ namespace Florian {
 
         #region Rebellion
 
-        private void AddRebellion() {
+        private void AddRebellion()
+        {
             if (Rebelling) { return; }
 
-            if (rebellionStacks == 0) {
+            if (rebellionStacks == 0)
+            {
                 rebellionSide = (int)(Tools.RandomFloat(-1f, 1f));
             }
 
             rebellionStacks++;
+            Material[] materials = bodyMount.materials;
+            materials[1].SetColor("_newColor", Color.Lerp(Color.black, Color.red, rebellionStacks / 4f));
+            bodyMount.materials = materials;
+
             vfx.AngerStack(rebellionSide);
 
-            if (rebellionStacks >= 4) {
+
+            if (rebellionStacks >= 4)
+            {
                 Rebellion();
             }
         }
 
-        private void Rebellion() {
+        private void Rebellion()
+        {
             vfx.AngerRadiant();
             //Debug.Log("REBELLION");
             //rebellionHorizontalDirection = UnityEngine.Random.Range(-0.5f, 0.5f);
@@ -532,18 +658,23 @@ namespace Florian {
             StartCoroutine(Tools.Delay(Unrebellion, rebellionTime));
         }
 
-        private void Unrebellion() {
+        private void Unrebellion()
+        {
             vfx.AngerClear(rebellionSide);
             rebellionSide = 0;
             rebellionHorizontalDirection = 0f;
             forwardTimer = 0f;
             emptyRebellionTimer = 0f;
             rebellionStacks = 0;
+            Material[] materials = bodyMount.materials;
+            materials[1].SetColor("_newColor", Color.Lerp(Color.black, Color.red, rebellionStacks / 4f));
+            bodyMount.materials = materials;
         }
 
         #endregion
 
-        private void OnFallingDeath(float time) {
+        private void OnFallingDeath(float time)
+        {
             //animalAnim.SetTrigger("Falling_death");
             //cameraController.followPlayer = false;
             cameraController.cameraState = CameraController.CameraState.LOOKAT;
@@ -552,7 +683,8 @@ namespace Florian {
             scaleRoutine = StartCoroutine(ScaleTo(Vector3.zero, time * 0.5f));
         }
 
-        private void OnRespawn() {
+        private void OnRespawn()
+        {
             if (scaleRoutine != null) { StopCoroutine(scaleRoutine); }
             model.localScale = baseScale;
 
@@ -561,7 +693,8 @@ namespace Florian {
             cameraController.ResetCamera();
             physics.stun = false;
 
-            if (jumpingSheep != null) {
+            if (jumpingSheep != null)
+            {
                 jumpingSheep.StopStomp();
             }
 
@@ -569,31 +702,36 @@ namespace Florian {
             Unstunned(true);
         }
 
-        private IEnumerator ScaleTo(Vector3 scale, float time) {
+        private IEnumerator ScaleTo(Vector3 scale, float time)
+        {
             Vector3 baseScale = model.localScale;
             int framesNumber = Mathf.FloorToInt(60f * time);
-            for (int i = 0; i < framesNumber; i++) {
+            for (int i = 0; i < framesNumber; i++)
+            {
                 model.localScale = Vector3.Lerp(baseScale, scale, i / (float)framesNumber);
                 yield return new WaitForSeconds(1f / 60f);
             }
         }
 
-        private IEnumerator WaitFor<T>(IEnumerator coroutine1, Tools.BasicDelegate<T> function, T arg) {
+        private IEnumerator WaitFor<T>(IEnumerator coroutine1, Tools.BasicDelegate<T> function, T arg)
+        {
             yield return StartCoroutine(coroutine1);
             Debug.Log($"Started {coroutine1}");
             function(arg);
         }
 
-        public void ResetPlayerTriggerList() {
-            playerTrigger.ResetList();
-        }
+        //public void ResetPlayerTriggerList()
+        //{
+        //    playerTrigger.ResetList();
+        //}
 
         //private void OnGUI() {
         //    GUILayout.Label(player.GetAxis("Horizontal").ToString());
         //    GUILayout.Label(player.GetAxis("Vertical").ToString());
         //}
 
-        public void Ghost(bool state) {
+        public void Ghost(bool state)
+        {
             GetComponent<CapsuleCollider>().enabled = !state;
             ghosted = state;
         }

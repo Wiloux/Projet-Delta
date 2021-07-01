@@ -4,27 +4,27 @@ using UnityEngine;
 
 namespace Florian.ActionSequencer
 {
-    public class ActionResetPlayerList : ActionGameObject
-    {
-        protected override void OnStart() { }
+    //public class ActionResetPlayerList : ActionGameObject
+    //{
+    //    //protected override void OnStart() { }
 
-        protected override void OnExecute()
-        {
-            MovementController movementController = entity.GetComponent<MovementController>();
-            if (movementController == null) { return; }
+    //    //protected override void OnExecute()
+    //    //{
+    //    //    MovementController movementController = entity.GetComponent<MovementController>();
+    //    //    if (movementController == null) { return; }
 
-            movementController.ResetPlayerTriggerList();
-        }
+    //    //    movementController.ResetPlayerTriggerList();
+    //    //}
 
-        public override bool IsActionEnded()
-        {
-            return true;
-        }
+    //    //public override bool IsActionEnded()
+    //    //{
+    //    //    return true;
+    //    //}
 
-        public override void ResetAction()
-        {
-            base.ResetAction();
-        }
-    }
+    //    //public override void ResetAction()
+    //    //{
+    //    //    base.ResetAction();
+    //    //}
+    //}
 }
 

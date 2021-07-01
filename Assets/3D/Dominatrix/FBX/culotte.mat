@@ -20,15 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: cloth laniere
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Name: culotte
+  m_Shader: {fileID: -6465566751694194690, guid: d9095b2529010d24dafe8faab3b95a84, type: 3}
   m_ShaderKeywords: _NORMALMAP _SPECULAR_SETUP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -39,6 +38,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - Texture2D_6a41ae3274554153bf0ad6659a0541e2:
         m_Texture: {fileID: 2800000, guid: 02972997fb50c634abcc2c71398ea1db, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_8a3b6d6e16314362874bb429143e43fc:
+        m_Texture: {fileID: 2800000, guid: feb075453800b5f439f945547d8d6f70, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_ae3f852705e64b08bea8512ee6551fdc:
@@ -113,6 +116,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _mainText:
+        m_Texture: {fileID: 2800000, guid: 113fbcca382291948b137fa9ec7ce90c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -126,10 +133,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_3f6574b1e3be4a239329aa295760c418: 0
     - Vector1_42c22622bf49443f9d55c3d545b58bfe: 0.5
     - Vector1_64b06da2666f4e36bbc4b9150eae0279: 1
     - Vector1_8af2f3e90b13425fa6b86ac5dbc4cf35: 0
     - Vector1_cbc875be3c42408b9d5ee02c2646a9ff: 0
+    - Vector1_ed559930a5034bfc9f016cbf17073479: 0.15
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 10.64
@@ -234,6 +243,8 @@ Material:
     - __dummy__: 0
     - __outline_gui_dummy__: 0
     m_Colors:
+    - Color_0a80eed9dca04f2dbb531bf86245fcd8: {r: 0, g: 0, b: 0, a: 0}
+    - Color_168cf54c56d14c619b4006664e8809d6: {r: 0, g: 0.7183056, b: 1, a: 0}
     - Color_d40f4a649b294e2fb9af98ca17261aaa: {r: 1, g: 1, b: 1, a: 0}
     - Color_e85459c1f53e4754a7d878b47b2297bf: {r: 1, g: 1, b: 1, a: 0}
     - Vector2_90d64a2f2d5640cb90af735ab8a123df: {r: 1, g: 1, b: 0, a: 0}
@@ -251,4 +262,5 @@ Material:
     - _SpecularColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
     - _UvOffset: {r: 0, g: 0, b: 0, a: 0}
     - _UvTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _newColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
