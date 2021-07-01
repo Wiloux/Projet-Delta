@@ -412,7 +412,11 @@ namespace Florian {
                 if (player.GetButtonDown("Accelerate")) {
                     animalAnim.SetTrigger("whipped");
                     radiantAnim.SetTrigger("whipped");
-                    riderAnim.SetTrigger("whip");
+                    if (triggerUnstunned)
+                    {
+                        Debug.Log("debug :)");
+                        riderAnim.SetTrigger("whip");
+                    }
                 }
             }
             animalAnim.SetBool("stop", physics.Decelerating);
@@ -466,8 +470,11 @@ namespace Florian {
             AddRebellion();
         }
 
+        bool triggerUnstunned = false;
+
         private void Unstunned(bool value) {
             riderAnim.SetBool("unstunned", value);
+            triggerUnstunned = value;
         }
 
         public void SetController(string name) {
