@@ -9170,7 +9170,7 @@ MonoBehaviour:
   lookBackPosition: {x: 0, y: 0, z: 5}
   playerName: P1
   playerToFollow: {fileID: 6989231966877414943}
-  followPlayer: 1
+  cameraState: 1
 --- !u!114 &3490258877651621951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39187,6 +39187,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 8423968230009318403, guid: d9ef17a9a07e3e9459015caff3c8253e, type: 3}
+    - target: {fileID: 5171707147960288264, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5171707147960288264, guid: ed7e135d07a087841b9092515bda6a8d, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
