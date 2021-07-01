@@ -42,6 +42,7 @@ namespace Florian {
                     float stunTime = 0f;
                     if (stun) { stunTime = this.stunTime; }
                     //hittedMvtController.physics.Bump((pushedObject.transform.position - transform.position).normalized, _pushForce, stunTime);
+                    pushedObject.GetComponent<VFXManager>().AttackSkillFX(center, 2f);
                     hittedMvtController.physics.Bump(transform.right * horizontal, _pushForce, stunTime);
                     //hittedMvtController.physics.AddVelocity(Vector3.right * horizontal * _pushForce);
                     //hittedMvtController.physics.TimedChange(ref hittedMvtController.physics.frictions.amplitude, "frictions.amplitude", hittedMvtController.physics.frictions.amplitude * 15f, 1f);

@@ -93,7 +93,6 @@ namespace Florian {
 
         private void Update() {
             UpdateRace();
-            if (Input.GetKeyDown(KeyCode.O)) { EndRace(); }
         }
 
         private void UpdateRace() {

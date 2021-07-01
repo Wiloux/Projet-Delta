@@ -238,8 +238,6 @@ namespace Florian
                 GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
             }
 
-            physics.cheating = player.GetButton("Cheat");
-
             if (CanMove && !Airborn)
             {
                 // Acceleration
