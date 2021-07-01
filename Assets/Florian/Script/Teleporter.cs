@@ -54,12 +54,12 @@ namespace Florian {
             Teleporter tp = tpTrans.parent.GetComponent<Teleporter>();
             mvtCtl.cameraController.ResetCamera();
             Vector3 direction = (tp.tunnelBegin.position - tp.tunnelBottom.position).normalized;
-            mvtCtl.cameraController.transform.parent.position = tp.tunnelBegin.position;
+            mvtCtl.cameraController.transform.parent.position = tp.tunnelBegin.position.Override(player.transform.position.y, Axis.Y);
             mvtCtl.cameraController.transform.parent.rotation = Quaternion.LookRotation(direction, Vector3.up);
             mvtCtl.cameraController.SpeedWizard(20f);
             StartCoroutine(TeleporterFade(player, time / 2f, true)); // Fadeout
 
-            yield return mvtCtl.GoToDestination(tp.tunnelBegin.position, 20f);
+            yield return mvtCtl.GoToDestination(tp.tunnelBegin.position, 20f, 2f);
 
             //mvtCtl.cameraController.followPlayer = true;
 

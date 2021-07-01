@@ -517,7 +517,7 @@ namespace Florian {
             Vector3 direction = worldDirection.Redirect(transform.forward, Vector3.forward);
             AddVelocity(direction * force);
             if (stunTime <= 0f) {
-                TimedChange(ref frictions.amplitude, "frictions.amplitude", frictions.amplitude * 5f, 1f * (force / 30f));
+                TimedChange(ref frictions.amplitude, "frictions.amplitude", frictions.amplitude * 5f, 1f * (force / 20f));
             } else {
                 Stun(stunTime);
             }
@@ -627,6 +627,8 @@ namespace Florian {
                 }
                 return true;
             }
+
+            offTracking = false;
             return false;
         }
 

@@ -135,7 +135,17 @@ namespace Florian {
         }
 
         public Coroutine ResetIn(float time) {
+            StartCoroutine(FollowPlayerPosition(time));
             return cam.ResetTransform(time, transform);
+        }
+
+        private IEnumerator FollowPlayerPosition(float time) {
+            float timer = 0f;
+            while (timer < time) {
+                transform.parent.position = playerToFollow.position;
+                timer += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 }

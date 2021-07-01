@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,13 @@ namespace Florian {
     }
 
     public class RaceManager : MonoBehaviour {
+        [Serializable]
+        public struct Place {
+            public int playerId;
+            public int points;
+        }
+
+        public Place[] places;
         public int lapsNumber = 0;
         public Vector3[] checkpoints = null;
         [HideInInspector] public List<Character> characters;
@@ -20,6 +28,7 @@ namespace Florian {
         [SerializeField] private List<int> checkpointReached = null;
         [SerializeField] private List<int> laps = null;
         public int[] placements = null;
+        public int[] endPlacement = null;
         public bool raceStarted = false;
 
         [Header("EndGame")]
@@ -78,7 +87,7 @@ namespace Florian {
                 AreaTrigger lastArea = insta.AddComponent<AreaTrigger>();
                 lastArea.SetCollider(checkpointsSize);
                 ActionCheckpointReached action = lastArea.AddAction<ActionCheckpointReached>(AreaTrigger.TriggerType.ON_ENTER);
-                action.SetAction(Action.WaitType.NONE, ActionGameObject.TargetType.TRIGGERING, this, i);
+                action.SetAction(Florian.ActionSequencer.Action.WaitType.NONE, ActionGameObject.TargetType.TRIGGERING, this, i);
             }
         }
 
@@ -105,8 +114,15 @@ namespace Florian {
                     MovementController player = characters[i] as MovementController;
                     player.Laps = laps[i];
                     if (HasEnded(i)) {
-                        player.lockMovements = true;
+                        for (int j = 0; j < endPlacement.Length; j++)
+                            if (endPlacement[j] == -1) {
+                                endPlacement[j] = i;
+                                break;
+                            }
+
+                        player.stopYou = true;
                         if (EveryoneEnded) {
+                            placements = endPlacement;
                             EndRace();
                         }
                     }
@@ -118,16 +134,20 @@ namespace Florian {
             SetCharacters(characters);
 
             placements = new int[characters.Length];
+            places = new Place[characters.Length];
+            endPlacement = new int[characters.Length];
 
             laps = new List<int>();
             checkpointReached = new List<int>();
             for (int i = 0; i < characters.Length; i++) {
+                endPlacement[i] = -1;
                 Debug.Log(characters[i].name);
                 laps.Add(0);
                 checkpointReached.Add(0);
                 placements[i] = 0;
                 (characters[i] as MovementController).maxLaps = lapsNumber;
                 (characters[i] as MovementController).Laps = 0;
+                places[i] = new Place();
             }
             AudioManager.Instance.PlayMusicWithFade(ClipsContainer.Instance.AllClips[15], 0.7f);
             AudioManager.Instance.PlayAmbiant(ClipsContainer.Instance.AllClips[16], 0.3f);
@@ -206,15 +226,15 @@ namespace Florian {
                 lastInst.transform.Find("1/PlayerColor").GetComponent<Image>().sprite = playerColorImages[i];
                 lastInst.transform.Find("1/PlayerColor/Number").GetComponent<Image>().sprite = playerNumberImages[place];
                 Vector3 lastPos = lastInst.transform.Find("1").transform.position;
-                lastInst.transform.Find("1").transform.position = new Vector3(lastPos.x + 25 * i, lastPos.y, lastPos.z);
+                lastInst.transform.Find("1").transform.position = new Vector3(lastPos.x + 25 * place, lastPos.y, lastPos.z);
             }
 
             for (int i = 0; i < AllPanels.Count; i++) {
                 for (int j = 0; j < placements.Length; j++) {
                     if (placements[j] == i)
                         place = j;
-
                 }
+
                 MovementController player = characters[i] as MovementController;
                 AllPanels[i].transform.SetSiblingIndex(place);
                 //Debug.Log(characters[i].name + ".." + characters[i].transform.GetSiblingIndex() + ".." + placements[i] + ".." + AllPanels[i].transform.name);
@@ -276,62 +296,108 @@ namespace Florian {
 
         public void ComputePlacements() {
             // Points = players;
-            Dictionary<int, List<int>> points = new Dictionary<int, List<int>>();
-
-            int maxPoint = 0;
+            //int[] pointPlayer = new int[characters.Count];
 
             for (int i = 0; i < characters.Count; i++) {
-                int point = GetPositionPoints(i);
-                if (!points.ContainsKey(point)) {
-                    points.Add(point, new List<int>());
-                }
-                points[point].Add(i);
-                if (point > maxPoint) {
-                    maxPoint = point;
-                }
+                places[i].playerId = i;
+
+                int points = GetPositionPoints(i);
+                places[i].points = points;
             }
 
-            int place = 0;
-
-            for (int i = 0; i < placements.Length; i++) {
-                if (HasEnded(placements[i])) {
-                    place = i + 1;
-                }
-            }
-
-            for (int i = maxPoint; i >= 0; i--) {
-                if (points.ContainsKey(i)) {
-                    for (int j = 0; j < points[i].Count; j++) {
-                        if (HasEnded(points[i][j])) {
-                            points[i].RemoveAt(j);
-                        }
-                    }
-
-                    if (points[i].Count > 1) {
-                        List<float> distances = new List<float>();
-                        Dictionary<float, int> almanac = new Dictionary<float, int>();
-                        for (int j = 0; j < points[i].Count; j++) {
-                            int index = points[i][j];
-                            distances.Add(Vector3.Distance(characters[index].transform.position, checkpoints[checkpointReached[index] + 1]));
-                            almanac.Add(distances[distances.Count - 1], index);
-                        }
-                        distances.Sort();
-                        for (int j = 0; j < distances.Count; j++) {
-                            placements[place] = almanac[distances[j]];
-                            place++;
-                        }
-                    } else if (points[i].Count > 0) {
-                        placements[place] = points[i][0];
-                        place++;
+            bool finish = false;
+            while (!finish) {
+                finish = true;
+                for (int i = 0; i < places.Length - 1; i++) {
+                    if (places[i].points < places[i + 1].points) {
+                        finish = false;
+                        Place temp = places[i + 1];
+                        places[i + 1] = places[i];
+                        places[i] = temp;
                     }
                 }
             }
+
+            for (int i = 0; i < places.Length; i++) {
+                placements[i] = places[i].playerId;
+            }
+
+            //Dictionary<int, List<int>> points = new Dictionary<int, List<int>>();
+
+            //int maxPoint = 0;
+
+            //for (int i = 0; i < characters.Count; i++) {
+            //    int point = GetPositionPoints(i);
+            //    if (!points.ContainsKey(point)) {
+            //        points.Add(point, new List<int>());
+            //    }
+            //    points[point].Add(i);
+            //    if (point > maxPoint) {
+            //        maxPoint = point;
+            //    }
+            //}
+
+            //int place = 0;
+
+            //for (int i = 0; i < placements.Length; i++) {
+            //    if (HasEnded(placements[i])) {
+            //        place = i + 1;
+            //    }
+            //}
+
+            //if (place >= placements.Length) {
+            //    return;
+            //}
+
+            //for (int i = maxPoint; i >= 0; i--) {
+            //    if (points.ContainsKey(i)) {
+            //        for (int j = 0; j < points[i].Count; j++) {
+            //            if (HasEnded(points[i][j])) {
+            //                points[i].RemoveAt(j);
+            //            }
+            //        }
+
+            //        if (points[i].Count > 1) {
+            //            List<float> distances = new List<float>();
+            //            Dictionary<float, int> almanac = new Dictionary<float, int>();
+            //            for (int j = 0; j < points[i].Count; j++) {
+            //                int index = points[i][j];
+            //                distances.Add(Vector3.Distance(characters[index].transform.position, checkpoints[checkpointReached[index] + 1]));
+            //                almanac.Add(distances[distances.Count - 1], index);
+            //            }
+            //            distances.Sort();
+            //            for (int j = 0; j < distances.Count; j++) {
+            //                placements[place] = almanac[distances[j]];
+            //                place++;
+            //            }
+            //        } else if (points[i].Count > 0) {
+            //            placements[place] = points[i][0];
+            //            place++;
+            //        }
+            //    }
+            //}
         }
 
         private int GetPositionPoints(int characterIndex) {
+            int chunk = 20;
+
             int points = 0;
             points = laps[characterIndex] * checkpoints.Length;
             points += checkpointReached[characterIndex];
+
+            points *= chunk;
+            int prevCheckpointIndex = checkpointReached[characterIndex];
+            int nextCheckpointIndex = checkpointReached[characterIndex] + 1;
+
+            if (nextCheckpointIndex >= checkpoints.Length) {
+                nextCheckpointIndex = 0;
+            }
+
+            float maxDistance = Vector3.Distance(checkpoints[prevCheckpointIndex], checkpoints[nextCheckpointIndex]);
+            float distance = Vector3.Distance(characters[characterIndex].transform.position, checkpoints[nextCheckpointIndex]);
+            int supplement = chunk - Mathf.RoundToInt((distance / maxDistance) * chunk);
+            points += supplement;
+
             return points;
         }
 

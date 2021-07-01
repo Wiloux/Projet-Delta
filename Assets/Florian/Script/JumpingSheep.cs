@@ -97,7 +97,7 @@ namespace Florian
             {
                 yield return new WaitForEndOfFrame();
             }
-            Vector3 stompFxPos = new Vector3(transform.position.x, transform.position.y - 0.8f, transform.position.z);
+            Vector3 stompFxPos = new Vector3(transform.position.x, transform.position.y - 2.3f, transform.position.z);
             GetComponent<VFXManager>().StompSkillFX(stompFxPos, 5f);
             Bump();
         }
