@@ -211,13 +211,20 @@ namespace Florian
             //StartCoroutine(ScaleTo(Vector3.one * 5f, 3f));
         }
 
+        public GameObject EndUI;
         void Update()
         {
             float horizontalDirection = 0f;
             bool emptyRebellion = true;
 
+
+           
+
             if (stopYou)
             {
+                if(!EndUI.activeSelf)
+                EndUI.SetActive(true);
+
                 if (physics.Speed > 0f)
                     physics.Decelerate();
                 else
