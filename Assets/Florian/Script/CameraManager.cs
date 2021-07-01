@@ -63,8 +63,8 @@ namespace Florian {
             return StartCoroutine(CameraReset(time, target));
         }
 
-        public void ResetTarget(float time, Transform target) {
-            StartCoroutine(TargetTransformReset(time, target));
+        public Coroutine ResetTarget(float time, Transform target) {
+            return StartCoroutine(TargetTransformReset(time, target));
         }
 
         public void ResetCamera() {
@@ -158,6 +158,10 @@ namespace Florian {
                 timepassed += Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
+        }
+
+        public void StopRoutines() {
+            StopAllCoroutines();
         }
     }
 }

@@ -420,12 +420,13 @@ namespace Florian {
 
         #endregion
 
-        public void GoToDestination(Vector3 position, float speed, float range = 5f) {
+        public Coroutine GoToDestination(Vector3 position, float speed, float range = 5f) {
             lockMovements = true;
             physics.NegateVelocity(Axis.X, Axis.Y, Axis.Z);
 
             if (moveToRoutine != null) { StopCoroutine(moveToRoutine); }
             moveToRoutine = StartCoroutine(MoveTo(position, speed, range));
+            return moveToRoutine;
         }
 
         private IEnumerator MoveTo(Vector3 position, float speed, float range) {
@@ -555,7 +556,8 @@ namespace Florian {
 
         private void OnFallingDeath(float time) {
             //animalAnim.SetTrigger("Falling_death");
-            cameraController.followPlayer = false;
+            //cameraController.followPlayer = false;
+            cameraController.cameraState = CameraController.CameraState.LOOKAT;
 
             if (scaleRoutine != null) { StopCoroutine(scaleRoutine); }
             scaleRoutine = StartCoroutine(ScaleTo(Vector3.zero, time * 0.5f));
@@ -565,7 +567,8 @@ namespace Florian {
             if (scaleRoutine != null) { StopCoroutine(scaleRoutine); }
             model.localScale = baseScale;
 
-            cameraController.followPlayer = true;
+            //cameraController.followPlayer = true;
+            cameraController.cameraState = CameraController.CameraState.FOLLOW;
             cameraController.ResetCamera();
             physics.stun = false;
             Unrebellion();
@@ -597,11 +600,7 @@ namespace Florian {
         //}
 
         public void Ghost(bool state) {
-            if (state) {
-                transform.tag = "Untagged";
-            } else {
-                transform.tag = "Player";
-            }
+            GetComponent<MeshCollider>().enabled = !state;
             ghosted = state;
         }
     }

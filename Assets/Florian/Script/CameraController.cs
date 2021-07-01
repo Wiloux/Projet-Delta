@@ -6,6 +6,8 @@ using ToolsBoxEngine;
 
 namespace Florian {
     public class CameraController : MonoBehaviour {
+        public enum CameraState { NONE, FOLLOW, LOOKAT }
+
         [Header("Camera")]
         [SerializeField] private MovementController movement;
         [SerializeField] private CameraManager cam;
@@ -42,7 +44,8 @@ namespace Florian {
 
         [Header("Other")]
         public Transform playerToFollow;
-        public bool followPlayer = true;
+        public CameraState cameraState = CameraState.FOLLOW;
+        //public bool followPlayer = true;
 
         private void Start() {
             player = ReInput.players.GetPlayer(movement.playerName);
@@ -50,18 +53,25 @@ namespace Florian {
         }
 
         private void Update() {
-            if (followPlayer) {
-                FollowPlayer();
-            } else {
-                transform.LookAt(playerToFollow);
-                return;
+            switch (cameraState) {
+                case CameraState.NONE:
+                    return;
+                case CameraState.LOOKAT:
+                    transform.LookAt(playerToFollow);
+                    return;
+                case CameraState.FOLLOW:
+                    FollowPlayer();
+                    break;
+                default:
+                    FollowPlayer();
+                    break;
             }
 
             if (player.GetButton("Look back")) {
                 cam.CameraMove(lookBackPosition, lookBackRotation, 0f);
                 lookingBack = true;
             } else {
-                if(lookingBack) {
+                if (lookingBack) {
                     cam.CameraMove(cam._initPos, cam._initRot, 0f);
                     lookingBack = false;
                 }
@@ -69,7 +79,7 @@ namespace Florian {
                 float percentageSpeed = Mathf.Clamp01(movement.Speed / movement.MaxSpeed);
                 float zPos = Mathf.Lerp(_minZ, _maxZ, percentageSpeed);
                 if (movement.Speed == 0) { zPos = cam._initPos.z; }
-                
+
                 // Acceleration
                 if (movement.Accelerating && movement.Speed < movement.MaxSpeed && !movement.Turning) {
                     if (zPos > cam._initPos.z) { zPos = Mathf.Lerp(cam._initPos.z, _maxZ, percentageSpeed); }
@@ -79,10 +89,10 @@ namespace Florian {
                 // Deceleration
                 if (movement.Decelerating && !movement.Turning) {
                     zPos = Mathf.Lerp(_minZ, _maxZ, Mathf.Clamp01(movement.Speed / movement.MaxSpeed));
-                    
+
                     cam.CameraMovePosition(decelPosition.Override(zPos, Axis.Z), decelDuration);
                 }
-                
+
                 // Tourner
                 if (movement.Turning && movement.Speed > 1f) {
                     Vector3 turnRotation = Vector3.Lerp(turnRotationMin, turnRotationMax, percentageSpeed);
@@ -111,6 +121,21 @@ namespace Florian {
 
         public void ResetCamera() {
             cam.ResetCamera();
+            cam.StopRoutines();
+        }
+
+        public void SpeedWizard(float speed) {
+            float percentageSpeed = Mathf.Clamp01(speed / movement.MaxSpeed);
+            float zPos = Mathf.Lerp(_minZ, _maxZ, percentageSpeed);
+
+            if (movement.Speed == 0) { zPos = cam._initPos.z; }
+            if (zPos > cam._initPos.z) { zPos = Mathf.Lerp(cam._initPos.z, _maxZ, percentageSpeed); }
+
+            cam.transform.localPosition = accelPosition.Override(zPos, Axis.Z);
+        }
+
+        public Coroutine ResetIn(float time) {
+            return cam.ResetTransform(time, transform);
         }
     }
 }

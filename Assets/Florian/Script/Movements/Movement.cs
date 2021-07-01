@@ -263,6 +263,8 @@ namespace Florian {
 
             if (!cheating) {
                 velocity += ComputeGravity() * Vector3.down;
+            } else {
+                velocity.y = 0f;
             }
 
             ApplySpeed();

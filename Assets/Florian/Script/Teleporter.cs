@@ -40,25 +40,33 @@ namespace Florian {
             MovementController mvtCtl = player.GetComponent<MovementController>();
             mvtCtl.GoToDestination(tunnelBottom.position, 20f);
             mvtCtl.Ghost(true);
-            mvtCtl.cameraController.followPlayer = false;
+
+            //mvtCtl.cameraController.followPlayer = false;
+            mvtCtl.cameraController.cameraState = CameraController.CameraState.LOOKAT;
 
             yield return StartCoroutine(TeleporterFade(player, time / 2f, false)); // Fadein
 
+            mvtCtl.cameraController.cameraState = CameraController.CameraState.NONE;
             mvtCtl.StopDestinationRoutine();
             Transform tpTrans = Teleport(player);
             if (tpTrans == null) { Debug.LogWarning("CA VA PA MARCHE"); }
             Teleporter tp = tpTrans.parent.GetComponent<Teleporter>();
-            Debug.Log(mvtCtl.cameraController.transform.position);
-            mvtCtl.cameraController.transform.position = tp.cameraOnExit.position;
-            mvtCtl.cameraController.transform.rotation = tp.cameraOnExit.rotation;
-            Debug.Log(mvtCtl.cameraController.transform.position);
-            mvtCtl.GoToDestination(tp.tunnelBegin.position, 20f);
+            mvtCtl.cameraController.ResetCamera();
+            Vector3 direction = (tp.tunnelBegin.position - tp.tunnelBottom.position).normalized;
+            mvtCtl.cameraController.transform.parent.position = tp.tunnelBegin.position;
+            mvtCtl.cameraController.transform.parent.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            mvtCtl.cameraController.SpeedWizard(20f);
+            StartCoroutine(TeleporterFade(player, time / 2f, true)); // Fadeout
 
-            yield return StartCoroutine(TeleporterFade(player, time / 2f, true)); // Fadeout
+            yield return mvtCtl.GoToDestination(tp.tunnelBegin.position, 20f);
 
-            mvtCtl.cameraController.followPlayer = true;
+            //mvtCtl.cameraController.followPlayer = true;
+
             mvtCtl.lockMovements = false;
             mvtCtl.Ghost(false);
+
+            yield return mvtCtl.cameraController.ResetIn(1f);
+            mvtCtl.cameraController.cameraState = CameraController.CameraState.FOLLOW;
         }
 
         private Transform Teleport(GameObject other) {
@@ -94,7 +102,6 @@ namespace Florian {
                                 }
                             }
                         }
-
 
                         passedPlayers.Remove(n);
                         other.transform.position = exits[index].position;
