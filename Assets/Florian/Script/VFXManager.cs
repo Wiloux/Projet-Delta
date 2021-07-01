@@ -39,6 +39,12 @@ namespace Florian
             UpdateFadeUI();
         }
 
+        [SerializeField] private ParticleSystem _slowFX = null;
+
+        public void Slowed()
+        {
+            _slowFX.Play();
+        }
         public void SharkFX(float timer)
         {
             ParticleSystem.MainModule mainSharkFX = sharkChargeFX.main;

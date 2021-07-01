@@ -72,6 +72,7 @@ public class Fear : MonoBehaviour {
             MovementController hittedMvtController = hitCollider.GetComponent<MovementController>();
             if (hittedMvtController != null && hittedMvtController.playerName != mvtController.playerName) {
                 hittedMvtController.physics.Slow(slowAmount);
+
             }
         }
     }

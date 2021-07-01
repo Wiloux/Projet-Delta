@@ -451,6 +451,8 @@ namespace Florian {
         public void Slow(float slow) {
             if (!slowable) { return; }
 
+            GetComponent<VFXManager>().Slowed();
+
             if (velocity.z > 0f) {
                 AddVelocity(Vector3.back * Mathf.Abs(slow));
                 if (velocity.z < 0f) {
