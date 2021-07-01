@@ -99,6 +99,7 @@ namespace Florian {
         private bool slowable = true;
 
         private Dictionary<string, TimedChangeCoroutineStruct<object>> timedChangedRoutines = null;
+        public bool cheating = false;
 
         #region Properties
 
@@ -260,8 +261,9 @@ namespace Florian {
                 decelerateTimer -= Time.fixedDeltaTime;
             }
 
-
-            velocity += ComputeGravity() * Vector3.down;
+            if (!cheating) {
+                velocity += ComputeGravity() * Vector3.down;
+            }
 
             ApplySpeed();
             // SlopeTilt();
@@ -649,7 +651,6 @@ namespace Florian {
             if (!(groundLayers.Contains(collision.gameObject.layer))) {
                 Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal, Color.red, 10f);
                 Debug.DrawRay(transform.position, -transform.forward, Color.green, 10f);
-                Debug.Log(Mathf.Abs(collision.contacts[0].point.y - groundCheck.position.y) + " . " + stepHeight);
             }
 
             if (!(groundLayers.Contains(collision.gameObject.layer)) &&

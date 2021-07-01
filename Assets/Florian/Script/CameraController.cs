@@ -51,9 +51,7 @@ namespace Florian {
 
         private void Update() {
             if (followPlayer) {
-                transform.parent.position = playerToFollow.position;
-                //transform.parent.rotation = playerToFollow.rotation;
-                transform.parent.localEulerAngles = transform.parent.localEulerAngles.Override(playerToFollow.localEulerAngles.y, Axis.Y);
+                FollowPlayer();
             } else {
                 transform.LookAt(playerToFollow);
                 return;
@@ -104,6 +102,11 @@ namespace Florian {
                 if (movement.Airborn)
                     cam.CameraMove(airPosition, airRotation, airDuration);
             }
+        }
+
+        public void FollowPlayer() {
+            transform.parent.position = playerToFollow.position;
+            transform.parent.localEulerAngles = transform.parent.localEulerAngles.Override(playerToFollow.localEulerAngles.y, Axis.Y);
         }
 
         public void ResetCamera() {

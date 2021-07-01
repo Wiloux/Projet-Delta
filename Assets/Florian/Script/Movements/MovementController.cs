@@ -58,7 +58,11 @@ namespace Florian {
         private float emptyRebellionTimer = 0f;
         private float forwardTimer = 0f;
 
+        public bool ghosted = false;
+
         public AudioSource AS;
+
+        private Coroutine moveToRoutine;
 
         #region Properties
 
@@ -179,12 +183,17 @@ namespace Florian {
             float horizontalDirection = 0f;
             bool emptyRebellion = true;
 
-            if (lockMovements) {
-                if (physics.Speed > 0f)
-                    physics.Decelerate();
-                else
-                    physics.Accelerate(Movement.AccelerationType.NONE);
-            }
+            //if (lockMovements) {
+            //    //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            //    if (physics.Speed > 0f)
+            //        physics.Decelerate();
+            //    else
+            //        physics.Accelerate(Movement.AccelerationType.NONE);
+            //} else {
+            //    //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+            //}
+
+            physics.cheating = player.GetButton("Cheat");
 
             if (CanMove && !Airborn) {
                 // Acceleration
@@ -411,6 +420,29 @@ namespace Florian {
 
         #endregion
 
+        public void GoToDestination(Vector3 position, float speed, float range = 5f) {
+            lockMovements = true;
+            physics.NegateVelocity(Axis.X, Axis.Y, Axis.Z);
+
+            if (moveToRoutine != null) { StopCoroutine(moveToRoutine); }
+            moveToRoutine = StartCoroutine(MoveTo(position, speed, range));
+        }
+
+        private IEnumerator MoveTo(Vector3 position, float speed, float range) {
+            while((position - transform.position).sqrMagnitude > range * range) {
+                position = position.Override(transform.position.y, Axis.Y);
+                Quaternion rotation = Quaternion.LookRotation(position - transform.position, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
+                physics.velocity = Vector3.forward * speed;
+                yield return new WaitForEndOfFrame();
+            }
+            physics.NegateVelocity(Axis.X, Axis.Y, Axis.Z);
+        }
+
+        public void StopDestinationRoutine() {
+            StopCoroutine(moveToRoutine);
+        }
+
         #region Setters
 
         public void OnStun(float time) {
@@ -516,6 +548,7 @@ namespace Florian {
             rebellionHorizontalDirection = 0f;
             forwardTimer = 0f;
             emptyRebellionTimer = 0f;
+            rebellionStacks = 0;
         }
 
         #endregion
@@ -562,5 +595,14 @@ namespace Florian {
         //    GUILayout.Label(player.GetAxis("Horizontal").ToString());
         //    GUILayout.Label(player.GetAxis("Vertical").ToString());
         //}
+
+        public void Ghost(bool state) {
+            if (state) {
+                transform.tag = "Untagged";
+            } else {
+                transform.tag = "Player";
+            }
+            ghosted = state;
+        }
     }
 }
