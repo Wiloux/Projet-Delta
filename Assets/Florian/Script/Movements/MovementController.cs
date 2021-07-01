@@ -45,6 +45,7 @@ namespace Florian {
 
         [Header("Controls")]
         public bool lockMovements = false;
+        public bool stopYou = false;
         public float weightDistributionSpeed = 3f;
         private Vector2 weightAxis = Vector2.zero;
         private Vector2 targetWeightAxis = Vector2.zero;
@@ -129,7 +130,7 @@ namespace Florian {
         }
 
         public bool CanMove {
-            get { return !(physics.stun || lockMovements); }
+            get { return !(physics.stun || lockMovements || stopYou); }
         }
 
         private Animator AnimalAnim {
@@ -183,15 +184,16 @@ namespace Florian {
             float horizontalDirection = 0f;
             bool emptyRebellion = true;
 
-            //if (lockMovements) {
-            //    //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            //    if (physics.Speed > 0f)
-            //        physics.Decelerate();
-            //    else
-            //        physics.Accelerate(Movement.AccelerationType.NONE);
-            //} else {
-            //    //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-            //}
+            if (stopYou) {
+                if (physics.Speed > 0f)
+                    physics.Decelerate();
+                else {
+                    physics.Accelerate(Movement.AccelerationType.NONE);
+                    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                }
+            } else {
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+            }
 
             physics.cheating = player.GetButton("Cheat");
 
@@ -355,8 +357,10 @@ namespace Florian {
                 } else {
                     physics.SetHorizontalDirection(weightAxis.x);
                 }
-            } else {
+            } else if (CanMove) {
                 physics.SetHorizontalDirection(0f + rebellionHorizontalDirection);
+            } else {
+                physics.SetHorizontalDirection(0f);
             }
 
             riderAnim.SetFloat("Horizontal", weightAxis.x);
@@ -505,28 +509,6 @@ namespace Florian {
             rebellionStacks++;
             vfx.AngerStack(rebellionSide);
 
-            //int probability = 0;
-            //switch (rebellionStacks) {
-            //    case 1:
-            //        probability = 15;
-            //        break;
-            //    case 2:
-            //        probability = 30;
-            //        break;
-            //    case 3:
-            //        probability = 50;
-            //        break;
-            //    case 4:
-            //        probability = 100;
-            //        break;
-            //}
-
-            //int random = UnityEngine.Random.Range(0, 100);
-
-            //if (random < probability) {
-            //    Rebellion();
-            //}
-
             if (rebellionStacks >= 4) {
                 Rebellion();
             }
@@ -572,7 +554,9 @@ namespace Florian {
             cameraController.ResetCamera();
             physics.stun = false;
 
-            jumpingSheep.StopStomp();
+            if (jumpingSheep != null) {
+                jumpingSheep.StopStomp();
+            }
 
             Unrebellion();
             Unstunned(true);
@@ -603,7 +587,7 @@ namespace Florian {
         //}
 
         public void Ghost(bool state) {
-            GetComponent<MeshCollider>().enabled = !state;
+            GetComponent<CapsuleCollider>().enabled = !state;
             ghosted = state;
         }
     }

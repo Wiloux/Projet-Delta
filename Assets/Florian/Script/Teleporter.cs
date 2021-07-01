@@ -9,7 +9,7 @@ namespace Florian {
 
         public List<Transform> exits = new List<Transform>();
 
-        public List<string> passedPlayers = new List<string>();
+        public List<string> playerToPass = new List<string>();
 
         public bool inverseRespawn = false;
 
@@ -25,9 +25,10 @@ namespace Florian {
             if (original) {
                 StartCoroutine(FadeAndTp(other.gameObject, teleportTime));
             } else {
-                for (int i = 0; i < passedPlayers.Count; i++) {
-                    string n = passedPlayers[i];
-                    if (other.transform.name == n) {
+                for (int i = 0; i < playerToPass.Count; i++) {
+                    string n = playerToPass[i];
+                    MovementController mvtCtl = other.GetComponent<MovementController>();
+                    if (mvtCtl.playerName == n) {
                         StartCoroutine(FadeAndTp(other.gameObject, teleportTime));
                     }
                 }
@@ -70,11 +71,12 @@ namespace Florian {
         }
 
         private Transform Teleport(GameObject other) {
+            MovementController mvtCtl = other.GetComponent<MovementController>();
             if (exits.Count > 0 && original) {
                 int index = Random.Range(0, exits.Count);
                 foreach (Transform exit in exits) {
                     if (index != exits.IndexOf(exit)) {
-                        exit.parent.GetComponent<Teleporter>().passedPlayers.Add(other.transform.name);
+                        exit.parent.GetComponent<Teleporter>().playerToPass.Add(mvtCtl.playerName);
                         break;
                     }
                 }
@@ -90,20 +92,20 @@ namespace Florian {
 
                 return exits[index];
             } else if (!original && exits.Count > 0) {
-                for (int i = 0; i < passedPlayers.Count; i++) {
-                    string n = passedPlayers[i];
-                    if (other.transform.name == n) {
+                for (int i = 0; i < playerToPass.Count; i++) {
+                    string n = playerToPass[i];
+                    if (mvtCtl.playerName == n) {
                         int index = Random.Range(0, exits.Count);
                         if (exits[index].parent.GetComponent<Teleporter>().exits.Count != 0) {
                             foreach (Transform exit in exits) {
                                 if (index != exits.IndexOf(exit)) {
-                                    exit.parent.GetComponent<Teleporter>().passedPlayers.Add(other.transform.name);
+                                    exit.parent.GetComponent<Teleporter>().playerToPass.Add(mvtCtl.playerName);
                                     break;
                                 }
                             }
                         }
 
-                        passedPlayers.Remove(n);
+                        playerToPass.Remove(n);
                         other.transform.position = exits[index].position;
                         other.transform.rotation = exits[index].rotation;
 
