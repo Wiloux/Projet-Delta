@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using ToolsBoxEngine;
 using Rewired;
@@ -21,6 +23,7 @@ namespace Florian
 
         [Header("UIs")]
         public MultiplayerPanel multiplayerPanel = null;
+        private Button previousButton;
 
         [Header("Players")]
         public GameObject kart = null;
@@ -326,7 +329,16 @@ namespace Florian
             if (panel)
             {
                 AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[0]);
-                panel.SetActive(!panel.activeSelf);
+                bool state = !panel.activeSelf;
+                panel.SetActive(state);
+
+                if (state) {
+                    previousButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+                    panel.GetComponentInChildren<Button>().Select();
+                } else {
+                    if (previousButton == null) { return; }
+                    previousButton.Select();
+                }
             }
         }
 
