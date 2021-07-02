@@ -653,7 +653,7 @@ namespace Florian
 
         private void Rebellion()
         {
-            AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[13], 0.2f);
+            AudioManager.Instance.PlaySFX(ClipsContainer.Instance.AllClips[13], 1f);
             vfx.AngerRadiant();
             //Debug.Log("REBELLION");
             //rebellionHorizontalDirection = UnityEngine.Random.Range(-0.5f, 0.5f);
